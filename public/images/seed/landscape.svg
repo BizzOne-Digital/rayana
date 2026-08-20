@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Natural landscape placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4B071B"/>
+      <stop offset="40%" stop-color="#7E1638"/>
+      <stop offset="100%" stop-color="#26020D"/>
+    </linearGradient>
+    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B88A44" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#D6B66E" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#B88A44" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <path d="M0 520 Q300 420 600 480 T1200 440 L1200 800 L0 800 Z" fill="#25151B" opacity="0.6"/>
+  <path d="M0 580 Q400 500 800 560 T1200 520 L1200 800 L0 800 Z" fill="#26020D" opacity="0.8"/>
+  <rect x="0" y="300" width="1200" height="1" fill="url(#goldLine)"/>
+  <circle cx="900" cy="180" r="60" fill="#D6B66E" opacity="0.15"/>
+  <text x="600" y="760" text-anchor="middle" fill="#DCA6B7" font-family="Georgia, serif" font-size="22" opacity="0.5">Landscape Placeholder</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Atmospheric portrait placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#26020D"/>
+      <stop offset="45%" stop-color="#4B071B"/>
+      <stop offset="100%" stop-color="#7E1638"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#D6B66E" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#D6B66E" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+  <ellipse cx="420" cy="360" rx="180" ry="240" fill="#A82750" opacity="0.25"/>
+  <path d="M120 620 Q600 520 1080 640" stroke="#D6B66E" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <rect width="1200" height="800" filter="url(#grain)" opacity="0.08"/>
+  <text x="600" y="760" text-anchor="middle" fill="#EBCDD3" font-family="Georgia, serif" font-size="22" opacity="0.5">Portrait Placeholder</text>
+</svg>

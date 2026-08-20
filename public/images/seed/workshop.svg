@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Workshop placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#26020D"/>
+      <stop offset="100%" stop-color="#4B071B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="300" cy="400" r="80" fill="#7E1638" opacity="0.25"/>
+  <circle cx="500" cy="380" r="70" fill="#A82750" opacity="0.2"/>
+  <circle cx="700" cy="410" r="75" fill="#7E1638" opacity="0.22"/>
+  <circle cx="900" cy="390" r="65" fill="#A82750" opacity="0.18"/>
+  <path d="M150 600 Q600 520 1050 600" stroke="#D6B66E" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <text x="600" y="760" text-anchor="middle" fill="#DCA6B7" font-family="Georgia, serif" font-size="22" opacity="0.5">Workshop Placeholder</text>
+</svg>
