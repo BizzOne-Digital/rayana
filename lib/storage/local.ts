@@ -1,8 +1,8 @@
 import { mkdir, unlink, writeFile } from "fs/promises";
-import { dirname, join, normalize, relative, resolve } from "path";
+import { dirname, join, normalize, relative } from "path";
 import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
-import { UPLOAD_DIR } from "@/lib/constants";
+import { UPLOAD_URL_PREFIX } from "@/lib/constants";
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",
@@ -47,13 +47,26 @@ export type UploadedImage = {
 };
 
 function getUploadRoot(): string {
-  return resolve(process.cwd(), UPLOAD_DIR);
+  if (process.env.UPLOAD_ROOT) {
+    return process.env.UPLOAD_ROOT;
+  }
+
+  return join(process.cwd(), "public", "uploads");
+}
+
+/** Resolve a path under the upload root with static cwd segments for Turbopack. */
+function uploadAbsolutePath(...segments: string[]): string {
+  if (process.env.UPLOAD_ROOT) {
+    return join(/* turbopackIgnore: true */ process.env.UPLOAD_ROOT, ...segments);
+  }
+
+  return join(process.cwd(), "public", "uploads", ...segments);
 }
 
 function assertSafeRelativePath(relativePath: string): string {
   const normalized = normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
-  const absolute = resolve(getUploadRoot(), normalized);
   const root = getUploadRoot();
+  const absolute = uploadAbsolutePath(normalized);
 
   if (!absolute.startsWith(root)) {
     throw new Error("Invalid upload path");
@@ -84,7 +97,7 @@ export async function saveUploadedImage(
   const safeOriginal = originalFilename.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120);
   const baseName = `${id}`;
   const folderRelative = join(new Date().getFullYear().toString(), baseName);
-  const folderAbsolute = resolve(getUploadRoot(), folderRelative);
+  const folderAbsolute = uploadAbsolutePath(folderRelative);
 
   await mkdir(folderAbsolute, { recursive: true });
 
@@ -102,7 +115,7 @@ export async function saveUploadedImage(
   for (const variant of variants) {
     const filename = `${baseName}-${variant.suffix}.webp`;
     const relativePath = assertSafeRelativePath(join(folderRelative, filename));
-    const absolutePath = resolve(getUploadRoot(), relativePath);
+    const absolutePath = uploadAbsolutePath(relativePath);
 
     await mkdir(dirname(absolutePath), { recursive: true });
 
@@ -117,7 +130,7 @@ export async function saveUploadedImage(
 
     await writeFile(absolutePath, output);
 
-    const url = `/${UPLOAD_DIR.replace(/^public[/\\]?/, "")}/${relativePath.replace(/\\/g, "/")}`;
+    const url = `/${UPLOAD_URL_PREFIX}/${relativePath.replace(/\\/g, "/")}`;
 
     uploadedVariants.push({
       suffix: variant.suffix,
@@ -153,7 +166,7 @@ export async function saveUploadedImage(
 
 export async function deleteUploadedImage(relativePath: string): Promise<void> {
   const safePath = assertSafeRelativePath(relativePath);
-  const absolutePath = resolve(getUploadRoot(), safePath);
+  const absolutePath = uploadAbsolutePath(safePath);
 
   try {
     await unlink(absolutePath);
@@ -166,7 +179,7 @@ export async function deleteUploadedImage(relativePath: string): Promise<void> {
 
   if (baseName) {
     for (const suffix of ["thumb", "md", "full"]) {
-      const variantPath = resolve(folder, `${baseName}-${suffix}.webp`);
+      const variantPath = join(folder, `${baseName}-${suffix}.webp`);
       try {
         await unlink(variantPath);
       } catch {

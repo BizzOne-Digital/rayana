@@ -17,9 +17,14 @@ const MOCKUP_HERO_PATHS = new Set([
   "/contact",
 ]);
 
+function hasFullBleedHero(pathname: string): boolean {
+  if (MOCKUP_HERO_PATHS.has(pathname)) return true;
+  return pathname.startsWith("/services/") && pathname.length > "/services/".length;
+}
+
 export function SiteMain({ children }: SiteMainProps) {
   const pathname = usePathname();
-  const hasMockupHero = MOCKUP_HERO_PATHS.has(pathname);
+  const hasMockupHero = hasFullBleedHero(pathname);
 
   return (
     <main

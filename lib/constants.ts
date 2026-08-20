@@ -7,6 +7,9 @@ export const DEFAULT_CURRENCY = process.env.DEFAULT_CURRENCY ?? "CAD";
 
 export const SITE_NAME = "Rayana De Silva — Heart Matters";
 
+export const UPLOAD_URL_PREFIX = "uploads";
+
+/** @deprecated Use UPLOAD_ROOT env for a custom absolute path. Default is public/uploads. */
 export const UPLOAD_DIR = process.env.UPLOAD_DIR ?? "public/uploads";
 
 export const RECORDINGS_DIR =

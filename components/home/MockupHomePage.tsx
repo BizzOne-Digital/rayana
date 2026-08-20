@@ -287,7 +287,9 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
             <div className="grid gap-5 md:grid-cols-3">
               {paddedTestimonials.map((item, index) => (
                 <figure key={`${item.slug}-${index}`} className="mockup-testimonial-card">
-                  <blockquote className="mockup-testimonial-quote">“{item.quote}”</blockquote>
+                  <blockquote className="mockup-testimonial-quote mockup-testimonial-quote--preview">
+                    “{item.quote}”
+                  </blockquote>
                   <figcaption className="mt-6 flex items-center gap-3">
                     <div className="relative h-11 w-11 overflow-hidden rounded-full border border-champagne-gold/30">
                       <Image

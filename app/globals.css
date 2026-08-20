@@ -894,6 +894,7 @@ svg {
 .mockup-home,
 .mockup-about,
 .mockup-services,
+.mockup-service-detail-page,
 .mockup-simple-page,
 .mockup-footer {
   overflow-x: clip;
@@ -904,6 +905,7 @@ svg {
 .mockup-home .site-container > *,
 .mockup-about .site-container > *,
 .mockup-services .site-container > *,
+.mockup-service-detail-page .site-container > *,
 .mockup-simple-page .site-container > *,
 .mockup-footer .site-container > * {
   min-width: 0;
@@ -1102,6 +1104,14 @@ svg {
   font-size: 1rem;
   line-height: 1.65;
   color: rgba(255, 248, 238, 0.92);
+}
+
+.mockup-testimonial-quote--preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(1.65em * 2);
 }
 
 .mockup-insight-card {
