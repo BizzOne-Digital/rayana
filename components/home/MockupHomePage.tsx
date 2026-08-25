@@ -3,16 +3,18 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen, ChevronLeft, ChevronRight, Sparkles, UserRound, Users } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, Heart, Sparkles, UserRound, Users, Waves } from "lucide-react";
 import { HeroCinematic } from "@/components/home/HeroCinematic";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
+import { RAYANA_BRINGS_ITEMS, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
 import type {
-  PublicBlogPost,
+  IconListItem,
+  NumberedStepItem,
   PublicService,
   PublicTestimonial,
   TypedPageSection,
@@ -24,79 +26,14 @@ type MockupHomePageProps = {
 };
 
 const SERVICE_META = [
-  { icon: UserRound, cta: "Explore Sessions" },
-  { icon: BookOpen, cta: "Explore Teachings" },
-  { icon: Users, cta: "View Experiences" },
+  { icon: UserRound, cta: "Learn More" },
+  { icon: BookOpen, cta: "Learn More" },
+  { icon: Waves, cta: "Learn More" },
+  { icon: Users, cta: "Learn More" },
+  { icon: Heart, cta: "Learn More" },
 ];
 
-const DEFAULT_TESTIMONIALS: PublicTestimonial[] = [
-  {
-    slug: "anita-r",
-    name: "Anita R.",
-    quote:
-      "Rayana helped me see what I could not see alone. Her presence is gentle, precise, and deeply transformative.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Vancouver, BC",
-  },
-  {
-    slug: "david-m",
-    name: "David M.",
-    quote:
-      "Working with Rayana brought clarity to patterns I had carried for years. I finally understand what my heart was asking for.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Toronto, ON",
-  },
-  {
-    slug: "sarah-l",
-    name: "Sarah L.",
-    quote:
-      "The teachings opened a doorway I didn't know existed. I feel more present, more honest, and more free.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Calgary, AB",
-  },
-];
-
-const DEFAULT_POSTS: PublicBlogPost[] = [
-  {
-    title: "What Your Heart Is Trying to Tell You",
-    slug: "courage-to-see",
-    excerpt: "Learning to listen beneath the noise of everyday life.",
-    body: "",
-    heroImage: SEED_IMAGES.sacred,
-    author: "Rayana De Silva",
-    categories: ["Insight"],
-    readingTimeMinutes: 5,
-    seo: {},
-  },
-  {
-    title: "The Practice of Inner Listening",
-    slug: "inner-listening",
-    excerpt: "A gentle practice for returning to what is true.",
-    body: "",
-    heroImage: SEED_IMAGES.teaching,
-    author: "Rayana De Silva",
-    categories: ["Practice"],
-    readingTimeMinutes: 4,
-    seo: {},
-  },
-  {
-    title: "Why Clarity Begins with Honesty",
-    slug: "clarity-honesty",
-    excerpt: "On seeing clearly before trying to change anything.",
-    body: "",
-    heroImage: SEED_IMAGES.workshop,
-    author: "Rayana De Silva",
-    categories: ["Teaching"],
-    readingTimeMinutes: 6,
-    seo: {},
-  },
-];
+const DEFAULT_TESTIMONIALS: PublicTestimonial[] = RAYANA_TESTIMONIALS;
 
 function findSection(sections: TypedPageSection[], id: string) {
   return sections.find((s) => s.id === id);
@@ -115,29 +52,44 @@ function MockupOrnament() {
 export function MockupHomePage({ sections, context }: MockupHomePageProps) {
   const hero = findSection(sections, "home-hero");
   const welcome = findSection(sections, "home-welcome");
+  const story = findSection(sections, "home-story");
+  const brings = findSection(sections, "home-brings");
+  const philosophy = findSection(sections, "home-philosophy");
+  const method = findSection(sections, "home-method");
   const offerings = findSection(sections, "home-offerings");
-  const heart = findSection(sections, "home-heart");
   const testimonialsSection = findSection(sections, "home-testimonials");
-  const insights = findSection(sections, "home-insights");
+  const media = findSection(sections, "home-media");
   const cta = findSection(sections, "home-cta");
 
   const services = useMemo(() => {
-    let list = (context?.services ?? []).filter((s) => s.featured).slice(0, 3);
-    if (list.length < 3) {
-      list = (context?.services ?? []).slice(0, 3);
-    }
-    return list;
-  }, [context?.services]);
+    const list = [...(context?.services ?? [])].sort(
+      (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
+    );
+    const limit = Number(offerings?.settings?.limit ?? 5);
+    return list.slice(0, limit);
+  }, [context?.services, offerings?.settings?.limit]);
 
   const testimonials = useMemo(() => {
-    const list = (context?.testimonials ?? []).filter((t) => t.featured).slice(0, 6);
-    return list.length >= 3 ? list : DEFAULT_TESTIMONIALS;
+    const list = (context?.testimonials ?? []).filter((t) => t.featured);
+    return list.length ? list : DEFAULT_TESTIMONIALS;
   }, [context?.testimonials]);
 
-  const posts = useMemo(() => {
-    const list = (context?.blogPosts ?? []).slice(0, 3);
-    return list.length >= 3 ? list : DEFAULT_POSTS;
-  }, [context?.blogPosts]);
+  const bringsItems =
+    (brings?.items as IconListItem[] | undefined)?.length
+      ? (brings!.items as IconListItem[])
+      : RAYANA_BRINGS_ITEMS.map((title) => ({ title, body: "", icon: "heart" }));
+
+  const methodItems =
+    (method?.items as NumberedStepItem[] | undefined)?.length
+      ? (method!.items as NumberedStepItem[])
+      : [
+          { title: "See", body: "What is actually happening." },
+          { title: "Understand", body: "What lies beneath the pattern." },
+          {
+            title: "Integrate",
+            body: "How to move forward with greater truth, consciousness, and from a deeper presence.",
+          },
+        ];
 
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const visibleTestimonials = testimonials.slice(testimonialIndex, testimonialIndex + 3);
@@ -193,13 +145,90 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
         <div className="mockup-section-curve mockup-section-curve--down" aria-hidden />
       </section>
 
-      {/* Signature Offerings — dark */}
+      {/* My Story — white */}
+      <section id={story?.id ?? "home-story"} className="mockup-section mockup-section--light">
+        <div className="site-container mockup-heart-grid">
+          <div>
+            <p className="mockup-eyebrow mockup-eyebrow--dark">{story?.eyebrow ?? "About"}</p>
+            <h2 className="mockup-heading mockup-heading--dark">{story?.heading ?? "My Story"}</h2>
+            <RichText
+              html={story?.body ?? ""}
+              className="mockup-body mockup-body--dark mt-6 space-y-4"
+            />
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] shadow-[0_24px_60px_-24px_rgba(38,2,13,0.2)]">
+            <MediaImage
+              image={story?.images?.[0] ?? SEED_IMAGES.portrait1}
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              className="absolute inset-0 h-full w-full"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* What Brings You Here — dark */}
+      <section id={brings?.id ?? "home-brings"} className="mockup-section mockup-section--dark text-center">
+        <div className="site-container max-w-3xl">
+          <p className="mockup-eyebrow">{brings?.eyebrow ?? "Is This You?"}</p>
+          <h2 className="mockup-heading mt-3">{brings?.heading ?? "What Brings You Here?"}</h2>
+          <MockupOrnament />
+          <ul className="mt-10 space-y-3 text-left">
+            {bringsItems.map((item) => (
+              <li key={item.title} className="mockup-check-item justify-start">
+                <Heart className="mockup-check-icon h-4 w-4 shrink-0" />
+                <span className="text-rose-mist/92">{item.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Philosophy — white */}
+      <section id={philosophy?.id ?? "home-philosophy"} className="mockup-section mockup-section--light text-center">
+        <div className="site-container max-w-3xl">
+          <p className="mockup-eyebrow mockup-eyebrow--dark">{philosophy?.eyebrow ?? "My Philosophy"}</p>
+          <h2 className="mockup-heading mockup-heading--dark mt-3">
+            {philosophy?.heading ?? "The Wisdom Heart"}
+          </h2>
+          <RichText
+            html={
+              philosophy?.body ??
+              "<p>Understanding yourself deeply through the lens of the wisdom heart changes how you understand and move through the world.</p>"
+            }
+            className="mockup-body mockup-body--dark mx-auto mt-6 max-w-2xl"
+          />
+        </div>
+      </section>
+
+      {/* How I Work — dark */}
+      <section id={method?.id ?? "home-method"} className="mockup-section mockup-section--dark text-center">
+        <div className="site-container">
+          <p className="mockup-eyebrow">{method?.eyebrow ?? "How I Work"}</p>
+          <h2 className="mockup-heading mt-3">{method?.heading ?? "See · Understand · Integrate"}</h2>
+          <MockupOrnament />
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {methodItems.map((item, index) => (
+              <article key={item.title} className="mockup-timeline-step">
+                <div className="mockup-timeline-marker">
+                  <span>{index + 1}</span>
+                </div>
+                <h3 className="mockup-card-title mt-5 text-base uppercase tracking-[0.14em]">
+                  {item.title}
+                </h3>
+                <p className="mockup-body mt-3 text-sm leading-relaxed opacity-90">{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Work With Me — dark */}
       <section id={offerings?.id ?? "home-offerings"} className="mockup-section mockup-section--dark">
         <div className="site-container text-center">
-          <p className="mockup-eyebrow">{offerings?.eyebrow ?? "Ways to Work Together"}</p>
-          <h2 className="mockup-heading mt-3">{offerings?.heading ?? "Signature Offerings"}</h2>
+          <p className="mockup-eyebrow">{offerings?.eyebrow ?? "Work With Me"}</p>
+          <h2 className="mockup-heading mt-3">{offerings?.heading ?? "Ways to Work Together"}</h2>
           <MockupOrnament />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service: PublicService, index: number) => {
               const meta = SERVICE_META[index] ?? SERVICE_META[0];
               const Icon = meta.icon;
@@ -235,42 +264,20 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
         </div>
       </section>
 
-      {/* Heart Remembers — white */}
-      <section id={heart?.id ?? "home-heart"} className="mockup-section mockup-section--light">
-        <div className="site-container mockup-heart-grid">
-          <div>
-            <h2 className="mockup-heading mockup-heading--dark">
-              {heart?.heading ?? "The Heart Remembers"}
-            </h2>
-            <RichText
-              html={
-                heart?.body ??
-                "<p>Beneath the stories we tell ourselves lives a deeper knowing—quiet, steady, and true. Rayana's work invites you back to that place: where clarity is not forced, but remembered.</p>"
-              }
-              className="mockup-body mockup-body--dark mt-6 max-w-lg"
-            />
-            <blockquote className="mockup-pull-quote mt-8">
-              “The heart holds the map. The soul knows the way.”
-            </blockquote>
-          </div>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] shadow-[0_24px_60px_-24px_rgba(38,2,13,0.2)]">
-            <MediaImage
-              image={heart?.images?.[0] ?? SEED_IMAGES.hands}
-              sizes="(max-width: 1024px) 100vw, 42vw"
-              className="absolute inset-0 h-full w-full"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials — dark */}
       <section id={testimonialsSection?.id ?? "home-testimonials"} className="mockup-section mockup-section--dark">
         <div className="site-container text-center">
-          <p className="mockup-eyebrow">{testimonialsSection?.eyebrow ?? "Kind Words"}</p>
+          <p className="mockup-eyebrow">{testimonialsSection?.eyebrow ?? "Testimonials"}</p>
           <h2 className="mockup-heading mt-3">
             {testimonialsSection?.heading ?? "From the Heart"}
           </h2>
           <MockupOrnament />
+          {testimonialsSection?.body ? (
+            <RichText html={testimonialsSection.body} className="mockup-body mx-auto mt-4 max-w-xl opacity-90" />
+          ) : null}
+          {testimonialsSection?.buttons?.length ? (
+            <SiteButtons buttons={testimonialsSection.buttons} className="mt-6 justify-center" />
+          ) : null}
 
           <div className="relative mt-12 md:px-12">
             <button
@@ -323,45 +330,21 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
         </div>
       </section>
 
-      {/* Insights — white */}
-      <section id={insights?.id ?? "home-insights"} className="mockup-section mockup-section--light">
-        <div className="site-container text-center">
-          <p className="mockup-eyebrow mockup-eyebrow--dark">
-            {insights?.eyebrow ?? "Insights & Teachings"}
-          </p>
+      {/* Media — white */}
+      <section id={media?.id ?? "home-media"} className="mockup-section mockup-section--light text-center">
+        <div className="site-container max-w-3xl">
+          <p className="mockup-eyebrow mockup-eyebrow--dark">{media?.eyebrow ?? "Media"}</p>
           <h2 className="mockup-heading mockup-heading--dark mt-3">
-            {insights?.heading ?? "Guidance for Your Journey"}
+            {media?.heading ?? "Latest Video, Podcast & Teaching"}
           </h2>
           <MockupOrnament />
-
-          <div className="mt-12 grid gap-6 text-left lg:grid-cols-3">
-            {posts.map((post) => {
-              const image = post.heroImage ?? SEED_IMAGES.nature;
-              const category = post.categories?.[0] ?? "Insight";
-              return (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="mockup-insight-card group">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <MediaImage
-                      image={image}
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="absolute inset-0 h-full w-full"
-                      imageClassName="transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-6 md:p-7">
-                    <p className="mockup-eyebrow mockup-eyebrow--dark text-[0.58rem]">{category}</p>
-                    <h3 className="mockup-card-title mockup-card-title--dark mt-2">{post.title}</h3>
-                    {post.excerpt ? (
-                      <p className="mockup-body mockup-body--dark mt-3 text-sm">{post.excerpt}</p>
-                    ) : null}
-                    <span className="mockup-card-link mockup-card-link--dark mt-5 inline-flex">
-                      Read Article →
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <RichText
+            html={
+              media?.body ??
+              "<p>New teachings and media will appear here — most likely via YouTube. Nothing to share just yet; please check back soon.</p>"
+            }
+            className="mockup-body mockup-body--dark mx-auto mt-6 max-w-2xl"
+          />
         </div>
       </section>
 

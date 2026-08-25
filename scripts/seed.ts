@@ -5,6 +5,7 @@
 import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
 import bcrypt from "bcryptjs";
+import { RAYANA_ABOUT_SECTIONS, RAYANA_HOME_SECTIONS } from "@/lib/data/site-copy";
 import { connectDB } from "@/lib/db/mongoose-connect";
 import {
   AdminUser,
@@ -214,176 +215,15 @@ interface PageSeedData {
 }
 
 function buildPages(): PageSeedData[] {
-  const homeSections: PageSection[] = [
-    section("home-hero", "hero", 0, {
-      label: "Home Hero",
-      heading: "A Deeper Way of Seeing What Matters",
-      body: "<p>See beneath the surface. Understand the pattern.<br/>Live with greater clarity.</p>",
-      buttons: [
-        btn("Explore the Work", "/services"),
-        btn("Meet Rayana", "/about", "secondary"),
-      ],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("home-welcome", "splitStory", 1, {
-      label: "Welcome",
-      eyebrow: "Welcome",
-      heading: "Return to the Wisdom of Your Heart",
-      body: "<p>Rayana De Silva is a master of heart matters—channeler, educator, and guide for those ready to see beneath the surface of their lives. Through private sessions, teachings, and group experiences, she helps you return to the wisdom already alive within you.</p>",
-      images: [IMAGES.portrait2],
-      buttons: [btn("Learn More About Rayana", "/about", "secondary")],
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("home-offerings", "serviceShowcase", 2, {
-      label: "Signature Offerings",
-      eyebrow: "Ways to Work Together",
-      heading: "Signature Offerings",
-      settings: { limit: 3, featuredOnly: true },
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("home-heart", "editorialQuote", 3, {
-      label: "The Heart Remembers",
-      heading: "The Heart Remembers",
-      body: "<p>Beneath the stories we tell ourselves lives a deeper knowing—quiet, steady, and true. Rayana's work invites you back to that place: where clarity is not forced, but remembered.</p>",
-      images: [IMAGES.hands],
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("home-testimonials", "testimonialSlider", 4, {
-      label: "Testimonials",
-      eyebrow: "Kind Words",
-      heading: "From the Heart",
-      settings: { featuredOnly: true, limit: 6 },
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("home-insights", "mediaFeature", 5, {
-      label: "Insights",
-      eyebrow: "Insights & Teachings",
-      heading: "Guidance for Your Journey",
-      settings: { contentType: "blog", limit: 3 },
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("home-cta", "bookingCTA", 6, {
-      label: "Final CTA",
-      heading: "Begin Where You Are",
-      body: "<p>The next step is already within you. I'm here to walk beside you as you return to what matters most.</p>",
-      buttons: [btn("Book a Session", "/booking")],
-      images: [IMAGES.sacred],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-  ];
+  const homeSections: PageSection[] = RAYANA_HOME_SECTIONS.map((section) => ({
+    ...section,
+    label: section.label ?? section.type,
+  })) as PageSection[];
 
-  const aboutSections: PageSection[] = [
-    section("about-hero", "hero", 0, {
-      label: "About Hero",
-      eyebrow: "About Rayana",
-      heading: "The Woman Behind Heart Matters",
-      body: "<p>My story. My purpose. The path that became Heart Matters.</p>",
-      images: [IMAGES.portrait2],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("about-intro", "splitStory", 1, {
-      label: "Intro",
-      heading: "A Life Shaped by Listening",
-      body: "<p>From an early age, I sensed that life held deeper layers than what appeared on the surface. That sensitivity became a path—a lifelong devotion to listening, seeing, and guiding others back to the wisdom of their own hearts.</p><p>Over decades of study, practice, and service, I have learned that transformation does not come from fixing ourselves. It comes from seeing clearly, understanding deeply, and choosing to live from what is true.</p>",
-      images: [IMAGES.portrait1],
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("about-journey", "numberedSteps", 2, {
-      label: "The Journey",
-      heading: "The Journey",
-      items: [
-        {
-          title: "The Calling",
-          body: "An inner pull to help others see beneath the surface—to listen where others only heard noise, and to guide people back to their own knowing.",
-        },
-        {
-          title: "The Opening",
-          body: "Years of study, practice, and deep inner work opened a path of clarity. What began as personal seeking became a vocation of service.",
-        },
-        {
-          title: "The Work",
-          body: "Heart Matters was born—a container for private sessions, teachings, and group experiences that honour truth, presence, and integration.",
-        },
-      ],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("about-principles", "iconList", 3, {
-      label: "Principles",
-      eyebrow: "Core Principles",
-      heading: "See Clearly. Live Deeply.",
-      items: [
-        {
-          title: "Clarity",
-          body: "Making choices that honour what is true—not what is convenient, familiar, or expected.",
-          icon: "heart",
-        },
-        {
-          title: "Alignment",
-          body: "Releasing what is out of sync with your deeper values so your life reflects your inner knowing.",
-          icon: "orbit",
-        },
-        {
-          title: "Embodiment",
-          body: "Living the insights—not just understanding them intellectually, but integrating them into daily life.",
-          icon: "flame",
-        },
-      ],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("about-teaching", "splitStory", 4, {
-      label: "Teaching",
-      heading: "Wisdom Becomes Real When It Is Lived",
-      body: "<p>My teachings are not abstract philosophy—they are invitations to practice, integrate, and embody. Whether in private sessions, written reflections, or group circles, the aim is the same: to help you return to your own knowing.</p>",
-      images: [IMAGES.workshop],
-      buttons: [btn("Explore My Teachings", "/blog", "secondary")],
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("about-values", "iconList", 5, {
-      label: "Values",
-      heading: "What I Value Most",
-      items: [
-        { title: "Presence", body: "Showing up fully—with attention, patience, and respect for what is unfolding." },
-        { title: "Truth", body: "Creating a space where honesty is safe, and clarity can emerge without force." },
-        { title: "Compassion", body: "Meeting each person where they are—with warmth, depth, and without judgment." },
-        { title: "Integration", body: "Supporting you to carry insight into your relationships, choices, and daily life." },
-      ],
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("about-behind", "galleryStrip", 6, {
-      label: "Behind the Work",
-      heading: "Behind the Work",
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-    section("about-quote", "editorialQuote", 7, {
-      label: "Quote",
-      heading: "Teacher. Guide. Mirror for Your Soul.",
-      body: "<p>“You don't have to become someone new. You just have to return to who you've always been. The heart knows the way.”</p>",
-      themeVariant: "burgundy",
-      layoutVariant: "mockup",
-    }),
-    section("about-cta", "bookingCTA", 8, {
-      label: "Final CTA",
-      heading: "Let's Begin With What Matters",
-      body: "<p>Your heart already has the answers. Let's uncover them—together.</p>",
-      buttons: [btn("Book a Session", "/booking")],
-      themeVariant: "ivory",
-      layoutVariant: "mockup",
-    }),
-  ];
+  const aboutSections: PageSection[] = RAYANA_ABOUT_SECTIONS.map((sectionData) => ({
+    ...sectionData,
+    label: sectionData.label ?? sectionData.type,
+  })) as PageSection[];
 
   const servicesSections: PageSection[] = [
     section("services-hero", "hero", 0, {
@@ -1268,9 +1108,9 @@ function buildFaqs() {
     {
       slug: "prepare-questions",
       category: "Sessions",
-      question: "How should I prepare my questions?",
+      question: "How should I prepare for a session?",
       answer:
-        "Prepare at least three questions if possible. This helps focus the energy of the reading and allows Rayana to look more deeply into what is happening. If you are unsure, the opening moments of the session can be used to clarify them together.",
+        "Prepare your questions—try to aim for at least three. It helps to focus the energy for the reading and allows Rayana to see deeper into what is really going on. We can spend a moment at the beginning of the session sorting that out if you are unsure.",
       displayOrder: 0,
     },
     {
@@ -1278,7 +1118,7 @@ function buildFaqs() {
       category: "Sessions",
       question: "What should I do before a session?",
       answer:
-        "Allow about ten quiet minutes beforehand to relax, centre your energy, and collect your thoughts and feelings.",
+        "Allow for 10 minutes before a session to relax and centre your energy, and to collect your thoughts and feelings so the session has greater focused energy and the information can be accessed faster, easier and with increased clarity.",
       displayOrder: 1,
     },
     {
@@ -1286,7 +1126,7 @@ function buildFaqs() {
       category: "Sessions",
       question: "How long is a session?",
       answer:
-        "Standard private sessions are 60 minutes. It is wise to keep 90 minutes free in case the session needs additional time to conclude what is coming through.",
+        "Sessions are 60 minutes, but it is good to put aside 90 minutes in the event that the session runs longer so we can conclude the information coming through.",
       displayOrder: 2,
     },
     {
@@ -1294,7 +1134,7 @@ function buildFaqs() {
       category: "Sessions",
       question: "Can I record the session?",
       answer:
-        "Clients may set up their own recording. A recording can also be arranged after booking and delivered through a secure email link.",
+        "You are welcome to set up your own recording of the session on your side. You can also arrange after booking to have a recording of the session sent to you via your email by contacting rayanadesilva@heartmatters.com.",
       displayOrder: 3,
     },
     {

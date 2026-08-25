@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { RAYANA_FAQS } from "@/lib/data/site-copy";
 import type { SectionContext } from "@/lib/sections/registry";
-import type { PublicFAQ, TypedPageSection } from "@/lib/sections/types";
+import type { TypedPageSection } from "@/lib/sections/types";
 
 type FaqsPageRendererProps = {
   sections: TypedPageSection[];
@@ -15,43 +16,7 @@ function findSection(sections: TypedPageSection[], id: string) {
   return sections.find((s) => s.id === id);
 }
 
-const DEFAULT_FAQS: PublicFAQ[] = [
-  {
-    slug: "how-to-book",
-    question: "How do I book a session?",
-    answer:
-      "Visit the booking page, choose your service and preferred time, and complete the confirmation steps. You'll receive a confirmation email with all the details.",
-    category: "Booking",
-  },
-  {
-    slug: "session-format",
-    question: "Are sessions in person or online?",
-    answer:
-      "Both options are available depending on the service. Private sessions can be held in person in Vancouver or via secure video.",
-    category: "General",
-  },
-  {
-    slug: "which-service",
-    question: "How do I know which offering is right for me?",
-    answer:
-      "If you're unsure, begin with a private session. Rayana will help you discern the path that meets you where you are.",
-    category: "General",
-  },
-  {
-    slug: "session-length",
-    question: "How long are sessions?",
-    answer:
-      "Private sessions are typically 90 minutes. Mentoring and group experiences vary—details are listed on each service page.",
-    category: "Sessions",
-  },
-  {
-    slug: "cancellation",
-    question: "What is your cancellation policy?",
-    answer:
-      "Please provide at least 48 hours notice if you need to reschedule or cancel. See the cancellation policy page for full details.",
-    category: "Booking",
-  },
-];
+const DEFAULT_FAQS = RAYANA_FAQS;
 
 export function FaqsPageRenderer({ sections, context }: FaqsPageRendererProps) {
   const hero = findSection(sections, "faqs-hero");

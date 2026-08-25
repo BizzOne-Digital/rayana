@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import { RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import type { SectionContext } from "@/lib/sections/registry";
-import type { PublicTestimonial, TypedPageSection } from "@/lib/sections/types";
+import type { TypedPageSection } from "@/lib/sections/types";
 
 type TestimonialsPageRendererProps = {
   sections: TypedPageSection[];
@@ -16,38 +17,7 @@ function findSection(sections: TypedPageSection[], id: string) {
   return sections.find((s) => s.id === id);
 }
 
-const DEFAULT_TESTIMONIALS: PublicTestimonial[] = [
-  {
-    slug: "anita-r",
-    name: "Anita R.",
-    quote:
-      "Rayana helped me see what I could not see alone. Her presence is gentle, precise, and deeply transformative.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Vancouver, BC",
-  },
-  {
-    slug: "david-m",
-    name: "David M.",
-    quote:
-      "Working with Rayana brought clarity to patterns I had carried for years. I finally understand what my heart was asking for.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Toronto, ON",
-  },
-  {
-    slug: "sarah-l",
-    name: "Sarah L.",
-    quote:
-      "The teachings opened a doorway I didn't know existed. I feel more present, more honest, and more free.",
-    excerpt: "",
-    featured: true,
-    showFullName: true,
-    role: "Calgary, AB",
-  },
-];
+const DEFAULT_TESTIMONIALS = RAYANA_TESTIMONIALS;
 
 export function TestimonialsPageRenderer({ sections, context }: TestimonialsPageRendererProps) {
   const hero = findSection(sections, "testimonials-hero");

@@ -7,6 +7,7 @@ import { Flame, Heart, Orbit, Sparkles } from "lucide-react";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
+import { RAYANA_BRINGS_ITEMS, RAYANA_STORY_BODY } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -32,56 +33,33 @@ function MockupOrnament({ dark = false }: { dark?: boolean }) {
 }
 
 const DEFAULT_JOURNEY: NumberedStepItem[] = [
+  { title: "See", body: "What is actually happening." },
+  { title: "Understand", body: "What lies beneath the pattern." },
   {
-    title: "The Calling",
-    body: "An inner pull to help others see beneath the surface—to listen where others only heard noise, and to guide people back to their own knowing.",
-  },
-  {
-    title: "The Opening",
-    body: "Years of study, practice, and deep inner work opened a path of clarity. What began as personal seeking became a vocation of service.",
-  },
-  {
-    title: "The Work",
-    body: "Heart Matters was born—a container for private sessions, teachings, and group experiences that honour truth, presence, and integration.",
+    title: "Integrate",
+    body: "How to move forward with greater truth, consciousness, and from a deeper presence.",
   },
 ];
 
 const DEFAULT_PRINCIPLES: IconListItem[] = [
   {
     title: "Clarity",
-    body: "Making choices that honour what is true—not what is convenient, familiar, or expected.",
+    body: "Meeting life with greater clarity and seeing what we could not previously see about ourselves and our lives.",
     icon: "heart",
   },
   {
-    title: "Alignment",
-    body: "Releasing what is out of sync with your deeper values so your life reflects your inner knowing.",
+    title: "Consciousness",
+    body: "Making choices from a place of greater consciousness, truth, and sovereignty.",
     icon: "orbit",
   },
   {
-    title: "Embodiment",
-    body: "Living the insights—not just understanding them intellectually, but integrating them into daily life.",
+    title: "Presence",
+    body: "Transforming uncertainty into understanding and wisdom, to be used daily.",
     icon: "flame",
   },
 ];
 
-const DEFAULT_VALUES: IconListItem[] = [
-  {
-    title: "Presence",
-    body: "Showing up fully—with attention, patience, and respect for what is unfolding.",
-  },
-  {
-    title: "Truth",
-    body: "Creating a space where honesty is safe, and clarity can emerge without force.",
-  },
-  {
-    title: "Compassion",
-    body: "Meeting each person where they are—with warmth, depth, and without judgment.",
-  },
-  {
-    title: "Integration",
-    body: "Supporting you to carry insight into your relationships, choices, and daily life.",
-  },
-];
+const DEFAULT_VALUES: IconListItem[] = RAYANA_BRINGS_ITEMS.map((title) => ({ title, body: "" }));
 
 const BEHIND_LABELS = [
   "Journaling & Reflection",
@@ -146,12 +124,12 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
         <div className="site-container max-w-3xl">
           <p className="mockup-eyebrow">{hero?.eyebrow ?? "About Rayana"}</p>
           <h1 className="mockup-about-hero-heading mt-4">
-            {hero?.heading ?? "The Woman Behind Heart Matters"}
+            {hero?.heading ?? "My Story"}
           </h1>
           <RichText
             html={
               hero?.body ??
-              "<p>My story. My purpose. The path that became Heart Matters.</p>"
+              "<p>Clarity · Consciousness · Truth · Presence</p>"
             }
             className="mockup-body mx-auto mt-5 max-w-xl opacity-90"
           />
@@ -175,13 +153,10 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
           </div>
           <div>
             <h2 className="mockup-heading mockup-heading--dark">
-              {intro?.heading ?? "A Life Shaped by Listening"}
+              {intro?.heading ?? "A Deeper Way of Seeing What Matters"}
             </h2>
             <RichText
-              html={
-                intro?.body ??
-                "<p>From an early age, I sensed that life held deeper layers than what appeared on the surface. That sensitivity became a path—a lifelong devotion to listening, seeing, and guiding others back to the wisdom of their own hearts.</p><p>Over decades of study, practice, and service, I have learned that transformation does not come from fixing ourselves. It comes from seeing clearly, understanding deeply, and choosing to live from what is true.</p>"
-              }
+              html={intro?.body ?? RAYANA_STORY_BODY}
               className="mockup-body mockup-body--dark mt-6 space-y-4"
             />
           </div>
@@ -191,7 +166,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
       {/* Journey — dark */}
       <section id={journey?.id ?? "about-journey"} className="mockup-section mockup-section--dark text-center">
         <div className="site-container">
-          <h2 className="mockup-heading">{journey?.heading ?? "The Journey"}</h2>
+          <h2 className="mockup-heading">{journey?.heading ?? "See · Understand · Integrate"}</h2>
           <MockupOrnament />
           <div className="mockup-timeline mt-14">
             {journeyItems.map((item, index) => (
@@ -215,9 +190,9 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
         className="mockup-section mockup-section--dark text-center"
       >
         <div className="site-container">
-          <p className="mockup-eyebrow">{principles?.eyebrow ?? "Core Principles"}</p>
+          <p className="mockup-eyebrow">{principles?.eyebrow ?? "My Philosophy"}</p>
           <h2 className="mockup-heading mt-3">
-            {principles?.heading ?? "See Clearly. Live Deeply."}
+            {principles?.heading ?? "The Wisdom Heart"}
           </h2>
           <MockupOrnament />
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -252,12 +227,12 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
           </div>
           <div>
             <h2 className="mockup-heading mockup-heading--dark">
-              {teaching?.heading ?? "Wisdom Becomes Real When It Is Lived"}
+              {teaching?.heading ?? "Over 30 Years of Experience"}
             </h2>
             <RichText
               html={
                 teaching?.body ??
-                "<p>My teachings are not abstract philosophy—they are invitations to practice, integrate, and embody. Whether in private sessions, written reflections, or group circles, the aim is the same: to help you return to your own knowing.</p>"
+                "<p>Rayana offers her expertise with over 30 years of professional and international experience in private practice, and as an educator.</p>"
               }
               className="mockup-body mockup-body--dark mt-6 max-w-lg"
             />
@@ -267,8 +242,8 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
                   ? teaching.buttons
                   : [
                       {
-                        label: "Explore My Teachings",
-                        href: "/blog",
+                        label: "Work With Me",
+                        href: "/services",
                         variant: "secondary" as const,
                         openInNewTab: false,
                       },
@@ -283,7 +258,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
       {/* Values — dark */}
       <section id={values?.id ?? "about-values"} className="mockup-section mockup-section--dark text-center">
         <div className="site-container">
-          <h2 className="mockup-heading">{values?.heading ?? "What I Value Most"}</h2>
+          <h2 className="mockup-heading">{values?.heading ?? "What Brings You Here?"}</h2>
           <MockupOrnament />
           <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {valueItems.map((item, index) => (
@@ -342,7 +317,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
           </div>
           <blockquote className="mockup-about-quote-text">
             {stripQuote(quote?.body) ??
-              "You don't have to become someone new. You just have to return to who you've always been. The heart knows the way."}
+              "When we learn to see more deeply, we understand ourselves more honestly. When we understand ourselves more honestly, we become free to live more consciously, and create the life we want."}
           </blockquote>
           <div className="mt-8 flex flex-col items-center gap-3">
             <div className="relative h-12 w-36">
@@ -355,7 +330,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
               />
             </div>
             <p className="text-sm text-rose-mist/80">
-              {quote?.heading ?? "Teacher. Guide. Mirror for Your Soul."}
+              {quote?.heading ?? "When We Learn to See More Deeply"}
             </p>
           </div>
         </div>
@@ -365,12 +340,12 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
       <section id={cta?.id ?? "about-cta"} className="mockup-section mockup-section--light text-center">
         <div className="site-container max-w-3xl">
           <h2 className="mockup-heading mockup-heading--dark">
-            {cta?.heading ?? "Let's Begin With What Matters"}
+            {cta?.heading ?? "Begin Where You Are"}
           </h2>
           <RichText
             html={
               cta?.body ??
-              "<p>Your heart already has the answers. Let's uncover them—together.</p>"
+              "<p>Centre yourself. Bring your questions. Allow space for what wants to be seen.</p>"
             }
             className="mockup-body mockup-body--dark mt-4"
           />
@@ -384,7 +359,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
             variant="hero"
           />
           <div className="mockup-about-cta-links mt-8 flex flex-wrap items-center justify-center gap-4 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#7e1638]/75">
-            <Link href="/services/private-consultation" className="hover:text-[#4e0505]">
+            <Link href="/services/private-consultations" className="hover:text-[#4e0505]">
               Private Sessions
             </Link>
             <span aria-hidden>•</span>
