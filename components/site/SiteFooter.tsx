@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BOOK_CONSULTATION_LABEL, SPIRITUAL_DISCLAIMER_TEXT } from "@/lib/data/site-copy";
 import type { PublicSettings } from "@/lib/sections/types";
 
 type SiteFooterProps = {
@@ -35,22 +36,23 @@ function YoutubeIcon() {
 const NAV_LINKS = [
   ["/", "Home"],
   ["/about", "About"],
-  ["/services", "Services"],
   ["/testimonials", "Testimonials"],
+  ["/pricing", "Pricing"],
   ["/faqs", "FAQ"],
   ["/contact", "Contact"],
 ] as const;
 
 const SERVICE_LINKS = [
-  ["/services/private-consultation", "Private Sessions"],
-  ["/services/wisdom-mentoring", "Heart Matters Teachings"],
-  ["/services", "Group Experiences"],
-  ["/pricing", "The Deepening"],
-  ["/booking", "Book a Session"],
+  ["/services/private-consultations", "Private Consultations"],
+  ["/services/private-consultations#wisdom-mentoring", "Wisdom Mentoring"],
+  ["/services/teachings-courses", "Teachings & Courses"],
+  ["/services/workshops-retreats", "Workshops & Retreats"],
+  ["/pricing", "Pricing"],
+  ["/booking", BOOK_CONSULTATION_LABEL],
 ] as const;
 
 const RESOURCE_LINKS = [
-  ["/blog", "Insights"],
+  ["/blog", "Reflections"],
   ["/media", "Media"],
   ["/faqs", "FAQ"],
   ["/write-a-review", "Write a Review"],
@@ -216,11 +218,33 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
         <div className="mockup-footer-divider my-10" />
 
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="relative mx-auto mb-6 h-16 w-44">
+            <Image
+              src="/brand/rayana-logo.png"
+              alt="Rayana De Silva — Heart Matters"
+              fill
+              sizes="176px"
+              className="object-contain object-center"
+            />
+          </div>
+          <p className="mockup-footer-heading">Disclaimer</p>
+          <p className="mt-4 text-sm leading-relaxed text-rose-mist/80">{SPIRITUAL_DISCLAIMER_TEXT}</p>
+          <Link href="/disclaimer" className="mockup-footer-link mt-4 inline-block text-xs">
+            Read full disclaimer
+          </Link>
+        </div>
+
+        <div className="mockup-footer-divider my-10" />
+
         <div className="flex flex-col gap-4 text-xs text-rose-mist/70 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <p>
             © {year} {settings.footer.copyrightName}. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/disclaimer" className="hover:text-warm-ivory">
+              Disclaimer
+            </Link>
             <Link href="/privacy" className="hover:text-warm-ivory">
               Privacy Policy
             </Link>

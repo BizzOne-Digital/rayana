@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
+import { BOOK_CONSULTATION_LABEL } from "@/lib/data/site-copy";
 import type { PublicService, PublicSettings, PublicTestimonial } from "@/lib/sections/types";
 import { formatCurrency } from "@/lib/utils";
 
@@ -9,7 +10,10 @@ type ServiceDetailPageViewProps = {
   service: PublicService;
   testimonial?: PublicTestimonial | null;
   settings: PublicSettings;
+  companionServices?: PublicService[];
 };
+
+const WISDOM_MENTORING_ANCHOR = "wisdom-mentoring";
 
 function MockupOrnament() {
   return (
@@ -25,9 +29,12 @@ export function ServiceDetailPageView({
   service,
   testimonial,
   settings,
+  companionServices = [],
 }: ServiceDetailPageViewProps) {
   const hero = service.detailPage.hero;
   const introImage = service.detailPage.gallery[0] ?? service.mainImage;
+  const isConsultationsHub = service.slug === "private-consultations";
+  const wisdomMentoring = companionServices.find((s) => s.slug === "wisdom-mentoring");
   const priceLabel =
     service.pricePreview ||
     (service.standardPrice
@@ -36,12 +43,9 @@ export function ServiceDetailPageView({
 
   return (
     <article className="mockup-service-detail-page">
-      {/* Hero — dark, centered, no image */}
       <section className="mockup-services-hero mockup-section--dark text-center">
         <div className="site-container max-w-3xl">
-          {service.badge ? (
-            <p className="mockup-eyebrow">{service.badge}</p>
-          ) : null}
+          {service.badge ? <p className="mockup-eyebrow">{service.badge}</p> : null}
           <h1 className="mockup-services-hero-heading mt-3">
             {hero.heading || service.title}
           </h1>
@@ -67,7 +71,7 @@ export function ServiceDetailPageView({
           ) : null}
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
             <Link href="/booking" className="btn btn-hero-primary inline-flex">
-              {service.detailPage.bookingCta.buttonLabel}
+              {BOOK_CONSULTATION_LABEL}
             </Link>
             {priceLabel ? (
               <span className="text-sm text-rose-mist/80">{priceLabel}</span>
@@ -78,7 +82,6 @@ export function ServiceDetailPageView({
         <div className="mockup-services-hero-curve" aria-hidden />
       </section>
 
-      {/* Introduction — white */}
       <section className="mockup-section mockup-section--light">
         <div className="site-container mockup-service-detail-grid">
           <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] shadow-[0_24px_60px_-24px_rgba(38,2,13,0.18)]">
@@ -90,8 +93,10 @@ export function ServiceDetailPageView({
             />
           </div>
           <div>
-            <p className="mockup-eyebrow mockup-eyebrow--dark">Introduction</p>
-            <h2 className="mockup-heading mockup-heading--dark mt-3">{service.title}</h2>
+            <p className="mockup-eyebrow mockup-eyebrow--dark">Private Consultations</p>
+            <h2 className="mockup-heading mockup-heading--dark mt-3">
+              Clarity, Detail and Specificity for What Matters Most
+            </h2>
             <RichText
               html={`<p>${service.detailPage.introduction}</p><p>${service.detailPage.audience}</p>`}
               className="mockup-body mockup-body--dark mt-5 space-y-4"
@@ -105,7 +110,6 @@ export function ServiceDetailPageView({
         </div>
       </section>
 
-      {/* What we explore — dark */}
       <section className="mockup-section mockup-section--dark text-center">
         <div className="site-container">
           <p className="mockup-eyebrow">Focus Areas</p>
@@ -124,7 +128,6 @@ export function ServiceDetailPageView({
         </div>
       </section>
 
-      {/* Process & benefits — white */}
       <section className="mockup-section mockup-section--light">
         <div className="site-container grid gap-10 lg:grid-cols-2 lg:items-start">
           <div>
@@ -150,7 +153,53 @@ export function ServiceDetailPageView({
         </div>
       </section>
 
-      {/* Testimonial — dark */}
+      {isConsultationsHub && wisdomMentoring ? (
+        <section
+          id={WISDOM_MENTORING_ANCHOR}
+          className="mockup-section mockup-section--dark scroll-mt-28"
+        >
+          <div className="site-container mockup-service-detail-grid mockup-service-detail-grid--reverse">
+            <div>
+              <p className="mockup-eyebrow">Also on This Page</p>
+              <h2 className="mockup-heading mt-3">Wisdom Mentoring</h2>
+              <p className="mockup-body mt-5 max-w-lg text-base leading-relaxed opacity-92">
+                {wisdomMentoring.shortDescription}
+              </p>
+              <p className="mockup-body mt-4 max-w-lg text-sm leading-relaxed opacity-88">
+                See deeply into the unknown. Change how you integrate and resonate. Ideal after a
+                private consultation when you want clarification, depth, and practical next steps.
+              </p>
+              <ul className="mt-6 space-y-3">
+                <li className="mockup-check-item">
+                  <Check className="mockup-check-icon h-4 w-4 shrink-0" />
+                  <span className="text-rose-mist/90">60-minute consultations</span>
+                </li>
+                <li className="mockup-check-item">
+                  <Check className="mockup-check-icon h-4 w-4 shrink-0" />
+                  <span className="text-rose-mist/90">
+                    Vancouver in person, video, phone, or email
+                  </span>
+                </li>
+                <li className="mockup-check-item">
+                  <Check className="mockup-check-icon h-4 w-4 shrink-0" />
+                  <span className="text-rose-mist/90">{wisdomMentoring.pricePreview}</span>
+                </li>
+              </ul>
+              <Link href="/booking" className="btn btn-hero-primary mt-8 inline-flex">
+                {BOOK_CONSULTATION_LABEL}
+              </Link>
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] shadow-[0_24px_60px_-24px_rgba(38,2,13,0.22)]">
+              <MediaImage
+                image={wisdomMentoring.mainImage}
+                sizes="(max-width: 1024px) 100vw, 46vw"
+                className="absolute inset-0 h-full w-full"
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       {testimonial ? (
         <section className="mockup-section mockup-section--dark text-center">
           <div className="site-container max-w-3xl">
@@ -166,7 +215,6 @@ export function ServiceDetailPageView({
         </section>
       ) : null}
 
-      {/* Booking CTA — dark */}
       <section className="mockup-section mockup-section--dark mockup-section--cta text-center">
         <div className="site-container max-w-2xl">
           <h2 className="mockup-heading">{service.detailPage.bookingCta.heading}</h2>
@@ -175,11 +223,13 @@ export function ServiceDetailPageView({
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/booking" className="btn btn-hero-primary inline-flex">
-              {service.detailPage.bookingCta.buttonLabel}
+              {BOOK_CONSULTATION_LABEL}
             </Link>
-            <Link href="/services" className="mockup-outline-btn inline-flex">
-              View All Services
-            </Link>
+            {!isConsultationsHub ? (
+              <Link href="/services/private-consultations" className="mockup-outline-btn inline-flex">
+                Private Consultations
+              </Link>
+            ) : null}
           </div>
         </div>
       </section>

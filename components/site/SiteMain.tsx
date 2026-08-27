@@ -11,7 +11,6 @@ type SiteMainProps = {
 const MOCKUP_HERO_PATHS = new Set([
   "/",
   "/about",
-  "/services",
   "/testimonials",
   "/faqs",
   "/contact",

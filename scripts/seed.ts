@@ -5,7 +5,7 @@
 import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
 import bcrypt from "bcryptjs";
-import { RAYANA_ABOUT_SECTIONS, RAYANA_HOME_SECTIONS } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_ABOUT_SECTIONS, RAYANA_HOME_SECTIONS, SPIRITUAL_DISCLAIMER_TEXT } from "@/lib/data/site-copy";
 import { connectDB } from "@/lib/db/mongoose-connect";
 import {
   AdminUser,
@@ -107,8 +107,7 @@ function section(
   };
 }
 
-const SPIRITUAL_DISCLAIMER =
-  "Sessions and educational offerings are provided for personal insight, spiritual exploration, and general wellbeing. They are not medical, psychological, legal, or financial treatment or advice, and they do not diagnose, treat, or cure any condition. Please consult an appropriately licensed professional for those needs. Clients remain responsible for their own decisions.";
+const SPIRITUAL_DISCLAIMER = SPIRITUAL_DISCLAIMER_TEXT;
 
 async function upsertSiteSettings(): Promise<void> {
   log("Upserting site settings…");
@@ -132,7 +131,7 @@ async function upsertSiteSettings(): Promise<void> {
       },
       social: { facebook: "", instagram: "", youtube: "" },
       header: {
-        primaryCtaLabel: "Book a Session",
+        primaryCtaLabel: BOOK_CONSULTATION_LABEL,
         primaryCtaHref: "/booking",
         showIntroOnFirstVisit: true,
       },
@@ -269,7 +268,7 @@ function buildPages(): PageSeedData[] {
       label: "Final CTA",
       heading: "Your Next Step Can Be Gentle",
       body: "<p>You don't need to have it all figured out. Begin with a single conversation—and let clarity unfold from there.</p>",
-      buttons: [btn("Book a Session", "/booking")],
+      buttons: [btn(BOOK_CONSULTATION_LABEL, "/booking")],
       images: [IMAGES.sacred],
       themeVariant: "burgundy",
       layoutVariant: "mockup",
@@ -295,7 +294,7 @@ function buildPages(): PageSeedData[] {
     }),
     section("pricing-cta", "bookingCTA", 4, {
       heading: "Questions about which offering fits?",
-      buttons: [btn("Contact Rayana", "/contact"), btn("Book a Session", "/booking", "secondary")],
+      buttons: [btn("Contact Rayana", "/contact"), btn(BOOK_CONSULTATION_LABEL, "/booking", "secondary")],
     }),
   ];
 
@@ -328,7 +327,7 @@ function buildPages(): PageSeedData[] {
 
   const blogSections: PageSection[] = [
     section("blog-hero", "hero", 0, {
-      heading: "Journal",
+      heading: "Reflections",
       body: "<p>Reflections on consciousness, relationships, and the path of inner knowing.</p>",
       images: [IMAGES.nature],
     }),
@@ -371,7 +370,7 @@ function buildPages(): PageSeedData[] {
 
   const bookingSections: PageSection[] = [
     section("booking-hero", "hero", 0, {
-      heading: "Book a Session",
+      heading: BOOK_CONSULTATION_LABEL,
       body: "<p>Choose your service, delivery mode, and a time that works in your local time zone.</p>",
       images: [IMAGES.sacred, IMAGES.session],
     }),
@@ -437,6 +436,7 @@ function buildPages(): PageSeedData[] {
       slug: "services",
       route: "/services",
       navigationLabel: "Services",
+      showInNavigation: false,
       sections: servicesSections,
       seo: { title: "Services", description: "Private consultations, wisdom mentoring, teachings, and more." },
     },
@@ -478,12 +478,12 @@ function buildPages(): PageSeedData[] {
     },
     {
       systemKey: "blog",
-      title: "Journal",
+      title: "Reflections",
       slug: "blog",
       route: "/blog",
-      navigationLabel: "Journal",
+      navigationLabel: "Reflections",
       sections: blogSections,
-      seo: { title: "Journal", description: "Reflections on consciousness and inner knowing." },
+      seo: { title: "Reflections", description: "Written reflections and teachings from Rayana." },
     },
     {
       systemKey: "media",
@@ -507,13 +507,13 @@ function buildPages(): PageSeedData[] {
     },
     {
       systemKey: "booking",
-      title: "Book a Session",
+      title: BOOK_CONSULTATION_LABEL,
       slug: "booking",
       route: "/booking",
-      navigationLabel: "Book a Session",
+      navigationLabel: BOOK_CONSULTATION_LABEL,
       showInNavigation: false,
       sections: bookingSections,
-      seo: { title: "Book a Session", description: "Schedule a private consultation or mentoring session." },
+      seo: { title: BOOK_CONSULTATION_LABEL, description: "Schedule a private consultation or mentoring session." },
     },
     {
       systemKey: "write-a-review",
@@ -610,13 +610,13 @@ function buildServices() {
       title: "Private Consultations",
       slug: "private-consultations",
       shortDescription:
-        "Clairvoyance and channel sessions for clarity, insight, personal guidance, and the energetic healing that occurs beneath the surface.",
+        "Clairvoyance and channelled guidance for clarity, insight, personal direction, and the energetic healing beneath the surface.",
       mainImage: IMAGES.portrait1,
       pricePreview: "CAD 220 · First session CAD 170",
       duration: "60 minutes",
       modes: ["Zoom", "FaceTime", "Email", "Phone", "In person"],
       status: "active",
-      badge: "Clairvoyance & Channel",
+      badge: "Clairvoyant & Channelled",
       featured: true,
       displayOrder: 0,
       cardCta: { label: "Learn More", href: "/services/private-consultations" },
@@ -626,27 +626,32 @@ function buildServices() {
       specialOfferActive: true,
       detailPage: {
         hero: {
-          heading: "Private Consultations",
-          subheading: "Clairvoyance & Channel",
-          promise: "Clarity, insight, and guidance beneath the surface of what you are experiencing.",
-          chips: ["60 minutes", "CAD 220", "Zoom · FaceTime · Phone · Email · In person"],
+          heading: "Private Consultations for Deeper Knowing",
+          subheading: "Clairvoyant & Channelled",
+          promise:
+            "Clarity, detail and specificity for what matters most. See deeply into the unknown. Change how you integrate and resonate.",
+          chips: [
+            "60 minutes",
+            "CAD 220",
+            "Vancouver in person · Video · Phone · Email",
+          ],
           image: IMAGES.portrait1,
         },
         introduction:
-          "Private consultations offer a focused space to look deeply into what is happening in your life—relationships, transitions, questions of purpose, and the patterns shaping your experience.",
+          "Centre yourself. Bring your questions. Rayana uses her clairvoyant and channelling abilities to see beneath the surface of your life—relationships, transitions, inner dynamics—and return you to what is true.",
         audience:
           "For thoughtful individuals ready to see beneath the surface and receive clear, compassionate guidance.",
         explorationTopics: [
           "Relationships and love",
           "Life direction and purpose",
-          "Patterns, beliefs, and attachments",
+          "Beliefs, attachments, and inner dynamics",
           "Transitions and crossroads",
           "Spiritual questions and inner knowing",
         ],
         expectations:
-          "Sessions are conversational, direct, and compassionate. Rayana sees, feels, and senses what is present—offering clarity without telling you who you should be.",
+          "Consultations are direct and compassionate. Rayana sees, feels, and senses what is present—offering clarity without telling you who you should be.",
         process:
-          "We begin by clarifying your questions. Rayana then works intuitively and clairvoyantly, sharing what emerges and supporting integration before the session closes.",
+          "We begin by clarifying your questions. Rayana then works clairvoyantly, sharing what emerges and supporting integration before the consultation closes.",
         benefits: [
           "Greater clarity about what is happening",
           "Deeper understanding of underlying patterns",
@@ -654,7 +659,7 @@ function buildServices() {
           "Energetic support and in-session healing",
         ],
         practicalDetails:
-          "Standard sessions are 60 minutes. Allow 90 minutes in your schedule in case additional time is needed. First-session special pricing is available when active.",
+          "Consultations are 60 minutes. Allow 90 minutes in your schedule in case additional time is needed. Available in Vancouver in person, by video, phone, or email.",
         gallery: gallerySet,
         faqs: [
           {
@@ -672,7 +677,7 @@ function buildServices() {
         bookingCta: {
           heading: "Book a private consultation",
           body: "Choose your preferred delivery mode and an available time.",
-          buttonLabel: "Book a Session",
+          buttonLabel: BOOK_CONSULTATION_LABEL,
         },
         seo: {
           title: "Private Consultations | Rayana De Silva",
@@ -692,7 +697,7 @@ function buildServices() {
       status: "active",
       featured: true,
       displayOrder: 1,
-      cardCta: { label: "Learn More", href: "/services/wisdom-mentoring" },
+      cardCta: { label: "Learn More", href: "/services/private-consultations#wisdom-mentoring" },
       bookable: true,
       standardPrice: 170,
       detailPage: {
@@ -729,7 +734,7 @@ function buildServices() {
         bookingCta: {
           heading: "Book wisdom mentoring",
           body: "Continue the conversation with focused support.",
-          buttonLabel: "Book a Session",
+          buttonLabel: BOOK_CONSULTATION_LABEL,
         },
         seo: {
           title: "Wisdom Mentoring | Rayana De Silva",
@@ -741,7 +746,7 @@ function buildServices() {
       title: "Teachings & Courses",
       slug: "teachings-courses",
       shortDescription:
-        "Live interactive programmes through Zoom for those ready to deepen awareness and learn practical energetic systems.",
+        "Live interactive programmes through Zoom while developing your own sixth-sense abilities and discernment.",
       mainImage: IMAGES.teaching,
       pricePreview: "From CAD 500",
       duration: "Programme-based",
@@ -903,7 +908,7 @@ function buildPricingPlans() {
       features: ["60 minutes", "Zoom, FaceTime, phone, email, or in person", "Personal guidance and insight"],
       price: 220,
       currency: "CAD",
-      ctaLabel: "Book a Session",
+      ctaLabel: BOOK_CONSULTATION_LABEL,
       ctaHref: "/booking",
       relatedServiceSlug: "private-consultations",
       displayOrder: 0,
@@ -917,7 +922,7 @@ function buildPricingPlans() {
       salePrice: 170,
       currency: "CAD",
       badge: "Special offer",
-      ctaLabel: "Book a Session",
+      ctaLabel: BOOK_CONSULTATION_LABEL,
       ctaHref: "/booking",
       relatedServiceSlug: "private-consultations",
       displayOrder: 1,
@@ -930,7 +935,7 @@ function buildPricingPlans() {
       features: ["60 minutes", "Ideal after a private session"],
       price: 170,
       currency: "CAD",
-      ctaLabel: "Book a Session",
+      ctaLabel: BOOK_CONSULTATION_LABEL,
       ctaHref: "/booking",
       relatedServiceSlug: "wisdom-mentoring",
       displayOrder: 2,
@@ -1051,7 +1056,7 @@ function buildTestimonials() {
     },
     {
       slug: "d-merizzi",
-      name: "D. Merizzi",
+      name: "Daniel Merizzi",
       role: "Senior Business Analyst",
       quote:
         "Rayana offered to help when I was feeling unsure about a direction in my career search. With her natural and easy approach, Rayana shared her intuition with me as it appeared in her mind's eye. I went to the interviews we had discussed with confidence and was truly amazed at how accurate Rayana had been in regard to both the approach to take and the personality types I would experience from the interviewers. Rayana's counsel was specifically accurate, and I recommend her services without hesitation.",
@@ -1067,7 +1072,7 @@ function buildTestimonials() {
     },
     {
       slug: "g-kuhlebrock",
-      name: "G. Kuhlebrock",
+      name: "Gudrun Kuhlebrock",
       role: "Germany",
       quote:
         "I want to thank you for the really good workshop. You are a very good teacher because you lead the group with love and safety, understanding and helping us individually, while at the same time guiding the group so that it remained undisturbed by our individual processes. I was familiar with the material you covered, but you showed me the context in a simple way so that suddenly I understood. With your concept, I am able to use and work with my energy field in a safe way that allows me to feel grounded at the same time.",
@@ -1158,7 +1163,7 @@ function buildFaqs() {
       category: "Booking",
       question: "Can I reschedule?",
       answer:
-        "A secure reschedule link is included in the confirmation email. Rescheduling transfers the existing successful payment to the new time and does not charge you again. A minimum of 24 hours' notice is required.",
+        "A secure reschedule link is included in the confirmation email. Rescheduling transfers the existing successful payment to the new time and does not charge you again. A minimum of 24 hours' notice is required. Less than 24 hours' notice and your payment will be non-refundable.",
       displayOrder: 6,
     },
     {
@@ -1274,11 +1279,11 @@ function buildBlogPosts() {
     {
       slug: "seeing-beneath-the-surface",
       title: "Seeing Beneath the Surface",
-      excerpt: "An invitation to look more honestly at the patterns shaping your experience.",
+      excerpt: "An invitation to look more honestly at the underlying influences shaping your experience.",
       body: `${sampleNotice}<p>There is a moment when life asks more of us than coping. Something shifts—a relationship, a career, a quiet inner restlessness—and we sense that the old explanations no longer fit.</p><p>This work begins not with answers, but with seeing: what is actually happening, beneath story and habit.</p>`,
       heroImage: IMAGES.landscape,
       categories: ["Reflections"],
-      tags: ["consciousness", "patterns"],
+      tags: ["consciousness", "seeing"],
       isSampleContent: true,
       readingTimeMinutes: 4,
       publishedAt: new Date("2026-01-15"),
@@ -1298,7 +1303,7 @@ function buildBlogPosts() {
     {
       slug: "presence-at-a-crossroads",
       title: "Presence at a Crossroads",
-      excerpt: "Crossroads are not failures—they are invitations to choose with greater consciousness.",
+      excerpt: "Crossroads are not missteps—they are invitations to choose with greater consciousness.",
       body: `${sampleNotice}<p>Standing at a crossroads can feel like failure or confusion. Often it is the opposite: a sign that you have outgrown a former version of your life.</p><p>Presence—not urgency—allows the next step to reveal itself.</p>`,
       heroImage: IMAGES.nature,
       categories: ["Reflections"],

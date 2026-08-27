@@ -2,10 +2,12 @@ import "server-only";
 import { isDbConfigured } from "@/lib/db/connect";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import {
+  BOOK_CONSULTATION_LABEL,
   RAYANA_ABOUT_SECTIONS,
   RAYANA_FAQS,
   RAYANA_HOME_SECTIONS,
   RAYANA_TESTIMONIALS,
+  SPIRITUAL_DISCLAIMER_TEXT,
 } from "@/lib/data/site-copy";
 import type {
   PublicBlogPost,
@@ -74,7 +76,7 @@ export const FALLBACK_SETTINGS: PublicSettings = {
   },
   social: { facebook: "", instagram: "", youtube: "" },
   header: {
-    primaryCtaLabel: "Book a Session",
+    primaryCtaLabel: BOOK_CONSULTATION_LABEL,
     primaryCtaHref: "/booking",
     showIntroOnFirstVisit: true,
   },
@@ -116,9 +118,13 @@ function page(
     systemKey,
     route,
     navigationLabel: title,
-    showInNavigation: !["privacy", "terms", "disclaimer", "cancellation-policy"].includes(
-      systemKey,
-    ),
+    showInNavigation: ![
+      "privacy",
+      "terms",
+      "disclaimer",
+      "cancellation-policy",
+      "services",
+    ].includes(systemKey),
     sections,
     seo,
   };
@@ -181,7 +187,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
       section("services-cta", "bookingCTA", 8, {
         heading: "Your Next Step Can Be Gentle",
         body: "<p>You don't need to have it all figured out. Begin with a single conversation—and let clarity unfold from there.</p>",
-        buttons: [btn("Book a Session", "/booking")],
+        buttons: [btn(BOOK_CONSULTATION_LABEL, "/booking")],
         images: [SEED_IMAGES.sacred],
         themeVariant: "burgundy",
         layoutVariant: "mockup",
@@ -203,7 +209,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
     section("pricing-cta", "bookingCTA", 4, {
       buttons: [
         btn("Contact Rayana", "/contact"),
-        btn("Book a Session", "/booking", "secondary"),
+        btn(BOOK_CONSULTATION_LABEL, "/booking", "secondary"),
       ],
     }),
   ], { title: "Pricing", description: "Session rates and programmes." }),
@@ -228,16 +234,16 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
       layoutVariant: "mockup",
     }),
   ], { title: "Contact", description: "Reach out to Rayana." }),
-  blog: page("blog", "Journal", "/blog", [
+  blog: page("blog", "Reflections", "/blog", [
     section("blog-hero", "hero", 0, {
-      heading: "Journal",
+      heading: "Reflections",
       images: [SEED_IMAGES.nature],
     }),
     section("blog-intro", "intro", 1, {}),
     section("blog-feature", "mediaFeature", 2, {
       settings: { contentType: "blog", showFeatured: true },
     }),
-  ], { title: "Journal", description: "Reflections and teachings." }),
+  ], { title: "Reflections", description: "Rayana's written reflections and teachings." }),
   media: page("media", "Media", "/media", [
     section("media-hero", "hero", 0, {
       heading: "Media",
@@ -256,9 +262,9 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
     section("shop-intro", "intro", 1, {}),
     section("shop-contact", "contactPanel", 2, {}),
   ], { title: "Shop", description: "Digital offerings." }),
-  booking: page("booking", "Book a Session", "/booking", [
+  booking: page("booking", BOOK_CONSULTATION_LABEL, "/booking", [
     section("booking-hero", "hero", 0, {
-      heading: "Book a Session",
+      heading: BOOK_CONSULTATION_LABEL,
       images: [SEED_IMAGES.sacred, SEED_IMAGES.session],
     }),
     section("booking-intro", "intro", 1, {}),
@@ -272,7 +278,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
     section("booking-faq", "faqPreview", 3, {
       settings: { category: "Booking" },
     }),
-  ], { title: "Book a Session", description: "Schedule your session." }),
+  ], { title: BOOK_CONSULTATION_LABEL, description: "Schedule your consultation." }),
   "write-a-review": page(
     "write-a-review",
     "Write a Review",
@@ -304,7 +310,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
   disclaimer: page("disclaimer", "Disclaimer", "/disclaimer", [
     section("disclaimer-hero", "hero", 0, { heading: "Disclaimer" }),
     section("disclaimer-content", "richText", 1, {
-      body: "<p>Sessions and educational offerings are provided for personal insight and spiritual exploration.</p>",
+      body: `<p>${SPIRITUAL_DISCLAIMER_TEXT}</p>`,
     }),
   ], { title: "Disclaimer", description: "Important notices." }),
   "cancellation-policy": page(
@@ -360,7 +366,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
       bookingCta: {
         heading: "Book a private consultation",
         body: "Choose your preferred delivery mode and an available time.",
-        buttonLabel: "Book a Session",
+        buttonLabel: BOOK_CONSULTATION_LABEL,
       },
       seo: { title: "Private Consultations", description: "Clairvoyance and channel sessions." },
     },
@@ -402,7 +408,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
       bookingCta: {
         heading: "Book wisdom mentoring",
         body: "Continue the conversation with focused support.",
-        buttonLabel: "Book a Session",
+        buttonLabel: BOOK_CONSULTATION_LABEL,
       },
       seo: { title: "Wisdom Mentoring", description: "Interactive mentoring for integration." },
     },
@@ -543,7 +549,7 @@ export const FALLBACK_PRICING: PublicPricingPlan[] = [
     currency: "CAD",
     availability: "active",
     featured: false,
-    ctaLabel: "Book a Session",
+    ctaLabel: BOOK_CONSULTATION_LABEL,
     ctaHref: "/booking",
   },
   {
@@ -556,7 +562,7 @@ export const FALLBACK_PRICING: PublicPricingPlan[] = [
     currency: "CAD",
     badge: "Special offer",
     availability: "active",
-    ctaLabel: "Book a Session",
+    ctaLabel: BOOK_CONSULTATION_LABEL,
     ctaHref: "/booking",
     featured: true,
   },
@@ -569,7 +575,7 @@ export const FALLBACK_PRICING: PublicPricingPlan[] = [
     currency: "CAD",
     availability: "active",
     featured: false,
-    ctaLabel: "Book a Session",
+    ctaLabel: BOOK_CONSULTATION_LABEL,
     ctaHref: "/booking",
   },
   {

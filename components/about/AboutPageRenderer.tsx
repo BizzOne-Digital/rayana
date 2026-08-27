@@ -7,7 +7,7 @@ import { Flame, Heart, Orbit, Sparkles } from "lucide-react";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
-import { RAYANA_BRINGS_ITEMS, RAYANA_STORY_BODY } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_STORY_BODY, RAYANA_VALUES_ITEMS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -34,7 +34,7 @@ function MockupOrnament({ dark = false }: { dark?: boolean }) {
 
 const DEFAULT_JOURNEY: NumberedStepItem[] = [
   { title: "See", body: "What is actually happening." },
-  { title: "Understand", body: "What lies beneath the pattern." },
+          { title: "Understand", body: "What dynamic is shaping your experience." },
   {
     title: "Integrate",
     body: "How to move forward with greater truth, consciousness, and from a deeper presence.",
@@ -59,14 +59,14 @@ const DEFAULT_PRINCIPLES: IconListItem[] = [
   },
 ];
 
-const DEFAULT_VALUES: IconListItem[] = RAYANA_BRINGS_ITEMS.map((title) => ({ title, body: "" }));
+const DEFAULT_VALUES: IconListItem[] = RAYANA_VALUES_ITEMS;
 
 const BEHIND_LABELS = [
   "Journaling & Reflection",
   "Quiet Preparation",
   "Curating Sacred Space",
   "Nature & Renewal",
-  "Gratitude & Grace",
+  "Reverence and Grace",
 ];
 
 const BEHIND_IMAGES = [
@@ -243,7 +243,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
                   : [
                       {
                         label: "Work With Me",
-                        href: "/services",
+                        href: "/services/private-consultations",
                         variant: "secondary" as const,
                         openInNewTab: false,
                       },
@@ -258,7 +258,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
       {/* Values — dark */}
       <section id={values?.id ?? "about-values"} className="mockup-section mockup-section--dark text-center">
         <div className="site-container">
-          <h2 className="mockup-heading">{values?.heading ?? "What Brings You Here?"}</h2>
+          <h2 className="mockup-heading">{values?.heading ?? "What I Value Most"}</h2>
           <MockupOrnament />
           <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {valueItems.map((item, index) => (
@@ -353,7 +353,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
             buttons={
               cta?.buttons?.length
                 ? cta.buttons
-                : [{ label: "Book a Session", href: "/booking", variant: "primary" as const, openInNewTab: false }]
+                : [{ label: BOOK_CONSULTATION_LABEL, href: "/booking", variant: "primary" as const, openInNewTab: false }]
             }
             className="mt-8 justify-center"
             variant="hero"
@@ -363,12 +363,12 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
               Private Sessions
             </Link>
             <span aria-hidden>•</span>
-            <Link href="/blog" className="hover:text-[#4e0505]">
-              Teachings
+            <Link href="/services/teachings-courses" className="hover:text-[#4e0505]">
+              Teachings & Courses
             </Link>
             <span aria-hidden>•</span>
-            <Link href="/services" className="hover:text-[#4e0505]">
-              Group Experiences
+            <Link href="/services/workshops-retreats" className="hover:text-[#4e0505]">
+              Workshops & Retreats
             </Link>
           </div>
         </div>

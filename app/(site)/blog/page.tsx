@@ -40,7 +40,7 @@ export default async function BlogPage() {
                   />
                 </div>
                 <div className="p-6">
-                  <p className="eyebrow mb-2">{post.categories[0] ?? "Journal"}</p>
+                  <p className="eyebrow mb-2">{post.categories[0] ?? "Reflections"}</p>
                   <h2 className="font-display text-2xl text-velvet-night">{post.title}</h2>
                   <p className="mt-2 text-sm text-muted-stone">{post.excerpt}</p>
                 </div>

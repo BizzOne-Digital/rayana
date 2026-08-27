@@ -1,6 +1,30 @@
 import type { PublicFAQ, PublicTestimonial, TypedPageSection } from "@/lib/sections/types";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 
+export const BOOK_CONSULTATION_LABEL = "Book a Consultation";
+
+export const SPIRITUAL_DISCLAIMER_TEXT =
+  "Sessions with Rayana De Silva are for personal development and spiritual support only. They are not medical or psychological treatment and do not diagnose, treat, or cure any condition. Always consult a licensed healthcare professional for any medical or mental health concerns. By booking, you acknowledge that you are responsible for your own health, wellbeing and decisions.";
+
+export const RAYANA_VALUES_ITEMS = [
+  {
+    title: "Compassion",
+    body: "Meeting each person where they are—with warmth, depth, and without judgment.",
+  },
+  {
+    title: "Truth",
+    body: "Creating a space where honesty is safe, and clarity can emerge without force.",
+  },
+  {
+    title: "Integration",
+    body: "Supporting you to carry insight into your relationships, choices, and daily life.",
+  },
+  {
+    title: "Presence",
+    body: "Showing up fully—with attention, patience, and respect for what is unfolding.",
+  },
+];
+
 function btn(
   label: string,
   href: string,
@@ -35,7 +59,7 @@ function section(
 }
 
 export const RAYANA_OPENING_BODY = `<p>This is a story of a woman who spent her life learning how to "see, feel and sense", and eventually realized that her greatest gift is to help others "see, feel and sense" too.</p>
-<p>Rayana helps us see beneath the surface of our lives — to understand the patterns, truths, and deeper wisdom shaping our experience. In this way, we become able to meet life with greater clarity, consciousness and sovereignty, to ultimately transform our presence and our life.</p>
+<p>Rayana helps us see beneath the surface of our lives — to understand the dynamics, truths, and deeper wisdom shaping our experience. In this way, we become able to expand into greater consciousness and sovereignty, to ultimately transform our presence and our life.</p>
 <p>Rayana helps us see what we couldn't previously see about ourselves, about our lives and about what truly matters. She helps transform uncertainty into understanding and wisdom, to be used daily.</p>`;
 
 export const RAYANA_STORY_BODY = `<p>Rayana De Silva has spent her life exploring what lies beneath the surface of human experience…seeking to understand consciousness, love, relationships, suffering, transformation and the deeper truth of who we are.</p>
@@ -62,7 +86,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     heading: "A Deeper Way of Seeing What Matters",
     body: "<p>Clarity · Consciousness · Truth · Presence</p>",
     buttons: [
-      btn("Work With Me", "/services"),
+      btn("Work With Me", "/services/private-consultations"),
       btn("My Story", "/about", "secondary"),
     ],
     themeVariant: "burgundy",
@@ -70,7 +94,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
   }),
   section("home-welcome", "splitStory", 1, {
     eyebrow: "Clarity · Consciousness · Truth · Presence",
-    heading: "See Beneath the Surface",
+    heading: "Rayana De Silva, Master of Heart Matters",
     body: RAYANA_OPENING_BODY,
     images: [SEED_IMAGES.portrait2],
     buttons: [btn("Read My Full Story", "/about", "secondary")],
@@ -99,7 +123,14 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     themeVariant: "ivory",
     layoutVariant: "mockup",
   }),
-  section("home-method", "numberedSteps", 5, {
+  section("home-heart", "editorialQuote", 5, {
+    heading: "The Heart Remembers",
+    body: "<p>The heart holds the map.<br/>The spirit knows the way.</p>",
+    images: [SEED_IMAGES.hands],
+    themeVariant: "burgundy",
+    layoutVariant: "mockup",
+  }),
+  section("home-method", "numberedSteps", 6, {
     eyebrow: "How I Work",
     heading: "See · Understand · Integrate",
     items: [
@@ -109,7 +140,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
       },
       {
         title: "Understand",
-        body: "What lies beneath the pattern.",
+        body: "What dynamic is shaping your experience.",
       },
       {
         title: "Integrate",
@@ -119,14 +150,14 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
-  section("home-offerings", "serviceShowcase", 6, {
+  section("home-offerings", "serviceShowcase", 7, {
     eyebrow: "Work With Me",
     heading: "Ways to Work Together",
     settings: { limit: 5, featuredOnly: false },
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
-  section("home-testimonials", "testimonialSlider", 7, {
+  section("home-testimonials", "testimonialSlider", 8, {
     eyebrow: "Testimonials",
     heading: "From the Heart",
     body: "<p>Read the full reflections on the testimonials page.</p>",
@@ -135,7 +166,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
-  section("home-media", "mediaFeature", 8, {
+  section("home-media", "mediaFeature", 9, {
     eyebrow: "Media",
     heading: "Latest Video, Podcast & Teaching",
     body: "<p>New teachings and media will appear here — most likely via YouTube. Nothing to share just yet; please check back soon.</p>",
@@ -143,10 +174,10 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     themeVariant: "ivory",
     layoutVariant: "mockup",
   }),
-  section("home-cta", "bookingCTA", 9, {
+  section("home-cta", "bookingCTA", 10, {
     heading: "Begin Where You Are",
     body: "<p>Centre yourself. Bring your questions. Allow space for what wants to be seen.</p>",
-    buttons: [btn("Book a Session", "/booking")],
+    buttons: [btn(BOOK_CONSULTATION_LABEL, "/booking")],
     images: [SEED_IMAGES.sacred],
     themeVariant: "burgundy",
     layoutVariant: "mockup",
@@ -196,7 +227,7 @@ export const RAYANA_TESTIMONIALS: PublicTestimonial[] = [
   },
   {
     slug: "d-merizzi",
-    name: "D. Merizzi",
+    name: "Daniel Merizzi",
     role: "Senior Business Analyst",
     quote:
       "Rayana offered to help when I was feeling unsure about a direction in my career search. With her natural and easy approach, Rayana shared her intuition with me as it appeared in her mind's eye. I went to the interviews we had discussed with confidence and was truly amazed at how accurate Rayana had been in regard to both the approach to take and the personality types I would experience from the interviewers I met with. Rayana's counsel was specifically accurate and I recommend her services without hesitation!",
@@ -216,7 +247,7 @@ export const RAYANA_TESTIMONIALS: PublicTestimonial[] = [
   },
   {
     slug: "g-kuhlebrock",
-    name: "G. Kuhlebrock",
+    name: "Gudrun Kuhlebrock",
     role: "Germany",
     quote:
       "I want to thank you for the really good workshop. You are a very good teacher, because you lead the group with love and safety, understanding and helping us individually, while at the same time guiding the group so that it remained undisturbed by our individual processes. I was familiar with the material you covered, but you showed me the context in a simple way so that suddenly I understood. With your concept, I am able to use and work with my energy field in a safe way that allows me to feel grounded at the same time.",
@@ -293,13 +324,13 @@ export const RAYANA_ABOUT_SECTIONS: TypedPageSection[] = [
     heading: "Over 30 Years of Experience",
     body: "<p>Rayana offers her expertise with over 30 years of professional and international experience in private practice, and as an educator. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to \"see and feel and sense\" deeply so we can recognize what is true, understand what our experience is revealing, and make choices from a place of greater consciousness and sovereignty.</p>",
     images: [SEED_IMAGES.workshop],
-    buttons: [btn("Work With Me", "/services", "secondary")],
+    buttons: [btn("Work With Me", "/services/private-consultations", "secondary")],
     themeVariant: "ivory",
     layoutVariant: "mockup",
   }),
   section("about-values", "iconList", 5, {
-    heading: "What Brings You Here?",
-    items: RAYANA_BRINGS_ITEMS.map((title) => ({ title, body: "" })),
+    heading: "What I Value Most",
+    items: RAYANA_VALUES_ITEMS,
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
@@ -317,7 +348,7 @@ export const RAYANA_ABOUT_SECTIONS: TypedPageSection[] = [
   section("about-cta", "bookingCTA", 8, {
     heading: "Begin Where You Are",
     body: "<p>Centre yourself. Bring your questions. Allow space for what wants to be seen.</p>",
-    buttons: [btn("Book a Session", "/booking")],
+    buttons: [btn(BOOK_CONSULTATION_LABEL, "/booking")],
     themeVariant: "ivory",
     layoutVariant: "mockup",
   }),
@@ -351,6 +382,13 @@ export const RAYANA_FAQS: PublicFAQ[] = [
     answer:
       "You are welcome to set up your own recording of the session on your side. You can also arrange after booking to have a recording of the session sent to you via your email by contacting rayanadesilva@heartmatters.com.",
     category: "Sessions",
+  },
+  {
+    slug: "reschedule",
+    question: "Can I reschedule?",
+    answer:
+      "A secure reschedule link is included in the confirmation email. Rescheduling transfers the existing successful payment to the new time and does not charge you again. A minimum of 24 hours' notice is required. Less than 24 hours' notice and your payment will be non-refundable.",
+    category: "Booking",
   },
   {
     slug: "online-sessions",

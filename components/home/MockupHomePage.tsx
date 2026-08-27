@@ -8,7 +8,7 @@ import { HeroCinematic } from "@/components/home/HeroCinematic";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
-import { RAYANA_BRINGS_ITEMS, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_BRINGS_ITEMS, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -55,6 +55,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
   const story = findSection(sections, "home-story");
   const brings = findSection(sections, "home-brings");
   const philosophy = findSection(sections, "home-philosophy");
+  const heart = findSection(sections, "home-heart");
   const method = findSection(sections, "home-method");
   const offerings = findSection(sections, "home-offerings");
   const testimonialsSection = findSection(sections, "home-testimonials");
@@ -84,7 +85,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
       ? (method!.items as NumberedStepItem[])
       : [
           { title: "See", body: "What is actually happening." },
-          { title: "Understand", body: "What lies beneath the pattern." },
+          { title: "Understand", body: "What dynamic is shaping your experience." },
           {
             title: "Integrate",
             body: "How to move forward with greater truth, consciousness, and from a deeper presence.",
@@ -123,7 +124,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
           <div className="mockup-welcome-copy">
             <p className="mockup-eyebrow mockup-eyebrow--dark">{welcome?.eyebrow ?? "Welcome"}</p>
             <h2 className="mockup-heading mockup-heading--dark">
-              {welcome?.heading ?? "Return to the Wisdom of Your Heart"}
+              {welcome?.heading ?? "Rayana De Silva, Master of Heart Matters"}
             </h2>
             <RichText
               html={
@@ -196,6 +197,21 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
               "<p>Understanding yourself deeply through the lens of the wisdom heart changes how you understand and move through the world.</p>"
             }
             className="mockup-body mockup-body--dark mx-auto mt-6 max-w-2xl"
+          />
+        </div>
+      </section>
+
+      {/* The Heart Remembers — dark */}
+      <section id={heart?.id ?? "home-heart"} className="mockup-section mockup-section--dark text-center">
+        <div className="site-container max-w-3xl">
+          <h2 className="mockup-heading mt-3">{heart?.heading ?? "The Heart Remembers"}</h2>
+          <MockupOrnament />
+          <RichText
+            html={
+              heart?.body ??
+              "<p>The heart holds the map.<br/>The spirit knows the way.</p>"
+            }
+            className="mockup-body mx-auto mt-6 max-w-xl text-lg opacity-92"
           />
         </div>
       </section>
@@ -372,7 +388,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
               buttons={
                 cta?.buttons?.length
                   ? cta.buttons
-                  : [{ label: "Book a Session", href: "/booking", variant: "primary" as const, openInNewTab: false }]
+                  : [{ label: BOOK_CONSULTATION_LABEL, href: "/booking", variant: "primary" as const, openInNewTab: false }]
               }
               className="mt-8"
               variant="hero"

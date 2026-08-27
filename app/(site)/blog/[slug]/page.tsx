@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="section-padding texture-parchment">
         <div className="site-container grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <div>
-            <p className="eyebrow mb-4">{post.categories.join(" · ") || "Journal"}</p>
+            <p className="eyebrow mb-4">{post.categories.join(" · ") || "Reflections"}</p>
             <h1 className="display-heading text-4xl md:text-5xl text-balance">{post.title}</h1>
             <p className="mt-4 text-sm text-muted-stone">
               {post.author} · {post.readingTimeMinutes} min read
@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="section-padding pt-0">
         <div className="site-container">
           <Link href="/blog" className="btn btn-secondary">
-            Back to Journal
+            Back to Reflections
           </Link>
         </div>
       </section>

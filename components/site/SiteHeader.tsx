@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BOOK_CONSULTATION_LABEL } from "@/lib/data/site-copy";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -15,7 +16,7 @@ type SiteHeaderProps = {
 const CORE_NAV = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
+  { href: "/services/private-consultations", label: "Consultations" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/faqs", label: "FAQ" },
   { href: "/contact", label: "Contact" },
@@ -30,7 +31,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
     setOpen(false);
   }, [pathname]);
 
-  const ctaLabel = settings.header.primaryCtaLabel || "Book a Session";
+  const ctaLabel = settings.header.primaryCtaLabel || BOOK_CONSULTATION_LABEL;
   const ctaHref = settings.header.primaryCtaHref || "/booking";
 
   return (

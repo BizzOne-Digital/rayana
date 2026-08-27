@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BOOK_CONSULTATION_LABEL } from "@/lib/data/site-copy";
 import { Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -99,7 +100,7 @@ export function ContactPageRenderer({ sections, context }: ContactPageRendererPr
               </a>
             ) : null}
             <Link href="/booking" className="btn btn-primary mt-4 inline-flex">
-              Book a Session
+              {BOOK_CONSULTATION_LABEL}
             </Link>
           </div>
 

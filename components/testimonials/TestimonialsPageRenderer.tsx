@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
-import { RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import type { SectionContext } from "@/lib/sections/registry";
 import type { TypedPageSection } from "@/lib/sections/types";
@@ -79,7 +79,7 @@ export function TestimonialsPageRenderer({ sections, context }: TestimonialsPage
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link href="/booking" className="btn btn-hero-primary">
-              Book a Session
+              {BOOK_CONSULTATION_LABEL}
             </Link>
             <Link href="/write-a-review" className="mockup-outline-btn">
               Write a Review

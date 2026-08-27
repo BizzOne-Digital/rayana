@@ -10,7 +10,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublicBlogPosts(),
   ]);
 
-  const staticEntries: MetadataRoute.Sitemap = pages.map((page) => ({
+  const staticEntries: MetadataRoute.Sitemap = pages
+    .filter((page) => page.systemKey !== "services")
+    .map((page) => ({
     url: `${base}${page.route}`,
     lastModified: new Date(),
     changeFrequency: page.systemKey === "home" ? "weekly" : "monthly",
