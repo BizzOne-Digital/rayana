@@ -70,11 +70,18 @@ const BEHIND_LABELS = [
 ];
 
 const BEHIND_IMAGES = [
-  SEED_IMAGES.teaching,
-  SEED_IMAGES.session,
-  SEED_IMAGES.sacred,
-  SEED_IMAGES.nature,
-  SEED_IMAGES.landscape,
+  SEED_IMAGES.journalReflection,
+  SEED_IMAGES.meditationCorner,
+  SEED_IMAGES.sacredAltar,
+  SEED_IMAGES.forestCrossroads,
+  SEED_IMAGES.calmLake,
+];
+
+const VALUE_IMAGES = [
+  SEED_IMAGES.valueCompassion,
+  SEED_IMAGES.valueTruth,
+  SEED_IMAGES.valueIntegration,
+  SEED_IMAGES.valuePresence,
 ];
 
 const PRINCIPLE_ICONS = {
@@ -82,13 +89,6 @@ const PRINCIPLE_ICONS = {
   orbit: Orbit,
   flame: Flame,
 };
-
-const VALUE_IMAGES = [
-  SEED_IMAGES.sacred,
-  SEED_IMAGES.texture,
-  SEED_IMAGES.hands,
-  SEED_IMAGES.nature,
-];
 
 export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
   const hero = findSection(sections, "about-hero");
@@ -156,7 +156,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
               {intro?.heading ?? "A Deeper Way of Seeing What Matters"}
             </h2>
             <RichText
-              html={intro?.body ?? RAYANA_STORY_BODY}
+              html={intro?.body?.trim() ? intro.body : RAYANA_STORY_BODY}
               className="mockup-body mockup-body--dark mt-6 space-y-4"
             />
           </div>
@@ -220,7 +220,7 @@ export function AboutPageRenderer({ sections }: AboutPageRendererProps) {
         <div className="site-container mockup-about-teaching-grid">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] shadow-[0_24px_60px_-24px_rgba(38,2,13,0.18)]">
             <MediaImage
-              image={teaching?.images?.[0] ?? SEED_IMAGES.workshop}
+              image={teaching?.images?.[0] ?? SEED_IMAGES.teachingExperience}
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="absolute inset-0 h-full w-full"
             />

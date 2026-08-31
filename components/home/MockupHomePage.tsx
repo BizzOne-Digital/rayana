@@ -8,7 +8,7 @@ import { HeroCinematic } from "@/components/home/HeroCinematic";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
-import { BOOK_CONSULTATION_LABEL, RAYANA_BRINGS_ITEMS, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_BRINGS_ITEMS, RAYANA_OPENING_BODY, RAYANA_STORY_BODY, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -128,8 +128,9 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
             </h2>
             <RichText
               html={
-                welcome?.body ??
-                "<p>Rayana De Silva is a master of heart matters—channeler, educator, and guide for those ready to see beneath the surface of their lives. Through private sessions, teachings, and group experiences, she helps you return to the wisdom already alive within you.</p>"
+                welcome?.body?.trim()
+                  ? welcome.body
+                  : RAYANA_OPENING_BODY
               }
               className="mockup-body mockup-body--dark mt-6 max-w-xl"
             />
@@ -153,7 +154,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
             <p className="mockup-eyebrow mockup-eyebrow--dark">{story?.eyebrow ?? "About"}</p>
             <h2 className="mockup-heading mockup-heading--dark">{story?.heading ?? "My Story"}</h2>
             <RichText
-              html={story?.body ?? ""}
+              html={story?.body?.trim() ? story.body : RAYANA_STORY_BODY}
               className="mockup-body mockup-body--dark mt-6 space-y-4"
             />
           </div>
@@ -191,11 +192,12 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
           <h2 className="mockup-heading mockup-heading--dark mt-3">
             {philosophy?.heading ?? "The Wisdom Heart"}
           </h2>
-          <RichText
-            html={
-              philosophy?.body ??
-              "<p>Understanding yourself deeply through the lens of the wisdom heart changes how you understand and move through the world.</p>"
-            }
+            <RichText
+              html={
+                philosophy?.body?.trim()
+                  ? philosophy.body
+                  : "<p>Understanding yourself deeply through the lens of the wisdom heart changes how you understand and move through the world.</p>"
+              }
             className="mockup-body mockup-body--dark mx-auto mt-6 max-w-2xl"
           />
         </div>

@@ -126,7 +126,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
   section("home-heart", "editorialQuote", 5, {
     heading: "The Heart Remembers",
     body: "<p>The heart holds the map.<br/>The spirit knows the way.</p>",
-    images: [SEED_IMAGES.hands],
+    images: [SEED_IMAGES.heartGlow],
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
@@ -178,7 +178,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
     heading: "Begin Where You Are",
     body: "<p>Centre yourself. Bring your questions. Allow space for what wants to be seen.</p>",
     buttons: [btn(BOOK_CONSULTATION_LABEL, "/booking")],
-    images: [SEED_IMAGES.sacred],
+    images: [SEED_IMAGES.sacredPortal],
     themeVariant: "burgundy",
     layoutVariant: "mockup",
   }),
@@ -323,7 +323,7 @@ export const RAYANA_ABOUT_SECTIONS: TypedPageSection[] = [
   section("about-teaching", "splitStory", 4, {
     heading: "Over 30 Years of Experience",
     body: "<p>Rayana offers her expertise with over 30 years of professional and international experience in private practice, and as an educator. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to \"see and feel and sense\" deeply so we can recognize what is true, understand what our experience is revealing, and make choices from a place of greater consciousness and sovereignty.</p>",
-    images: [SEED_IMAGES.workshop],
+    images: [SEED_IMAGES.teachingExperience],
     buttons: [btn("Work With Me", "/services/private-consultations", "secondary")],
     themeVariant: "ivory",
     layoutVariant: "mockup",

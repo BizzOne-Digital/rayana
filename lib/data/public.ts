@@ -231,13 +231,14 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
     section("contact-hero", "hero", 0, {
       eyebrow: "Reach Out",
       heading: "Get in Touch",
+      images: [SEED_IMAGES.envelopePen],
       layoutVariant: "mockup",
     }),
   ], { title: "Contact", description: "Reach out to Rayana." }),
   blog: page("blog", "Reflections", "/blog", [
     section("blog-hero", "hero", 0, {
       heading: "Reflections",
-      images: [SEED_IMAGES.nature],
+      images: [SEED_IMAGES.wisdomMentoring],
     }),
     section("blog-intro", "intro", 1, {}),
     section("blog-feature", "mediaFeature", 2, {
@@ -247,7 +248,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
   media: page("media", "Media", "/media", [
     section("media-hero", "hero", 0, {
       heading: "Media",
-      images: [SEED_IMAGES.teaching],
+      images: [SEED_IMAGES.teachingExperience],
     }),
     section("media-feature", "mediaFeature", 1, {
       settings: { contentType: "media", emptyState: true },
@@ -257,7 +258,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
   shop: page("shop", "Shop", "/shop", [
     section("shop-hero", "hero", 0, {
       heading: "Shop",
-      images: [SEED_IMAGES.texture],
+      images: [SEED_IMAGES.silkRibbon],
     }),
     section("shop-intro", "intro", 1, {}),
     section("shop-contact", "contactPanel", 2, {}),
@@ -265,7 +266,7 @@ export const FALLBACK_PAGES: Record<string, PublicPage> = {
   booking: page("booking", BOOK_CONSULTATION_LABEL, "/booking", [
     section("booking-hero", "hero", 0, {
       heading: BOOK_CONSULTATION_LABEL,
-      images: [SEED_IMAGES.sacred, SEED_IMAGES.session],
+      images: [SEED_IMAGES.calendarDesk, SEED_IMAGES.privateConsultation],
     }),
     section("booking-intro", "intro", 1, {}),
     section("booking-steps", "numberedSteps", 2, {
@@ -333,7 +334,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
     slug: "private-consultations",
     shortDescription:
       "Clairvoyance and channel sessions for clarity, insight, personal guidance, and the energetic healing that occurs beneath the surface.",
-    mainImage: SEED_IMAGES.portrait1,
+    mainImage: SEED_IMAGES.privateConsultation,
     pricePreview: "CAD 220 · First session CAD 170",
     duration: "60 minutes",
     modes: ["Zoom", "FaceTime", "Email", "Phone", "In person"],
@@ -350,7 +351,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
         subheading: "Clairvoyance & Channel",
         promise: "Clarity, insight, and guidance beneath the surface of what you are experiencing.",
         chips: ["60 minutes", "CAD 220"],
-        image: SEED_IMAGES.portrait1,
+        image: SEED_IMAGES.privateConsultation,
       },
       introduction:
         "Centre yourself. Bring your questions. Sit quietly to have your questions answered along with the energetic healing that goes on below the surface of the session.",
@@ -376,7 +377,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
     slug: "wisdom-mentoring",
     shortDescription:
       "Interactive talk sessions for clarification, depth, and greater understanding—especially after a private session.",
-    mainImage: SEED_IMAGES.session,
+    mainImage: SEED_IMAGES.wisdomMentoring,
     pricePreview: "CAD 170",
     duration: "60 minutes",
     modes: ["Zoom", "FaceTime", "Phone", "In person"],
@@ -392,7 +393,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
         subheading: "Integration and practical depth",
         promise: "Sessions to give you something to chew on.",
         chips: ["60 minutes", "CAD 170"],
-        image: SEED_IMAGES.session,
+        image: SEED_IMAGES.wisdomMentoring,
       },
       introduction:
         "Interactive talk sessions for clarification and more depth—for tweaking what you may already understand and want to experience by taking a deeper dive.",
@@ -418,7 +419,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
     slug: "teachings-courses",
     shortDescription:
       "Live interactive programmes through Zoom for those ready to deepen awareness and learn practical energetic systems.",
-    mainImage: SEED_IMAGES.teaching,
+    mainImage: SEED_IMAGES.teachingsCourses,
     pricePreview: "From CAD 600",
     duration: "Programme-based",
     modes: ["Zoom"],
@@ -433,7 +434,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
         subheading: "Experience the Journey Within",
         promise: "Structured teachings for alignment, energetic literacy, and inner knowing.",
         chips: ["Live on Zoom", "Level 1 & Level 2"],
-        image: SEED_IMAGES.teaching,
+        image: SEED_IMAGES.teachingsCourses,
       },
       introduction:
         "Experience The Journey Within—live and interactive over Zoom, class size limited to 10 participants.",
@@ -458,7 +459,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
     title: "Workshops & Retreats",
     slug: "workshops-retreats",
     shortDescription: "Immersive transformation experiences—coming soon.",
-    mainImage: SEED_IMAGES.workshop,
+    mainImage: SEED_IMAGES.workshopsRetreats,
     pricePreview: "TBA",
     duration: "Immersive",
     modes: ["In person"],
@@ -473,7 +474,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
         subheading: "Immersive transformation",
         promise: "Location TBA.",
         chips: ["Coming soon"],
-        image: SEED_IMAGES.workshop,
+        image: SEED_IMAGES.workshopsRetreats,
       },
       introduction: "Immersive workshops and retreats for collective deep work.",
       audience: "Those drawn to collective transformation.",
@@ -498,7 +499,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
     slug: "meditation-group-channel",
     shortDescription:
       "Membership-based group channel for deepening inner awareness and cultivating presence—coming soon.",
-    mainImage: SEED_IMAGES.sacred,
+    mainImage: SEED_IMAGES.meditationChannel,
     pricePreview: "Coming soon",
     duration: "Ongoing membership",
     modes: ["Online"],
@@ -513,7 +514,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
         subheading: "Deepening presence together",
         promise: "Membership channel—coming soon.",
         chips: ["Coming soon"],
-        image: SEED_IMAGES.sacred,
+        image: SEED_IMAGES.meditationChannel,
       },
       introduction: "A Patreon-style membership channel for ongoing meditation practice and group presence.",
       audience: "Practitioners wanting regular support and community.",

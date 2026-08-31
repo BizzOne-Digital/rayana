@@ -6,6 +6,7 @@ import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
 import bcrypt from "bcryptjs";
 import { BOOK_CONSULTATION_LABEL, RAYANA_ABOUT_SECTIONS, RAYANA_HOME_SECTIONS, SPIRITUAL_DISCLAIMER_TEXT } from "@/lib/data/site-copy";
+import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { connectDB } from "@/lib/db/mongoose-connect";
 import {
   AdminUser,
@@ -65,18 +66,7 @@ function img(
   };
 }
 
-const IMAGES = {
-  portrait1: img("portrait-1.svg", "Editorial portrait placeholder in warm burgundy tones"),
-  portrait2: img("portrait-2.svg", "Secondary portrait composition with golden accent line"),
-  hands: img("hands-detail.svg", "Close detail of hands in warm light"),
-  landscape: img("landscape.svg", "Coastal landscape at dusk with golden horizon"),
-  session: img("session-atmosphere.svg", "Quiet session space with soft ambient light"),
-  texture: img("texture-abstract.svg", "Velvet texture with abstract golden thread", { decorative: true }),
-  sacred: img("sacred-space.svg", "Sacred space with gentle luminous centre"),
-  teaching: img("teaching.svg", "Teaching atmosphere with layered parchment tones"),
-  workshop: img("workshop.svg", "Gathered circle suggesting workshop presence"),
-  nature: img("nature.svg", "Forest path through mist and morning light"),
-};
+const IMAGES = SEED_IMAGES;
 
 function btn(label: string, href: string, variant: "primary" | "secondary" | "ghost" = "primary") {
   return { label, href, variant, openInNewTab: false };
@@ -287,7 +277,7 @@ function buildPages(): PageSeedData[] {
     section("pricing-spotlight", "pricingSpotlight", 2, {
       heading: "Featured Packages",
       settings: { showAll: true },
-      images: [IMAGES.texture],
+      images: [IMAGES.silkRibbon],
     }),
     section("pricing-note", "richText", 3, {
       body: "<p>First-session specials and limited-time programme rates are controlled from admin and expire automatically when configured.</p>",
@@ -321,6 +311,7 @@ function buildPages(): PageSeedData[] {
       label: "Contact Hero",
       eyebrow: "Reach Out",
       heading: "Get in Touch",
+      images: [IMAGES.envelopePen],
       layoutVariant: "mockup",
     }),
   ];
@@ -329,7 +320,7 @@ function buildPages(): PageSeedData[] {
     section("blog-hero", "hero", 0, {
       heading: "Reflections",
       body: "<p>Reflections on consciousness, relationships, and the path of inner knowing.</p>",
-      images: [IMAGES.nature],
+      images: [IMAGES.wisdomMentoring],
     }),
     section("blog-intro", "intro", 1, {
       body: "<p>Editorial writing for those walking a thoughtful spiritual path.</p>",
@@ -343,7 +334,7 @@ function buildPages(): PageSeedData[] {
     section("media-hero", "hero", 0, {
       heading: "Media",
       body: "<p>Teachings, conversations, and video offerings—coming soon.</p>",
-      images: [IMAGES.teaching],
+      images: [IMAGES.teachingExperience],
     }),
     section("media-feature", "mediaFeature", 1, {
       settings: { contentType: "media", emptyState: true },
@@ -357,7 +348,7 @@ function buildPages(): PageSeedData[] {
     section("shop-hero", "hero", 0, {
       heading: "Shop",
       body: "<p>Digital offerings, courses, and gifts—coming soon.</p>",
-      images: [IMAGES.texture],
+      images: [IMAGES.silkRibbon],
     }),
     section("shop-intro", "intro", 1, {
       body: "<p>This section remains available in admin while hidden from navigation until launch.</p>",
@@ -372,7 +363,7 @@ function buildPages(): PageSeedData[] {
     section("booking-hero", "hero", 0, {
       heading: BOOK_CONSULTATION_LABEL,
       body: "<p>Choose your service, delivery mode, and a time that works in your local time zone.</p>",
-      images: [IMAGES.sacred, IMAGES.session],
+      images: [IMAGES.calendarDesk, IMAGES.session],
     }),
     section("booking-intro", "intro", 1, {
       body: "<p>Available times are shown in your time zone. Confirmation includes both your local time and Rayana's Vancouver time.</p>",
@@ -598,11 +589,11 @@ async function upsertPages(): Promise<void> {
 
 function buildServices() {
   const gallerySet = [
-    IMAGES.portrait1,
-    IMAGES.hands,
-    IMAGES.session,
-    IMAGES.sacred,
-    IMAGES.landscape,
+    IMAGES.privateConsultation,
+    IMAGES.wisdomMentoring,
+    IMAGES.sacredPortal,
+    IMAGES.valueIntegration,
+    IMAGES.teachingsCourses,
   ];
 
   return [
@@ -611,7 +602,7 @@ function buildServices() {
       slug: "private-consultations",
       shortDescription:
         "Clairvoyance and channelled guidance for clarity, insight, personal direction, and the energetic healing beneath the surface.",
-      mainImage: IMAGES.portrait1,
+      mainImage: IMAGES.privateConsultation,
       pricePreview: "CAD 220 · First session CAD 170",
       duration: "60 minutes",
       modes: ["Zoom", "FaceTime", "Email", "Phone", "In person"],
@@ -635,7 +626,7 @@ function buildServices() {
             "CAD 220",
             "Vancouver in person · Video · Phone · Email",
           ],
-          image: IMAGES.portrait1,
+          image: IMAGES.privateConsultation,
         },
         introduction:
           "Centre yourself. Bring your questions. Rayana uses her clairvoyant and channelling abilities to see beneath the surface of your life—relationships, transitions, inner dynamics—and return you to what is true.",
@@ -690,7 +681,7 @@ function buildServices() {
       slug: "wisdom-mentoring",
       shortDescription:
         "Interactive talk sessions for clarification, depth, and greater understanding—especially after a private session.",
-      mainImage: IMAGES.session,
+      mainImage: IMAGES.wisdomMentoring,
       pricePreview: "CAD 170",
       duration: "60 minutes",
       modes: ["Zoom", "FaceTime", "Phone", "In person"],
@@ -706,7 +697,7 @@ function buildServices() {
           subheading: "Integration and practical depth",
           promise: "Explore the nitty gritty, integrate insight, and refine your next steps.",
           chips: ["60 minutes", "CAD 170", "Zoom · FaceTime · Phone · In person"],
-          image: IMAGES.session,
+          image: IMAGES.wisdomMentoring,
         },
         introduction:
           "Wisdom mentoring is an interactive conversation for those who want to go deeper into what emerged in a session—or who need practical clarity about how to move forward.",
@@ -747,7 +738,7 @@ function buildServices() {
       slug: "teachings-courses",
       shortDescription:
         "Live interactive programmes through Zoom while developing your own sixth-sense abilities and discernment.",
-      mainImage: IMAGES.teaching,
+      mainImage: IMAGES.teachingsCourses,
       pricePreview: "From CAD 500",
       duration: "Programme-based",
       modes: ["Zoom"],
@@ -763,7 +754,7 @@ function buildServices() {
           subheading: "Experience the Journey Within",
           promise: "Structured teachings for alignment, energetic literacy, and inner knowing.",
           chips: ["Live on Zoom", "Level 1 & Level 2", "Limited class sizes"],
-          image: IMAGES.teaching,
+          image: IMAGES.teachingsCourses,
         },
         introduction:
           "For those ready to move beyond occasional sessions into structured learning—alignment, chakras, charging energetic systems with intention, and learning to read oneself and others.",
@@ -802,7 +793,7 @@ function buildServices() {
       title: "Workshops & Retreats",
       slug: "workshops-retreats",
       shortDescription: "Immersive transformation experiences—coming soon.",
-      mainImage: IMAGES.workshop,
+      mainImage: IMAGES.workshopsRetreats,
       pricePreview: "TBA",
       duration: "Immersive",
       modes: ["In person"],
@@ -817,7 +808,7 @@ function buildServices() {
           subheading: "Immersive transformation",
           promise: "Deep collective containers for presence, learning, and renewal.",
           chips: ["Coming soon", "Location TBA"],
-          image: IMAGES.workshop,
+          image: IMAGES.workshopsRetreats,
         },
         introduction: "Immersive workshops and retreats are in development. Location and pricing will be announced when ready.",
         audience: "Those drawn to collective deep work in held, beautiful environments.",
@@ -845,7 +836,7 @@ function buildServices() {
       slug: "meditation-group-channel",
       shortDescription:
         "Membership-based group channel for deepening inner awareness and cultivating presence—coming soon.",
-      mainImage: IMAGES.sacred,
+      mainImage: IMAGES.meditationChannel,
       pricePreview: "Coming soon",
       duration: "Ongoing membership",
       modes: ["Online"],
@@ -860,7 +851,7 @@ function buildServices() {
           subheading: "Deepening presence together",
           promise: "A membership space for meditation, practice, and group channel work.",
           chips: ["Coming soon", "Membership"],
-          image: IMAGES.sacred,
+          image: IMAGES.meditationChannel,
         },
         introduction:
           "A Patreon-style membership channel is in development for ongoing meditation practice and group presence.",
@@ -1192,14 +1183,25 @@ async function upsertFaqs(): Promise<void> {
 const GALLERY_SEED_IMAGES = [
   IMAGES.portrait1,
   IMAGES.portrait2,
-  IMAGES.hands,
-  IMAGES.landscape,
-  IMAGES.session,
-  IMAGES.texture,
+  IMAGES.privateConsultation,
+  IMAGES.wisdomMentoring,
+  IMAGES.teachingsCourses,
+  IMAGES.workshopsRetreats,
+  IMAGES.meditationChannel,
+  IMAGES.teachingExperience,
+  IMAGES.journalReflection,
+  IMAGES.meditationCorner,
+  IMAGES.sacredAltar,
+  IMAGES.forestCrossroads,
+  IMAGES.calmLake,
+  IMAGES.heartGlow,
+  IMAGES.silkGradient,
+  IMAGES.silkRibbon,
+  IMAGES.calendarDesk,
+  IMAGES.envelopePen,
   IMAGES.sacred,
-  IMAGES.teaching,
-  IMAGES.workshop,
-  IMAGES.nature,
+  IMAGES.valueCompassion,
+  IMAGES.valueTruth,
 ];
 
 async function upsertGallery(): Promise<void> {
@@ -1217,7 +1219,7 @@ async function upsertGallery(): Promise<void> {
       slug: "sacred-spaces",
       title: "Sacred Spaces",
       description: "Quiet rooms and held environments.",
-      coverImage: IMAGES.sacred,
+      coverImage: IMAGES.sacredAltar,
       displayOrder: 1,
     },
     {
@@ -1238,7 +1240,7 @@ async function upsertGallery(): Promise<void> {
       slug: "journey-nature",
       title: "Journey & Nature",
       description: "Paths, shoreline, and natural light.",
-      coverImage: IMAGES.nature,
+      coverImage: IMAGES.forestPath,
       displayOrder: 4,
     },
   ];
