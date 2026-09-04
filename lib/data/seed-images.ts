@@ -24,12 +24,14 @@ export function seedImage(
 
 export const SEED_IMAGES = {
   portrait1: seedImage(
-    "portrait-1.svg",
-    "Editorial portrait placeholder in warm burgundy tones",
+    "rayana-story.jpg",
+    "Rayana De Silva in reflective portrait",
+    { width: 900, height: 1200 },
   ),
   portrait2: seedImage(
-    "portrait-2.svg",
-    "Secondary portrait composition with golden accent line",
+    "rayana-welcome.jpg",
+    "Rayana De Silva, Master of Heart Matters",
+    { width: 900, height: 1200 },
   ),
   privateConsultation: seedImage(
     "consultation-room.jpg",
