@@ -34,14 +34,18 @@ export default async function ServiceDetailPage({ params }: Props) {
     redirect("/services/private-consultations#wisdom-mentoring");
   }
 
-  const [service, services, testimonials, settings] = await Promise.all([
+  const [service, services, settings] = await Promise.all([
     getPublicService(slug),
     getPublicServices(),
-    getPublicTestimonials({ limit: 1 }),
     getPublicSettings(),
   ]);
 
   if (!service) notFound();
+
+  const testimonialSlug = service.detailPage.selectedTestimonialSlug;
+  const testimonials = testimonialSlug
+    ? await getPublicTestimonials({ slug: testimonialSlug })
+    : await getPublicTestimonials({ limit: 1 });
 
   const companionServices =
     slug === "private-consultations"

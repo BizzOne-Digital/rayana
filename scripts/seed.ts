@@ -6,6 +6,7 @@ import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
 import bcrypt from "bcryptjs";
 import { BOOK_CONSULTATION_LABEL, RAYANA_ABOUT_SECTIONS, RAYANA_HOME_SECTIONS, SPIRITUAL_DISCLAIMER_TEXT } from "@/lib/data/site-copy";
+import { ALL_SHOP_PRODUCTS } from "@/lib/data/shop-catalog";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { connectDB } from "@/lib/db/mongoose-connect";
 import {
@@ -17,6 +18,7 @@ import {
   GalleryImage,
   Page,
   PricingPlan,
+  Product,
   Service,
   SiteSettings,
   Testimonial,
@@ -119,7 +121,12 @@ async function upsertSiteSettings(): Promise<void> {
         whatsApp: "+16047717804",
         location: "Richmond, British Columbia, Canada",
       },
-      social: { facebook: "", instagram: "", youtube: "" },
+      social: {
+        facebook: "https://www.facebook.com/rayanaheartmatters",
+        instagram: "https://www.instagram.com/rayanaheartmatters/",
+        youtube: "https://www.youtube.com/@rayanaheartmatters",
+        linktree: "https://linktr.ee/rayanaheartmatters",
+      },
       header: {
         primaryCtaLabel: BOOK_CONSULTATION_LABEL,
         primaryCtaHref: "/booking",
@@ -154,9 +161,9 @@ async function upsertSiteSettings(): Promise<void> {
         replyTo: "rayanadesilva@heartmatters.com",
       },
       featureFlags: {
-        hideShopInNav: true,
+        hideShopInNav: false,
         hideMediaInNav: true,
-        shopEnabled: false,
+        shopEnabled: true,
         mediaEnabled: false,
       },
       legalNotices: {
@@ -347,11 +354,11 @@ function buildPages(): PageSeedData[] {
   const shopSections: PageSection[] = [
     section("shop-hero", "hero", 0, {
       heading: "Shop",
-      body: "<p>Digital offerings, courses, and gifts—coming soon.</p>",
+      body: "<p>Stand-alone recorded modules to study at your leisure—plus merchandise coming soon.</p>",
       images: [IMAGES.silkRibbon],
     }),
     section("shop-intro", "intro", 1, {
-      body: "<p>This section remains available in admin while hidden from navigation until launch.</p>",
+      body: "<p>Purchase individual chakra modules or explore a free introduction before committing to a live course.</p>",
     }),
     section("shop-contact", "contactPanel", 2, {
       heading: "Contact to purchase",
@@ -607,7 +614,7 @@ function buildServices() {
       duration: "60 minutes",
       modes: ["Zoom", "FaceTime", "Email", "Phone", "In person"],
       status: "active",
-      badge: "Clairvoyant & Channelled",
+      badge: "Clairvoyance and Channelling",
       featured: true,
       displayOrder: 0,
       cardCta: { label: "Learn More", href: "/services/private-consultations" },
@@ -629,7 +636,7 @@ function buildServices() {
           image: IMAGES.privateConsultation,
         },
         introduction:
-          "Centre yourself. Bring your questions. Rayana uses her clairvoyant and channelling abilities to see beneath the surface of your life—relationships, transitions, inner dynamics—and return you to what is true.",
+          "Centre yourself. Bring your questions. Rayana uses her clairvoyant and channelling abilities to see beneath the surface of your life—relationships, transitions, inner dynamics—and return you to what is true, with a dash of lightness and humour.",
         audience:
           "For thoughtful individuals ready to see beneath the surface and receive clear, compassionate guidance.",
         explorationTopics: [
@@ -640,12 +647,12 @@ function buildServices() {
           "Spiritual questions and inner knowing",
         ],
         expectations:
-          "Consultations are direct and compassionate. Rayana sees, feels, and senses what is present—offering clarity without telling you who you should be.",
+          "Consultations are direct, compassionate and playful. Rayana sees, feels, hears and senses what is present—offering clarity and direction.",
         process:
           "We begin by clarifying your questions. Rayana then works clairvoyantly, sharing what emerges and supporting integration before the consultation closes.",
         benefits: [
           "Greater clarity about what is happening",
-          "Deeper understanding of underlying patterns",
+          "Deeper understanding of underlying dynamics",
           "Practical direction for next steps",
           "Energetic support and in-session healing",
         ],
@@ -757,7 +764,7 @@ function buildServices() {
           image: IMAGES.teachingsCourses,
         },
         introduction:
-          "For those ready to move beyond occasional sessions into structured learning—alignment, chakras, charging energetic systems with intention, and learning to read oneself and others.",
+          "Welcome to everyone who has a great desire to be conscious in a compassionate and playful way! For those ready to move beyond occasional sessions into structured learning—alignment, chakras, charging energetic systems with intention, and learning to read oneself and others.",
         audience: "Spiritually curious individuals committed to regular practice and group learning.",
         explorationTopics: [
           "Chakras 1–7 and beyond",
@@ -767,7 +774,8 @@ function buildServices() {
           "Grounded energetic practice",
         ],
         expectations: "Live, interactive classes with practical exercises and individual support within a held group container.",
-        process: "Programmes run over 12 weeks with two-hour weekly sessions and limited class sizes.",
+        process:
+          "Both Level 1 and Level 2 run over 4 weeks with 2.5-hour weekly sessions and limited class sizes.",
         benefits: [
           "Structured energetic education",
           "Safe group container",
@@ -777,6 +785,7 @@ function buildServices() {
         practicalDetails: "See Pricing for Journey Within Level 1 and Level 2 details, prerequisites, and current rates.",
         gallery: [IMAGES.teaching, IMAGES.workshop, IMAGES.sacred, IMAGES.hands, IMAGES.texture],
         faqs: [],
+        selectedTestimonialSlug: "g-kuhlebrock",
         relatedServiceSlugs: ["private-consultations"],
         bookingCta: {
           heading: "Enquire about programmes",
@@ -875,6 +884,98 @@ function buildServices() {
         },
       },
     },
+    {
+      title: "Emergency Reading — 30 Minutes",
+      slug: "emergency-reading-30",
+      shortDescription:
+        "Urgent clairvoyant support when you need insight quickly—offered when Rayana has availability.",
+      mainImage: IMAGES.privateConsultation,
+      pricePreview: "CAD 130",
+      duration: "30 minutes",
+      modes: ["Zoom", "FaceTime", "Phone"],
+      status: "active",
+      badge: "Emergency",
+      featured: false,
+      displayOrder: 5,
+      cardCta: { label: "Book Now", href: "/booking" },
+      bookable: true,
+      standardPrice: 130,
+      detailPage: {
+        hero: {
+          heading: "Emergency Reading",
+          subheading: "30 minutes",
+          promise: "Focused clairvoyant support when timing matters.",
+          chips: ["30 minutes", "CAD 130", "When available"],
+          image: IMAGES.privateConsultation,
+        },
+        introduction:
+          "For moments that cannot wait. Emergency readings are shorter, focused sessions offered when Rayana has availability on her calendar.",
+        audience: "Those needing timely clarity during urgent transitions or decisions.",
+        explorationTopics: ["Urgent crossroads", "Immediate clarity", "Focused guidance"],
+        expectations: "Direct, compassionate and playful. A condensed format for what matters most right now.",
+        process: "Book when available. We clarify your most pressing questions and work clairvoyantly within the session time.",
+        benefits: ["Timely clarity", "Focused direction", "Energetic support"],
+        practicalDetails: "30 minutes. Availability varies—book when slots are open on the calendar.",
+        gallery: gallerySet,
+        faqs: [],
+        relatedServiceSlugs: ["private-consultations"],
+        bookingCta: {
+          heading: "Book an emergency reading",
+          body: "Choose a 30-minute slot when available.",
+          buttonLabel: BOOK_CONSULTATION_LABEL,
+        },
+        seo: {
+          title: "Emergency Reading — 30 Minutes | Rayana De Silva",
+          description: "30-minute emergency clairvoyant reading when available.",
+        },
+      },
+    },
+    {
+      title: "Emergency Reading — 60 Minutes",
+      slug: "emergency-reading-60",
+      shortDescription:
+        "Extended urgent clairvoyant support—offered when Rayana has availability.",
+      mainImage: IMAGES.privateConsultation,
+      pricePreview: "CAD 260",
+      duration: "60 minutes",
+      modes: ["Zoom", "FaceTime", "Phone"],
+      status: "active",
+      badge: "Emergency",
+      featured: false,
+      displayOrder: 6,
+      cardCta: { label: "Book Now", href: "/booking" },
+      bookable: true,
+      standardPrice: 260,
+      detailPage: {
+        hero: {
+          heading: "Emergency Reading",
+          subheading: "60 minutes",
+          promise: "More time for urgent insight and integration.",
+          chips: ["60 minutes", "CAD 260", "When available"],
+          image: IMAGES.privateConsultation,
+        },
+        introduction:
+          "When you need more than a quick check-in. A full emergency session for deeper urgent clarity.",
+        audience: "Those needing extended timely support during significant transitions.",
+        explorationTopics: ["Urgent decisions", "Relationship clarity", "Life direction"],
+        expectations: "Direct, compassionate and playful—with space to go deeper than a 30-minute session.",
+        process: "Book when available. We clarify questions and work clairvoyantly with time for integration.",
+        benefits: ["Deeper urgent clarity", "Practical direction", "Energetic support"],
+        practicalDetails: "60 minutes. Availability varies—book when slots are open on the calendar.",
+        gallery: gallerySet,
+        faqs: [],
+        relatedServiceSlugs: ["private-consultations", "emergency-reading-30"],
+        bookingCta: {
+          heading: "Book an emergency reading",
+          body: "Choose a 60-minute slot when available.",
+          buttonLabel: BOOK_CONSULTATION_LABEL,
+        },
+        seo: {
+          title: "Emergency Reading — 60 Minutes | Rayana De Silva",
+          description: "60-minute emergency clairvoyant reading when available.",
+        },
+      },
+    },
   ];
 }
 
@@ -932,6 +1033,30 @@ function buildPricingPlans() {
       displayOrder: 2,
     },
     {
+      title: "Emergency Reading — 30 Minutes",
+      slug: "emergency-reading-30",
+      description: "Urgent clairvoyant support when available",
+      features: ["30 minutes", "CAD 130", "Book when slots are open"],
+      price: 130,
+      currency: "CAD",
+      ctaLabel: BOOK_CONSULTATION_LABEL,
+      ctaHref: "/booking",
+      relatedServiceSlug: "emergency-reading-30",
+      displayOrder: 3,
+    },
+    {
+      title: "Emergency Reading — 60 Minutes",
+      slug: "emergency-reading-60",
+      description: "Extended urgent clairvoyant support when available",
+      features: ["60 minutes", "CAD 260", "Book when slots are open"],
+      price: 260,
+      currency: "CAD",
+      ctaLabel: BOOK_CONSULTATION_LABEL,
+      ctaHref: "/booking",
+      relatedServiceSlug: "emergency-reading-60",
+      displayOrder: 4,
+    },
+    {
       title: "The Deepening",
       slug: "the-deepening",
       description: "Three months of dedicated evolution",
@@ -950,7 +1075,7 @@ function buildPricingPlans() {
       badge: "Founding client rate available",
       ctaLabel: "Enquire & Book",
       ctaHref: "/contact",
-      displayOrder: 3,
+      displayOrder: 5,
       featured: true,
       image: IMAGES.sacred,
       terms: "Package terms and scheduling details confirmed at booking.",
@@ -958,7 +1083,7 @@ function buildPricingPlans() {
     {
       title: "Experience the Journey Within — Level 1",
       slug: "journey-within-level-1",
-      description: "12 sessions over 12 weeks · 2 hours per week · class size limited to 10",
+      description: "4 weeks · 2.5 hours per week · class size limited to 10",
       features: [
         "Alignment and chakras 1–7",
         "Charging energetic systems with intention",
@@ -972,13 +1097,13 @@ function buildPricingPlans() {
       ctaLabel: "Enquire",
       ctaHref: "/contact",
       relatedServiceSlug: "teachings-courses",
-      displayOrder: 4,
+      displayOrder: 6,
       image: IMAGES.teaching,
     },
     {
       title: "Experience the Journey Within — Level 2",
       slug: "journey-within-level-2",
-      description: "Prerequisite: Level 1 · 12 sessions over 12 weeks · 2 hours per week",
+      description: "4 weeks · 2.5 hours per week · **(Level 1 is a prerequisite)**",
       features: [
         "Continued alignment",
         "Out-of-body chakras 8–12",
@@ -990,7 +1115,7 @@ function buildPricingPlans() {
       ctaLabel: "Enquire",
       ctaHref: "/contact",
       relatedServiceSlug: "teachings-courses",
-      displayOrder: 5,
+      displayOrder: 7,
       image: IMAGES.workshop,
     },
   ];
@@ -1005,6 +1130,32 @@ async function upsertPricingPlans(): Promise<void> {
       setDefaultsOnInsert: true,
     });
     log(`  Plan: ${plan.slug}`);
+  }
+}
+
+async function upsertProducts(): Promise<void> {
+  log("Upserting shop products…");
+  for (const item of ALL_SHOP_PRODUCTS) {
+    await Product.findOneAndUpdate(
+      { slug: item.slug },
+      {
+        name: item.name,
+        slug: item.slug,
+        summary: item.summary,
+        description: item.description,
+        productType: "course",
+        price: item.price,
+        currency: "CAD",
+        stockStatus: "unlimited",
+        visibility: "published",
+        featured: item.featured ?? false,
+        displayOrder: item.displayOrder,
+        gallery: [IMAGES.teachingsCourses],
+        seo: { title: `${item.name} | Shop`, description: item.summary },
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
+    );
+    log(`  Product: ${item.slug}`);
   }
 }
 
@@ -1372,6 +1523,7 @@ async function seed(): Promise<void> {
   await upsertPages();
   await upsertServices();
   await upsertPricingPlans();
+  await upsertProducts();
   await upsertTestimonials();
   await upsertFaqs();
   await upsertGallery();

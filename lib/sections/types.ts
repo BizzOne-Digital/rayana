@@ -108,6 +108,7 @@ export type PublicSettings = {
     facebook: string;
     instagram: string;
     youtube: string;
+    linktree?: string;
   };
   header: {
     primaryCtaLabel: string;

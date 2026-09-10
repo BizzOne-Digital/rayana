@@ -93,9 +93,13 @@ export function ServiceDetailPageView({
             />
           </div>
           <div>
-            <p className="mockup-eyebrow mockup-eyebrow--dark">Private Consultations</p>
+            <p className="mockup-eyebrow mockup-eyebrow--dark">
+              {isConsultationsHub ? "Private Consultations" : service.title}
+            </p>
             <h2 className="mockup-heading mockup-heading--dark mt-3">
-              Clarity, Detail and Specificity for What Matters Most
+              {isConsultationsHub
+                ? "Clarity, Detail and Specificity for What Matters Most"
+                : hero.heading || service.title}
             </h2>
             <RichText
               html={`<p>${service.detailPage.introduction}</p><p>${service.detailPage.audience}</p>`}
@@ -195,6 +199,27 @@ export function ServiceDetailPageView({
                 sizes="(max-width: 1024px) 100vw, 46vw"
                 className="absolute inset-0 h-full w-full"
               />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {isConsultationsHub ? (
+        <section className="mockup-section mockup-section--light text-center">
+          <div className="site-container max-w-2xl">
+            <p className="mockup-eyebrow mockup-eyebrow--dark">Continue Your Path</p>
+            <h2 className="mockup-heading mockup-heading--dark mt-3">Courses & Teachings</h2>
+            <p className="mockup-body mockup-body--dark mx-auto mt-4 max-w-xl">
+              Ready to move beyond sessions into structured learning? Explore live programmes and
+              recorded modules at your own pace.
+            </p>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="/services/teachings-courses" className="btn btn-primary inline-flex">
+                Courses & Teachings
+              </Link>
+              <Link href="/shop" className="mockup-outline-btn mockup-outline-btn--dark inline-flex">
+                Shop Recorded Modules
+              </Link>
             </div>
           </div>
         </section>

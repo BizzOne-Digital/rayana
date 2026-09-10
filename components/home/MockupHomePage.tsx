@@ -8,7 +8,7 @@ import { HeroCinematic } from "@/components/home/HeroCinematic";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { SiteButtons } from "@/components/ui/SiteButton";
-import { BOOK_CONSULTATION_LABEL, RAYANA_BRINGS_ITEMS, RAYANA_OPENING_BODY, RAYANA_STORY_BODY, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
+import { BOOK_CONSULTATION_LABEL, RAYANA_BRINGS_ITEMS, RAYANA_HOME_STORY_BODY, RAYANA_OPENING_BODY, RAYANA_STORY_BODY, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { refreshScrollTriggers } from "@/lib/motion/scroll-trigger";
 import type { SectionContext } from "@/lib/sections/registry";
@@ -154,7 +154,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
             <p className="mockup-eyebrow mockup-eyebrow--dark">{story?.eyebrow ?? "About"}</p>
             <h2 className="mockup-heading mockup-heading--dark">{story?.heading ?? "My Story"}</h2>
             <RichText
-              html={story?.body?.trim() ? story.body : RAYANA_STORY_BODY}
+              html={story?.body?.trim() ? story.body : RAYANA_HOME_STORY_BODY}
               className="mockup-body mockup-body--dark mt-6 space-y-4"
             />
           </div>

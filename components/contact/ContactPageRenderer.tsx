@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { BOOK_CONSULTATION_LABEL } from "@/lib/data/site-copy";
-import { Mail, MapPin, Phone, Sparkles } from "lucide-react";
+import { ExternalLink, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import type { SectionContext } from "@/lib/sections/registry";
 import type { TypedPageSection } from "@/lib/sections/types";
@@ -19,6 +19,8 @@ function findSection(sections: TypedPageSection[], id: string) {
 export function ContactPageRenderer({ sections, context }: ContactPageRendererProps) {
   const hero = findSection(sections, "contact-hero");
   const contact = context?.settings?.contact;
+  const social = context?.settings?.social;
+  const linktree = social?.linktree?.trim();
 
   return (
     <div className="mockup-simple-page">
@@ -89,12 +91,23 @@ export function ContactPageRenderer({ sections, context }: ContactPageRendererPr
             {contact?.responseTimeNote ? (
               <p className="mockup-body mockup-body--dark mt-8 text-sm">{contact.responseTimeNote}</p>
             ) : null}
+            {linktree ? (
+              <a
+                href={linktree}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mockup-outline-btn mockup-outline-btn--dark mt-6 inline-flex items-center gap-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Linktree & Social Media
+              </a>
+            ) : null}
             {contact?.whatsApp ? (
               <a
                 href={`https://wa.me/${contact.whatsApp.replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mockup-outline-btn mockup-outline-btn--dark mt-6 inline-flex"
+                className="mockup-outline-btn mockup-outline-btn--dark mt-4 inline-flex"
               >
                 Message on WhatsApp
               </a>

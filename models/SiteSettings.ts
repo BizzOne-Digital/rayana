@@ -22,6 +22,7 @@ export interface ISiteSettings extends Document {
     facebook: string;
     instagram: string;
     youtube: string;
+    linktree: string;
   };
   header: {
     primaryCtaLabel: string;
@@ -92,6 +93,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       facebook: { type: String, default: "" },
       instagram: { type: String, default: "" },
       youtube: { type: String, default: "" },
+      linktree: { type: String, default: "" },
     },
     header: {
       primaryCtaLabel: { type: String, default: "Book a Session" },

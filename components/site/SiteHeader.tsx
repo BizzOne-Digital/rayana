@@ -17,10 +17,17 @@ const CORE_NAV = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services/private-consultations", label: "Consultations" },
+  { href: "/services/teachings-courses", label: "Courses & Teachings" },
+  { href: "/shop", label: "Shop" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/faqs", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
+
+function isNavActive(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function SiteHeader({ settings }: SiteHeaderProps) {
   const pathname = usePathname();
@@ -63,7 +70,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             aria-label="Primary"
           >
             {CORE_NAV.map((link) => {
-              const active = pathname === link.href;
+              const active = isNavActive(pathname, link.href);
               return (
                 <Link
                   key={link.href}
@@ -109,7 +116,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                   href={link.href}
                   className={cn(
                     "rounded-xl px-4 py-3 text-xs font-medium uppercase tracking-[0.22em] transition-colors",
-                    pathname === link.href
+                    isNavActive(pathname, link.href)
                       ? "bg-[#d4af37]/10 text-[#e8c97a]"
                       : "text-[#d4af37]/85 hover:bg-[#d4af37]/5 hover:text-[#e8c97a]",
                   )}

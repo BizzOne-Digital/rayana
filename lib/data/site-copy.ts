@@ -58,15 +58,17 @@ function section(
   };
 }
 
-export const RAYANA_OPENING_BODY = `<p>This is a story of a woman who spent her life learning how to "see, feel and sense", and eventually realized that her greatest gift is to help others "see, feel and sense" too.</p>
-<p>Rayana helps us see beneath the surface of our lives — to understand the dynamics, truths, and deeper wisdom shaping our experience. In this way, we become able to expand into greater consciousness and sovereignty, to ultimately transform our presence and our life.</p>
-<p>Rayana helps us see what we couldn't previously see about ourselves, about our lives and about what truly matters. She helps transform uncertainty into understanding and wisdom, to be used daily.</p>`;
+export const RAYANA_OPENING_BODY = `<p>This is a story of a woman who came into this life knowing how to "see, hear, feel and sense". She realized, after spending time honing her abilities, that her greatest gift is to help and encourage others to develop their own abilities to "see, feel, hear and sense" too.</p>
+<p>Rayana helps us see beneath the surface of our lives — to understand the dynamics, truths, and deeper wisdom shaping our experience. In this way, we expand into greater consciousness and autonomy, in order to ultimately transform our presence and our life.</p>
+<p>Rayana helps us see what we couldn't previously see about ourselves, about our lives and about what truly matters. She guides us from uncertainty into clarity, deeper understanding and wisdom we can embody in our everyday life.</p>`;
+
+export const RAYANA_HOME_STORY_BODY = `<p>Rayana has spent her life exploring the inner landscape of the human experience…seeking to understand herself, consciousness, love, relationships, suffering and our connection to the spiritual realm. Her journey continues to unfold as she explores the transformation required to move beyond conditioned ways of being and embrace the deeper truth of who we are….the reclamation of our true self.</p>`;
 
 export const RAYANA_STORY_BODY = `<p>Rayana De Silva has spent her life exploring what lies beneath the surface of human experience…seeking to understand consciousness, love, relationships, suffering, transformation and the deeper truth of who we are.</p>
-<p>Through a life marked by profound experiences, questioning, spiritual exploration, and challenges and transformation, she has learned that the answers we seek externally often begin with learning to see ourselves more truthfully.</p>
-<p>Rayana came to understand that our experiences are not merely things that happen to us. They can become mirrors — revealing unconscious patterns, beliefs, wounds, desires, attachments, and places where we have lost connection with our own inner knowing. Our challenges then can become our path to enlightenment.</p>
+<p>Through a life marked by profound experiences, questioning, spiritual exploration, and challenges and transformation, she has learned that the answers we seek often begin with learning to see ourselves more truthfully.</p>
+<p>Rayana came to understand that our experiences are not merely things that happen to us. They can become mirrors — revealing unconscious patterns, beliefs, wounds, desires, attachments, and places where we have lost connection with our own inner knowing. Our challenges then can become our path to self-realization.</p>
 <p>Rayana developed a way of "seeing" that brings together intuition, the wisdom heart, discernment and the lived experience. She learned to look beneath appearances to recognize what is actually happening beneath the story we tell ourselves or the circumstances we are facing.</p>
-<p>Today, she shares that understanding with others. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to "see and feel and sense" deeply so we can recognize what is true, understand what our experience is revealing, and make choices from a place of greater consciousness and sovereignty.</p>
+<p>Today, she shares that understanding with others. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to "see and feel and sense" deeply so we can recognize what is true, understand what this experience is revealing, and make choices from a place of greater consciousness and awareness.</p>
 <p>At the heart of her work is a simple belief: When we learn to see more deeply, we understand ourselves more honestly. When we understand ourselves more honestly, we become free to live more consciously, and create the life we want.</p>
 <p>This, at its heart, is what "A deeper way of seeing what matters" means.</p>
 <p>She offers her expertise with over 30 years of professional and international experience in private practice, and as an educator.</p>`;
@@ -104,7 +106,7 @@ export const RAYANA_HOME_SECTIONS: TypedPageSection[] = [
   section("home-story", "richText", 2, {
     eyebrow: "About",
     heading: "My Story",
-    body: RAYANA_STORY_BODY,
+    body: RAYANA_HOME_STORY_BODY,
     images: [SEED_IMAGES.portrait1],
     themeVariant: "ivory",
     layoutVariant: "mockup",
@@ -308,7 +310,7 @@ export const RAYANA_ABOUT_SECTIONS: TypedPageSection[] = [
       },
       {
         title: "Consciousness",
-        body: "Making choices from a place of greater consciousness, truth, and sovereignty.",
+        body: "Making choices from a place of greater consciousness, truth, and awareness.",
         icon: "orbit",
       },
       {
@@ -322,7 +324,7 @@ export const RAYANA_ABOUT_SECTIONS: TypedPageSection[] = [
   }),
   section("about-teaching", "splitStory", 4, {
     heading: "Over 30 Years of Experience",
-    body: "<p>Rayana offers her expertise with over 30 years of professional and international experience in private practice, and as an educator. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to \"see and feel and sense\" deeply so we can recognize what is true, understand what our experience is revealing, and make choices from a place of greater consciousness and sovereignty.</p>",
+    body: "<p>Rayana offers her expertise with over 30 years of professional and international experience in private practice, and as an educator. Her work is not about telling us who we should be or giving us answers to live by. It is about helping us to \"see and feel and sense\" deeply so we can recognize what is true, understand what our experience is revealing, and make choices from a place of greater consciousness and empowerment.</p>",
     images: [SEED_IMAGES.teachingExperience],
     buttons: [btn("Work With Me", "/services/private-consultations", "secondary")],
     themeVariant: "ivory",

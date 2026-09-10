@@ -74,7 +74,12 @@ export const FALLBACK_SETTINGS: PublicSettings = {
     responseTimeNote:
       "Rayana personally reads every message and responds as thoughtfully as she can within a few business days.",
   },
-  social: { facebook: "", instagram: "", youtube: "" },
+  social: {
+    facebook: "https://www.facebook.com/rayanaheartmatters",
+    instagram: "https://www.instagram.com/rayanaheartmatters/",
+    youtube: "https://www.youtube.com/@rayanaheartmatters",
+    linktree: "https://linktr.ee/rayanaheartmatters",
+  },
   header: {
     primaryCtaLabel: BOOK_CONSULTATION_LABEL,
     primaryCtaHref: "/booking",
@@ -93,9 +98,9 @@ export const FALLBACK_SETTINGS: PublicSettings = {
     defaultOgImage: SEED_IMAGES.portrait1,
   },
   featureFlags: {
-    hideShopInNav: true,
+    hideShopInNav: false,
     hideMediaInNav: true,
-    shopEnabled: false,
+    shopEnabled: true,
     mediaEnabled: false,
   },
   payments: {
@@ -446,6 +451,7 @@ export const FALLBACK_SERVICES: PublicService[] = [
       practicalDetails: "See Pricing for Level 1 and Level 2 details.",
       gallery: [SEED_IMAGES.teaching, SEED_IMAGES.workshop],
       faqs: [],
+      selectedTestimonialSlug: "g-kuhlebrock",
       relatedServiceSlugs: ["private-consultations"],
       bookingCta: {
         heading: "Enquire about programmes",
@@ -778,14 +784,23 @@ export async function getPublicService(slug: string): Promise<PublicService | nu
 export async function getPublicTestimonials(options?: {
   featuredOnly?: boolean;
   limit?: number;
+  slug?: string;
 }): Promise<PublicTestimonial[]> {
-  const { featuredOnly, limit } = options ?? {};
+  const { featuredOnly, limit, slug } = options ?? {};
   let fallback = FALLBACK_TESTIMONIALS;
+  if (slug) {
+    const match = fallback.find((t) => t.slug === slug);
+    return match ? [match] : [];
+  }
   if (featuredOnly) fallback = fallback.filter((t) => t.featured);
   if (limit) fallback = fallback.slice(0, limit);
 
   return withDb(async () => {
     const { Testimonial } = await import("@/models");
+    if (slug) {
+      const doc = await Testimonial.findOne({ slug, status: "approved" }).lean();
+      return doc ? [lean(doc) as PublicTestimonial] : [];
+    }
     const query: Record<string, unknown> = { status: "approved" };
     if (featuredOnly) query.featured = true;
     let q = Testimonial.find(query).sort({ displayOrder: 1 });

@@ -41,6 +41,7 @@ const settingsSchema = z.object({
     facebook: z.string(),
     instagram: z.string(),
     youtube: z.string(),
+    linktree: z.string(),
   }),
   header: z.object({
     primaryCtaLabel: z.string(),
@@ -217,6 +218,9 @@ export default function AdminSettingsPage() {
               </AdminField>
               <AdminField label="YouTube">
                 <AdminInput {...form.register("social.youtube")} />
+              </AdminField>
+              <AdminField label="Linktree">
+                <AdminInput {...form.register("social.linktree")} />
               </AdminField>
             </div>
           </AdminCard>

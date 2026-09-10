@@ -52,8 +52,11 @@ export default async function ProductPage({ params }: Props) {
             <p className="mt-6 font-display text-4xl text-heart-wine">
               {formatCurrency(product.price, product.currency || settings.payments?.defaultCurrency || "CAD")}
             </p>
-            <Link href="/contact" className="btn btn-primary mt-8 inline-flex">
-              Enquire to Purchase
+            <Link
+              href={`/contact?interest=${encodeURIComponent(product.slug)}`}
+              className="btn btn-primary mt-8 inline-flex"
+            >
+              {product.price > 0 ? "Purchase" : "Get Free Sample"}
             </Link>
           </div>
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-soft">

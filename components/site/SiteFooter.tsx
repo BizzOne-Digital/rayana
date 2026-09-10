@@ -45,7 +45,8 @@ const NAV_LINKS = [
 const SERVICE_LINKS = [
   ["/services/private-consultations", "Private Consultations"],
   ["/services/private-consultations#wisdom-mentoring", "Wisdom Mentoring"],
-  ["/services/teachings-courses", "Teachings & Courses"],
+  ["/services/teachings-courses", "Courses & Teachings"],
+  ["/shop", "Shop"],
   ["/services/workshops-retreats", "Workshops & Retreats"],
   ["/pricing", "Pricing"],
   ["/booking", BOOK_CONSULTATION_LABEL],
