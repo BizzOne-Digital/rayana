@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight, Heart, Sparkles, UserRound, Users, Waves } from "lucide-react";
 import { HeroCinematic } from "@/components/home/HeroCinematic";
@@ -315,22 +314,11 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
                   <blockquote className="mockup-testimonial-quote mockup-testimonial-quote--preview">
                     “{item.quote}”
                   </blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3">
-                    <div className="relative h-11 w-11 overflow-hidden rounded-full border border-champagne-gold/30">
-                      <Image
-                        src={SEED_IMAGES.portrait1.url}
-                        alt=""
-                        fill
-                        sizes="44px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm font-medium text-warm-ivory">{item.name}</p>
-                      {item.role ? (
-                        <p className="text-xs text-rose-mist/75">{item.role}</p>
-                      ) : null}
-                    </div>
+                  <figcaption className="mt-6 text-left">
+                    <p className="text-sm font-medium text-warm-ivory">{item.name}</p>
+                    {item.role ? (
+                      <p className="text-xs text-rose-mist/75">{item.role}</p>
+                    ) : null}
                   </figcaption>
                 </figure>
               ))}

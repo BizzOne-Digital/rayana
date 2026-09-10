@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { BOOK_CONSULTATION_LABEL, RAYANA_TESTIMONIALS } from "@/lib/data/site-copy";
-import { SEED_IMAGES } from "@/lib/data/seed-images";
 import type { SectionContext } from "@/lib/sections/registry";
 import type { TypedPageSection } from "@/lib/sections/types";
 
@@ -50,20 +48,9 @@ export function TestimonialsPageRenderer({ sections, context }: TestimonialsPage
                 <blockquote className="mockup-testimonial-quote mockup-testimonial-quote--dark">
                   “{item.quote}”
                 </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <div className="relative h-11 w-11 overflow-hidden rounded-full border border-champagne-gold/25">
-                    <Image
-                      src={SEED_IMAGES.portrait1.url}
-                      alt=""
-                      fill
-                      sizes="44px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-velvet-night">{item.name}</p>
-                    {item.role ? <p className="text-xs text-muted-stone">{item.role}</p> : null}
-                  </div>
+                <figcaption className="mt-6">
+                  <p className="text-sm font-medium text-velvet-night">{item.name}</p>
+                  {item.role ? <p className="text-xs text-muted-stone">{item.role}</p> : null}
                 </figcaption>
               </figure>
             ))}
