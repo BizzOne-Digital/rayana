@@ -88,7 +88,7 @@ export default function AdminDashboardPage() {
 
       {loading ? (
         <CardGridSkeleton count={4} />
-      ) : stats ? (
+      ) : stats?.bookings ? (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <StatCard
@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
             </AdminCard>
           </div>
 
-          <IntegrationHealth items={stats.integrations} />
+          <IntegrationHealth items={stats.integrations ?? []} />
         </div>
       ) : (
         <AdminCard>

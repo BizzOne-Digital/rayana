@@ -10,7 +10,12 @@ export default async function ProtectedAdminLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await auth();
+  let session = null;
+  try {
+    session = await auth();
+  } catch {
+    redirect("/admin/login");
+  }
 
   if (!session?.user) {
     redirect("/admin/login");
