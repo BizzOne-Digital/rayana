@@ -16,16 +16,20 @@ type SiteHeaderProps = {
 const CORE_NAV = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services/private-consultations", label: "Consultations" },
+  { href: "/work-with-me", label: "Work with Me" },
   { href: "/services/teachings-courses", label: "Courses & Teachings" },
-  { href: "/shop", label: "Shop" },
-  { href: "/testimonials", label: "Testimonials" },
-  { href: "/faqs", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
 
 function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
+  if (href === "/work-with-me") {
+    if (pathname === "/work-with-me") return true;
+    if (pathname.startsWith("/services/") && !pathname.startsWith("/services/teachings-courses")) {
+      return true;
+    }
+    return false;
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

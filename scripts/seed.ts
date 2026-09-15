@@ -161,9 +161,9 @@ async function upsertSiteSettings(): Promise<void> {
         replyTo: "rayanadesilva@heartmatters.com",
       },
       featureFlags: {
-        hideShopInNav: false,
+        hideShopInNav: true,
         hideMediaInNav: true,
-        shopEnabled: true,
+        shopEnabled: false,
         mediaEnabled: false,
       },
       legalNotices: {
@@ -627,7 +627,7 @@ function buildServices() {
           heading: "Private Consultations for Deeper Knowing",
           subheading: "Clairvoyant & Channelled",
           promise:
-            "Clarity, detail and specificity for what matters most. See deeply into the unknown. Change how you integrate and resonate.",
+            "Clarity and detail for what matters most. See deeply into the unknown. Change how you integrate and resonate.",
           chips: [
             "60 minutes",
             "CAD 220",
@@ -1193,12 +1193,12 @@ function buildTestimonials() {
       name: "M. Rogers",
       role: "Chief Coaching Officer",
       quote:
-        "Hi Rayana, we spoke on Sunday. Well, you spoke and I listened and learned. OK, I made jokes too! Thank you for your insights and for your intuitive gift. Your connection to the higher truth about my path was heart-warming, validating and, in case you didn't already know, extremely accurate. You helped to add another layer to the picture I am manifesting—or perhaps the picture I am being manifested into. Many thanks. You are a wonderful addition to my world.",
+        "Thank you for your insights and for your intuitive gift. Your connection to the higher truth about my path was heart-warming, validating and, in case you didn't already know, extremely accurate. You helped to add another layer to the picture I am manifesting—or perhaps the picture I am being manifested into. Many thanks. You are a wonderful addition to my world.",
       displayOrder: 3,
     },
     {
       slug: "d-merizzi",
-      name: "Daniel Merizzi",
+      name: "D. Merizzi",
       role: "Senior Business Analyst",
       quote:
         "Rayana offered to help when I was feeling unsure about a direction in my career search. With her natural and easy approach, Rayana shared her intuition with me as it appeared in her mind's eye. I went to the interviews we had discussed with confidence and was truly amazed at how accurate Rayana had been in regard to both the approach to take and the personality types I would experience from the interviewers. Rayana's counsel was specifically accurate, and I recommend her services without hesitation.",
@@ -1214,7 +1214,7 @@ function buildTestimonials() {
     },
     {
       slug: "g-kuhlebrock",
-      name: "Gudrun Kuhlebrock",
+      name: "G. Kuhlebrock",
       role: "Germany",
       quote:
         "I want to thank you for the really good workshop. You are a very good teacher because you lead the group with love and safety, understanding and helping us individually, while at the same time guiding the group so that it remained undisturbed by our individual processes. I was familiar with the material you covered, but you showed me the context in a simple way so that suddenly I understood. With your concept, I am able to use and work with my energy field in a safe way that allows me to feel grounded at the same time.",
@@ -1233,7 +1233,7 @@ function buildTestimonials() {
     ...item,
     excerpt: item.quote.slice(0, 180) + (item.quote.length > 180 ? "…" : ""),
     status: "approved" as const,
-    showFullName: true,
+    showFullName: false,
     displayOrder: item.displayOrder ?? index,
   }));
 }

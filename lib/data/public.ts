@@ -98,9 +98,9 @@ export const FALLBACK_SETTINGS: PublicSettings = {
     defaultOgImage: SEED_IMAGES.portrait1,
   },
   featureFlags: {
-    hideShopInNav: false,
+    hideShopInNav: true,
     hideMediaInNav: true,
-    shopEnabled: true,
+    shopEnabled: false,
     mediaEnabled: false,
   },
   payments: {

@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { BookOpen, ChevronLeft, ChevronRight, Heart, Sparkles, UserRound, Users, Waves } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart as HeartIcon, Sparkles } from "lucide-react";
+import { WorkWithMeHub } from "@/components/services/WorkWithMeHub";
 import { HeroCinematic } from "@/components/home/HeroCinematic";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
@@ -23,14 +24,6 @@ type MockupHomePageProps = {
   sections: TypedPageSection[];
   context?: SectionContext;
 };
-
-const SERVICE_META = [
-  { icon: UserRound, cta: "Learn More" },
-  { icon: BookOpen, cta: "Learn More" },
-  { icon: Waves, cta: "Learn More" },
-  { icon: Users, cta: "Learn More" },
-  { icon: Heart, cta: "Learn More" },
-];
 
 const DEFAULT_TESTIMONIALS: PublicTestimonial[] = RAYANA_TESTIMONIALS;
 
@@ -54,7 +47,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
   const story = findSection(sections, "home-story");
   const brings = findSection(sections, "home-brings");
   const philosophy = findSection(sections, "home-philosophy");
-  const heart = findSection(sections, "home-heart");
+  const heartSection = findSection(sections, "home-heart");
   const method = findSection(sections, "home-method");
   const offerings = findSection(sections, "home-offerings");
   const testimonialsSection = findSection(sections, "home-testimonials");
@@ -176,7 +169,7 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
           <ul className="mt-10 space-y-3 text-left">
             {bringsItems.map((item) => (
               <li key={item.title} className="mockup-check-item justify-start">
-                <Heart className="mockup-check-icon h-4 w-4 shrink-0" />
+                <HeartIcon className="mockup-check-icon h-4 w-4 shrink-0" aria-hidden />
                 <span className="text-rose-mist/92">{item.title}</span>
               </li>
             ))}
@@ -203,13 +196,13 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
       </section>
 
       {/* The Heart Remembers — dark */}
-      <section id={heart?.id ?? "home-heart"} className="mockup-section mockup-section--dark text-center">
+      <section id={heartSection?.id ?? "home-heart"} className="mockup-section mockup-section--dark text-center">
         <div className="site-container max-w-3xl">
-          <h2 className="mockup-heading mt-3">{heart?.heading ?? "The Heart Remembers"}</h2>
+          <h2 className="mockup-heading mt-3">{heartSection?.heading ?? "The Heart Remembers"}</h2>
           <MockupOrnament />
           <RichText
             html={
-              heart?.body ??
+              heartSection?.body ??
               "<p>The heart holds the map.<br/>The spirit knows the way.</p>"
             }
             className="mockup-body mx-auto mt-6 max-w-xl text-lg opacity-92"
@@ -245,39 +238,10 @@ export function MockupHomePage({ sections, context }: MockupHomePageProps) {
           <p className="mockup-eyebrow">{offerings?.eyebrow ?? "Work With Me"}</p>
           <h2 className="mockup-heading mt-3">{offerings?.heading ?? "Ways to Work Together"}</h2>
           <MockupOrnament />
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service: PublicService, index: number) => {
-              const meta = SERVICE_META[index] ?? SERVICE_META[0];
-              const Icon = meta.icon;
-              return (
-                <article key={service.slug} className="mockup-offering-card">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <MediaImage
-                      image={service.mainImage}
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="absolute inset-0 h-full w-full"
-                      imageClassName="transition-transform duration-700 hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-6 text-left md:p-7">
-                    <span className="mockup-offering-icon">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <h3 className="mockup-card-title mt-4">{service.title}</h3>
-                    <p className="mockup-body mt-3 text-sm leading-relaxed opacity-90">
-                      {service.shortDescription}
-                    </p>
-                    <Link
-                      href={service.cardCta.href || `/services/${service.slug}`}
-                      className="mockup-card-link mt-6 inline-flex"
-                    >
-                      {meta.cta} →
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+          <WorkWithMeHub
+            services={services}
+            limit={Number(offerings?.settings?.limit ?? 5)}
+          />
         </div>
       </section>
 

@@ -30,6 +30,7 @@
   --font-body: var(--font-manrope);
 
   --section-py: clamp(4rem, 8vw, 7rem);
+  --site-header-clearance: clamp(4.75rem, 7vw, 6.25rem);
   --section-px: clamp(1.25rem, 4vw, 2.5rem);
   --content-max: 72rem;
   --editorial-max: 42rem;
@@ -269,6 +270,15 @@ svg {
   width: min(calc(100% - var(--section-px) * 2), var(--content-max));
   margin-inline: auto;
   min-width: 0;
+}
+
+/* Fixed header clearance — heroes use this instead of padding on <main>. */
+.site-main--below-header {
+  padding-top: var(--site-header-clearance);
+}
+
+#main-content > div > section.section-padding:first-child {
+  padding-top: calc(var(--site-header-clearance) + var(--section-py));
 }
 
 .section-padding {
@@ -1219,7 +1229,7 @@ svg {
 
 /* ─── Mockup about page ─── */
 .mockup-about-hero {
-  padding-top: clamp(6rem, 10vw, 8rem);
+  padding-top: calc(var(--site-header-clearance) + clamp(1.5rem, 3vw, 2.5rem));
   padding-bottom: clamp(4rem, 8vw, 6rem);
 }
 
@@ -1389,7 +1399,7 @@ svg {
 
 /* ─── Mockup services page ─── */
 .mockup-services-hero {
-  padding-top: clamp(6rem, 10vw, 8rem);
+  padding-top: calc(var(--site-header-clearance) + clamp(1.5rem, 3vw, 2.5rem));
   padding-bottom: clamp(3rem, 6vw, 4.5rem);
   position: relative;
 }
@@ -1651,7 +1661,7 @@ svg {
 }
 
 .mockup-simple-hero {
-  padding-top: clamp(6rem, 10vw, 7.5rem);
+  padding-top: calc(var(--site-header-clearance) + clamp(1.5rem, 3vw, 2.5rem));
   padding-bottom: clamp(3rem, 6vw, 4rem);
 }
 
@@ -1735,7 +1745,7 @@ svg {
   .mockup-about-hero,
   .mockup-services-hero,
   .mockup-simple-hero {
-    padding-top: clamp(5.5rem, 16vw, 6.5rem);
+    padding-top: calc(var(--site-header-clearance) + clamp(1rem, 4vw, 1.75rem));
     padding-bottom: clamp(2.5rem, 8vw, 3.5rem);
   }
 

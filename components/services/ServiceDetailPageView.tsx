@@ -98,7 +98,7 @@ export function ServiceDetailPageView({
             </p>
             <h2 className="mockup-heading mockup-heading--dark mt-3">
               {isConsultationsHub
-                ? "Clarity, Detail and Specificity for What Matters Most"
+                ? "Clarity and Detail for What Matters Most"
                 : hero.heading || service.title}
             </h2>
             <RichText
@@ -210,15 +210,12 @@ export function ServiceDetailPageView({
             <p className="mockup-eyebrow mockup-eyebrow--dark">Continue Your Path</p>
             <h2 className="mockup-heading mockup-heading--dark mt-3">Courses & Teachings</h2>
             <p className="mockup-body mockup-body--dark mx-auto mt-4 max-w-xl">
-              Ready to move beyond sessions into structured learning? Explore live programmes and
-              recorded modules at your own pace.
+              Ready to move beyond sessions into structured learning? Explore live programmes at your
+              own pace.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/services/teachings-courses" className="btn btn-primary inline-flex">
                 Courses & Teachings
-              </Link>
-              <Link href="/shop" className="mockup-outline-btn mockup-outline-btn--dark inline-flex">
-                Shop Recorded Modules
               </Link>
             </div>
           </div>

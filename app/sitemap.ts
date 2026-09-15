@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const staticEntries: MetadataRoute.Sitemap = pages
-    .filter((page) => page.systemKey !== "services")
+    .filter((page) => page.systemKey !== "services" && page.systemKey !== "shop")
     .map((page) => ({
     url: `${base}${page.route}`,
     lastModified: new Date(),

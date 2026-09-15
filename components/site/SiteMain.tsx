@@ -7,28 +7,25 @@ type SiteMainProps = {
   children: React.ReactNode;
 };
 
-/** Pages whose first section is a full-bleed mockup hero under the fixed header. */
-const MOCKUP_HERO_PATHS = new Set([
-  "/",
-  "/about",
-  "/testimonials",
-  "/faqs",
-  "/contact",
+/** Plain legal pages — no dedicated hero; main needs clearance for the fixed header. */
+const LEGAL_PATHS = new Set([
+  "/privacy",
+  "/terms",
+  "/disclaimer",
+  "/cancellation-policy",
 ]);
-
-function hasFullBleedHero(pathname: string): boolean {
-  if (MOCKUP_HERO_PATHS.has(pathname)) return true;
-  return pathname.startsWith("/services/") && pathname.length > "/services/".length;
-}
 
 export function SiteMain({ children }: SiteMainProps) {
   const pathname = usePathname();
-  const hasMockupHero = hasFullBleedHero(pathname);
+  const needsHeaderOffset = LEGAL_PATHS.has(pathname);
 
   return (
     <main
       id="main-content"
-      className={cn("flex-1 min-w-0 w-full max-w-full overflow-x-clip", !hasMockupHero && "pt-24 md:pt-28")}
+      className={cn(
+        "flex-1 min-w-0 w-full max-w-full overflow-x-clip",
+        needsHeaderOffset && "site-main--below-header",
+      )}
     >
       {children}
     </main>
