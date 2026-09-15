@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { resolvePublicImageUrl } from "@/lib/storage/image-url";
 import type { ImageMedia } from "@/models/shared";
 
 type MediaImageProps = {
@@ -23,6 +24,7 @@ export function MediaImage({
   sizes = "(max-width: 768px) 100vw, 50vw",
   aspectClassName,
 }: MediaImageProps) {
+  const src = resolvePublicImageUrl(image.url);
   const focalX = (image.focalPoint?.x ?? 0.5) * 100;
   const focalY = (image.focalPoint?.y ?? 0.5) * 100;
   const objectPosition = `${focalX}% ${focalY}%`;
@@ -31,7 +33,7 @@ export function MediaImage({
     return (
       <div className={cn("relative h-full w-full min-h-full overflow-hidden", aspectClassName, className)}>
         <Image
-          src={image.url}
+          src={src}
           alt={image.decorative ? "" : image.alt || ""}
           fill
           priority={priority}
@@ -50,7 +52,7 @@ export function MediaImage({
 
   return (
     <Image
-      src={image.url}
+      src={src}
       alt={image.decorative ? "" : image.alt || ""}
       width={image.width ?? 1200}
       height={image.height ?? 800}

@@ -18,6 +18,9 @@ export type { IPage } from "./Page";
 export { MediaAsset } from "./MediaAsset";
 export type { IMediaAsset } from "./MediaAsset";
 
+export { StoredUpload } from "./StoredUpload";
+export type { IStoredUpload, StoredUploadFolder } from "./StoredUpload";
+
 export { Service } from "./Service";
 export type { IService } from "./Service";
 

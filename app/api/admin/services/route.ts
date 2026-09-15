@@ -4,6 +4,7 @@ import {
   jsonCreated,
   jsonOk,
   logAudit,
+  paginated,
   parseJsonBody,
   serializeDoc,
   withAdmin,
@@ -15,9 +16,12 @@ import { serviceCreateSchema } from "@/lib/validation/admin";
 export async function GET(request: NextRequest) {
   return withAdmin(request, async () => {
     const services = await listServices();
-    return jsonOk({
-      services: services.map((service) => ({ ...service, id: String(service._id) })),
-    });
+    const items = services.map((service) => ({
+      ...service,
+      _id: String(service._id),
+      id: String(service._id),
+    }));
+    return jsonOk(paginated(items));
   });
 }
 

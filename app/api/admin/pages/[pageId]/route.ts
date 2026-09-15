@@ -49,6 +49,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     });
 
     revalidatePath(page.route);
+    if (page.route === "/" || page.systemKey === "home") {
+      revalidatePath("/", "layout");
+    }
     return jsonOk({ page: serializeDoc(page) });
   });
 }

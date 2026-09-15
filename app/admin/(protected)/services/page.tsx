@@ -6,8 +6,8 @@ import {
   AdminLinkButton,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { AdminServiceSummary, PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchList } from "@/lib/admin/api";
+import type { AdminServiceSummary } from "@/lib/admin/types";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,8 +18,8 @@ export default function AdminServicesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminFetch<PaginatedResponse<AdminServiceSummary>>("/api/admin/services?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<AdminServiceSummary>("/api/admin/services?limit=100")
+      .then((response) => setItems(response))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load services"))
       .finally(() => setLoading(false));
   }, []);

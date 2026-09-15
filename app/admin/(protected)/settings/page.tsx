@@ -12,7 +12,7 @@ import {
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
@@ -96,7 +96,7 @@ export default function AdminSettingsPage() {
   });
 
   useEffect(() => {
-    adminFetch<SettingsForm>("/api/admin/settings")
+    adminFetchResource<SettingsForm>("/api/admin/settings", "settings")
       .then((data) => form.reset(data))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load settings"))
       .finally(() => setLoading(false));

@@ -5,6 +5,7 @@ import {
   jsonCreated,
   jsonOk,
   logAudit,
+  paginated,
   parseJsonBody,
   serializeDoc,
   withAdmin,
@@ -16,9 +17,12 @@ import { pageCreateSchema } from "@/lib/validation/admin";
 export async function GET(request: NextRequest) {
   return withAdmin(request, async () => {
     const pages = await listPages();
-    return jsonOk({
-      pages: pages.map((page) => ({ ...page, id: String(page._id) })),
-    });
+    const items = pages.map((page) => ({
+      ...page,
+      _id: String(page._id),
+      id: String(page._id),
+    }));
+    return jsonOk(paginated(items));
   });
 }
 

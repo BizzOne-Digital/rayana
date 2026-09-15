@@ -22,6 +22,17 @@ export function jsonOk<T>(data: T, init?: ResponseInit): NextResponse {
   return NextResponse.json(data, { status: 200, ...init });
 }
 
+export function paginated<T>(items: T[], page = 1, limit?: number) {
+  const resolvedLimit = limit ?? (items.length || 1);
+  return {
+    items,
+    total: items.length,
+    page,
+    limit: resolvedLimit,
+    totalPages: 1,
+  };
+}
+
 export function jsonCreated<T>(data: T): NextResponse {
   return NextResponse.json(data, { status: 201 });
 }

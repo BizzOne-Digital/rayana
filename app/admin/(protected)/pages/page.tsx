@@ -7,8 +7,8 @@ import {
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
-import { adminFetch } from "@/lib/admin/api";
-import type { AdminPageSummary, PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchList } from "@/lib/admin/api";
+import type { AdminPageSummary } from "@/lib/admin/types";
 import { format } from "date-fns";
 import { ExternalLink, FileText } from "lucide-react";
 import Link from "next/link";
@@ -20,8 +20,8 @@ export default function AdminPagesListPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminFetch<PaginatedResponse<AdminPageSummary>>("/api/admin/pages?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<AdminPageSummary>("/api/admin/pages?limit=100")
+      .then((response) => setItems(response))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load pages"))
       .finally(() => setLoading(false));
   }, []);

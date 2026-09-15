@@ -12,7 +12,7 @@ import {
 import { SectionEditor } from "@/components/admin/SectionEditor";
 import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetchResource } from "@/lib/admin/api";
 import type { AdminPageDetail } from "@/lib/admin/types";
 import { seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,10 +52,10 @@ export default function AdminPageEditorPage() {
   });
 
   useEffect(() => {
-    adminFetch<AdminPageDetail>(`/api/admin/pages/${params.pageId}`)
+    adminFetchResource<AdminPageDetail>(`/api/admin/pages/${params.pageId}`, "page")
       .then((data) => {
         setPage(data);
-        setSections(data.sections);
+        setSections(data.sections ?? []);
         form.reset({
           title: data.title,
           navigationLabel: data.navigationLabel,
@@ -72,14 +72,18 @@ export default function AdminPageEditorPage() {
     setSaving(true);
     try {
       const values = form.getValues();
-      const updated = await adminFetch<AdminPageDetail>(`/api/admin/pages/${params.pageId}`, {
+      const updated = await adminFetchResource<AdminPageDetail>(
+        `/api/admin/pages/${params.pageId}`,
+        "page",
+        {
         method: "PATCH",
         body: JSON.stringify({
           ...values,
           sections,
           status,
         }),
-      });
+        },
+      );
       setPage(updated);
       toast.success(status === "published" ? "Page published" : "Draft saved");
     } catch (error) {
