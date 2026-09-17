@@ -32,6 +32,7 @@ export interface IBooking extends Document {
     stripeSessionId?: string;
     eTransferReference?: string;
     paidAt?: Date;
+    adminNotifiedAt?: Date;
   };
   status:
     | "hold"
@@ -97,6 +98,7 @@ const BookingSchema = new Schema<IBooking>(
       stripeSessionId: { type: String },
       eTransferReference: { type: String },
       paidAt: { type: Date },
+      adminNotifiedAt: { type: Date },
     },
     status: {
       type: String,

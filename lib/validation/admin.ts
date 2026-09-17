@@ -236,6 +236,12 @@ export const bookingAdminUpdateSchema = z.object({
   adminNotes: z.string().max(5000).optional(),
   recordingUrl: z.string().url().or(z.literal("")).optional(),
   cancellationReason: z.string().max(1000).optional(),
+  adminOverride: z.boolean().optional(),
+  payment: z
+    .object({
+      status: z.enum(["pending", "held", "paid", "failed", "refunded", "cancelled"]),
+    })
+    .optional(),
 });
 
 export const auditQuerySchema = z.object({

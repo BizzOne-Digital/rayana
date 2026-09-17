@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       customer_email: booking.client.email,
       client_reference_id: booking.referenceNumber,
       metadata: {
+        purchaseKind: "booking",
         referenceNumber: booking.referenceNumber,
         serviceSlug: booking.serviceSlug,
       },

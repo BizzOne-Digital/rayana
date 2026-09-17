@@ -9,6 +9,7 @@ import {
 import { BookingError, confirmBooking } from "@/lib/booking/service";
 import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email/templates";
+import { notifyAdminOfPaidBooking } from "@/lib/notifications/admin-payment";
 import { bookingConfirmSchema } from "@/lib/validation/admin";
 
 export async function POST(request: NextRequest) {
@@ -44,6 +45,10 @@ export async function POST(request: NextRequest) {
         html: template.html,
         text: template.text,
       });
+
+      if (booking.payment.status === "paid") {
+        await notifyAdminOfPaidBooking(booking.referenceNumber);
+      }
 
       return jsonOk({ booking: serializeDoc(booking) });
     } catch (error) {

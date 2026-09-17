@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { ShopPurchaseButton } from "@/components/shop/ShopPurchaseButton";
 import { MediaImage } from "@/components/site/MediaImage";
 import { RichText } from "@/components/ui/RichText";
 import { shopProductTier } from "@/lib/data/shop-catalog";
@@ -15,10 +16,6 @@ export function ShopProductView({ product, settings }: ShopProductViewProps) {
   const tier = shopProductTier(product.slug);
   const currency = product.currency || settings.payments?.defaultCurrency || "CAD";
   const isFree = product.price === 0;
-  const purchaseHref = isFree
-    ? "/contact"
-    : `/contact?interest=${encodeURIComponent(product.title)}`;
-
   return (
     <article className="mockup-simple-page">
       <section className="mockup-simple-hero mockup-section--dark text-center">
@@ -65,16 +62,13 @@ export function ShopProductView({ product, settings }: ShopProductViewProps) {
             <div className="prose-shop mockup-body mockup-body--dark max-w-none text-base leading-relaxed">
               <RichText html={product.description} />
             </div>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Link href={purchaseHref} className="btn btn-primary inline-flex justify-center">
-                {isFree ? "Get in touch for access" : "Purchase"}
-              </Link>
-              {!isFree ? (
-                <p className="text-sm text-[#4e0505]/70">
-                  Online payment (Stripe) will be wired on your walkthrough—until then, use Purchase
-                  to reach Rayana.
-                </p>
-              ) : null}
+            <div className="mt-10">
+              <ShopPurchaseButton
+                productSlug={product.slug}
+                productTitle={product.title}
+                price={product.price}
+                isFree={isFree}
+              />
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {
   serializeDoc,
   withAdmin,
 } from "@/lib/api/utils";
+import { notifyAdminOfPaidBooking } from "@/lib/notifications/admin-payment";
 import { Booking } from "@/models";
 import { bookingAdminUpdateSchema } from "@/lib/validation/admin";
 
@@ -27,7 +28,23 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     const parsed = await parseJsonBody(request, bookingAdminUpdateSchema);
     if (!parsed.success) return parsed.response;
 
-    const updates: Record<string, unknown> = { ...parsed.data };
+    const updates: Record<string, unknown> = {};
+    if (parsed.data.status !== undefined) updates.status = parsed.data.status;
+    if (parsed.data.adminNotes !== undefined) updates.adminNotes = parsed.data.adminNotes;
+    if (parsed.data.recordingUrl !== undefined) updates.recordingUrl = parsed.data.recordingUrl;
+    if (parsed.data.cancellationReason !== undefined) {
+      updates.cancellationReason = parsed.data.cancellationReason;
+    }
+    if (parsed.data.adminOverride) {
+      updates.status = "confirmed";
+      updates.confirmedAt = new Date();
+    }
+    if (parsed.data.payment?.status === "paid") {
+      updates["payment.status"] = "paid";
+      updates["payment.paidAt"] = new Date();
+      updates.status = "confirmed";
+      updates.confirmedAt = new Date();
+    }
     if (parsed.data.status === "cancelled") {
       updates.cancelledAt = new Date();
     }

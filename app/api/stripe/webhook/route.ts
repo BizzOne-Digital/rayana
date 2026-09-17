@@ -2,6 +2,10 @@ import type { NextRequest } from "next/server";
 import { headers } from "next/headers";
 import { jsonError, jsonOk, logAudit, withPublicHandler } from "@/lib/api/utils";
 import { confirmBooking } from "@/lib/booking/service";
+import {
+  notifyAdminOfPaidBooking,
+  notifyAdminOfShopPurchase,
+} from "@/lib/notifications/admin-payment";
 import { fromStripeAmount, getStripe, isStripeConfigured } from "@/lib/payments/stripe";
 import { AuditLog, Booking } from "@/models";
 
@@ -47,6 +51,8 @@ export async function POST(request: NextRequest) {
         const referenceNumber =
           session.metadata?.referenceNumber ?? session.client_reference_id;
 
+        const productSlug = session.metadata?.productSlug;
+
         if (referenceNumber) {
           const booking = await Booking.findOne({ referenceNumber });
           if (booking) {
@@ -63,6 +69,9 @@ export async function POST(request: NextRequest) {
           } else {
             await confirmBooking(referenceNumber, "stripe");
           }
+          await notifyAdminOfPaidBooking(referenceNumber);
+        } else if (productSlug) {
+          await notifyAdminOfShopPurchase(session, productSlug);
         }
         break;
       }
