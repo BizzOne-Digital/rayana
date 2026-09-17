@@ -161,9 +161,9 @@ async function upsertSiteSettings(): Promise<void> {
         replyTo: "rayanadesilva@heartmatters.com",
       },
       featureFlags: {
-        hideShopInNav: true,
+        hideShopInNav: false,
         hideMediaInNav: true,
-        shopEnabled: false,
+        shopEnabled: true,
         mediaEnabled: false,
       },
       legalNotices: {

@@ -193,10 +193,13 @@ export type PublicProduct = {
   title: string;
   slug: string;
   shortDescription: string;
+  description: string;
   price: number;
   currency: string;
   image?: ImageMedia;
   status: string;
+  displayOrder: number;
+  stripePriceId?: string;
 };
 
 export type PublicMediaPost = {

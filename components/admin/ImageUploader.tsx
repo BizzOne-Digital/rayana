@@ -10,7 +10,7 @@ import { deleteStoredUploadByUrl } from "@/lib/storage/stored-upload-client";
 import type { ImageMedia } from "@/models/shared";
 import { cn } from "@/lib/utils";
 import { ImageIcon, Loader2, Upload, X } from "lucide-react";
-import Image from "next/image";
+import { AdminImagePreview } from "@/components/admin/AdminImagePreview";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -33,6 +33,7 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0);
   const [alt, setAlt] = useState(value?.alt ?? "");
 
   const handleFile = async (file: File) => {
@@ -48,6 +49,7 @@ export function ImageUploader({
         alt: alt || file.name,
         mimeType: file.type,
       });
+      setPreviewKey((key) => key + 1);
       toast.success("Image uploaded");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Upload failed");
@@ -62,12 +64,10 @@ export function ImageUploader({
         {value?.url ? (
           <div className="relative overflow-hidden rounded-xl border border-[var(--admin-border)] bg-[var(--admin-surface)]">
             <div className="relative aspect-[16/10] w-full">
-              <Image
-                src={value.url}
+              <AdminImagePreview
+                src={`${value.url}${value.url.includes("?") ? "&" : "?"}v=${previewKey}`}
                 alt={value.alt || "Uploaded image preview"}
-                fill
-                className="object-cover"
-                unoptimized={value.url.startsWith("/")}
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <button

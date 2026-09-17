@@ -91,11 +91,47 @@ export async function saveStoredUpload(
   };
 }
 
+export function storedUploadDataToBytes(data: unknown): Uint8Array | null {
+  if (data == null) return null;
+  if (Buffer.isBuffer(data)) return new Uint8Array(data);
+  if (data instanceof Uint8Array) return data;
+  if (typeof data === "object") {
+    const record = data as { buffer?: Buffer; data?: number[] };
+    if (record.buffer && Buffer.isBuffer(record.buffer)) {
+      return new Uint8Array(record.buffer);
+    }
+    if (Array.isArray(record.data)) {
+      return Uint8Array.from(record.data);
+    }
+  }
+  return null;
+}
+
 export async function getStoredUpload(folder: StoredUploadFolder, filename: string) {
   await connectDB();
-  const safe = sanitizeUploadFilename(filename);
+  const safe = sanitizeUploadFilename(decodeURIComponent(filename));
   if (!safe) return null;
   return StoredUpload.findOne({ folder, filename: safe }).lean();
+}
+
+export async function getStoredUploadBytes(folder: StoredUploadFolder, filename: string) {
+  await connectDB();
+  const safe = sanitizeUploadFilename(decodeURIComponent(filename));
+  if (!safe) return null;
+
+  const doc = await StoredUpload.findOne({ folder, filename: safe }).select(
+    "mimeType size data",
+  );
+  if (!doc) return null;
+
+  const bytes = storedUploadDataToBytes(doc.data);
+  if (!bytes || bytes.byteLength === 0) return null;
+
+  return {
+    mimeType: doc.mimeType,
+    size: doc.size,
+    bytes,
+  };
 }
 
 export async function deleteStoredUploadByUrl(url: string | undefined | null) {

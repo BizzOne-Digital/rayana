@@ -49,7 +49,7 @@ const DEFAULT_PRINCIPLES: IconListItem[] = [
   },
   {
     title: "Consciousness",
-    body: "Making choices from a place of greater consciousness, truth, and sovereignty.",
+    body: "Making choices from a place of greater consciousness, truth, and awareness.",
     icon: "orbit",
   },
   {

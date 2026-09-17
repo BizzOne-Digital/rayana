@@ -25,6 +25,7 @@ export function MediaImage({
   aspectClassName,
 }: MediaImageProps) {
   const src = resolvePublicImageUrl(image.url);
+  const useUnoptimized = src.startsWith("/api/uploads/");
   const focalX = (image.focalPoint?.x ?? 0.5) * 100;
   const focalY = (image.focalPoint?.y ?? 0.5) * 100;
   const objectPosition = `${focalX}% ${focalY}%`;
@@ -38,6 +39,7 @@ export function MediaImage({
           fill
           priority={priority}
           sizes={sizes}
+          unoptimized={useUnoptimized}
           className={cn("object-cover", imageClassName)}
           style={{ objectPosition }}
         />
@@ -57,6 +59,7 @@ export function MediaImage({
       width={image.width ?? 1200}
       height={image.height ?? 800}
       priority={priority}
+      unoptimized={useUnoptimized}
       className={cn("object-cover", className)}
       style={{ objectPosition }}
     />

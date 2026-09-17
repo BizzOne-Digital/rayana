@@ -4,7 +4,7 @@ import { adminUploadToFolder, type StoredUploadFolder } from "@/lib/admin/api";
 import { deleteStoredUploadByUrl } from "@/lib/storage/stored-upload-client";
 import { cn } from "@/lib/utils";
 import { ImageIcon, Loader2, Upload, X } from "lucide-react";
-import Image from "next/image";
+import { AdminImagePreview } from "@/components/admin/AdminImagePreview";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { AdminButton, AdminField } from "@/components/admin/AdminHeader";
@@ -28,6 +28,7 @@ export function LocalImageField({
 }: LocalImageFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0);
 
   const upload = async (file: File) => {
     setUploading(true);
@@ -37,6 +38,7 @@ export function LocalImageField({
       }
       const result = await adminUploadToFolder(file, folder);
       onChange(result.url);
+      setPreviewKey((key) => key + 1);
       toast.success("Image uploaded");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Upload failed");
@@ -58,12 +60,9 @@ export function LocalImageField({
         {value ? (
           <div className="relative overflow-hidden rounded-xl border border-[var(--admin-border)] bg-[var(--admin-surface)]">
             <div className="relative aspect-[16/10] w-full">
-              <Image
-                src={value}
-                alt=""
-                fill
-                className="object-cover"
-                unoptimized={value.startsWith("/api/uploads/")}
+              <AdminImagePreview
+                src={`${value}${value.includes("?") ? "&" : "?"}v=${previewKey}`}
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <button

@@ -45,7 +45,7 @@ export default function AdminUploadsPage() {
   const remove = async () => {
     if (!deleteId) return;
     try {
-      await adminFetch(`/api/uploads/${deleteId}`, { method: "DELETE" });
+      await adminFetch(`/api/uploads/asset/${deleteId}`, { method: "DELETE" });
       toast.success("Asset deleted");
       setDeleteId(null);
       load(page);

@@ -12,6 +12,7 @@ type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
+/** Legacy disk uploads (MediaAsset) — separate from Mongo `/api/uploads/{folder}/{filename}`. */
 export async function DELETE(request: NextRequest, context: RouteContext) {
   return withAdmin(request, async (session) => {
     const { id } = await context.params;

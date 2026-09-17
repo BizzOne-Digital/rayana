@@ -1,5 +1,9 @@
 import type { NextRequest } from "next/server";
-import { getStoredUpload, isStoredUploadFolder, sanitizeUploadFilename } from "@/lib/storage/stored-upload";
+import {
+  getStoredUploadBytes,
+  isStoredUploadFolder,
+  sanitizeUploadFilename,
+} from "@/lib/storage/stored-upload";
 
 export const runtime = "nodejs";
 
@@ -12,24 +16,21 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     return new Response("Not found", { status: 404 });
   }
 
-  const safeName = sanitizeUploadFilename(filename);
+  const safeName = sanitizeUploadFilename(decodeURIComponent(filename));
   if (!safeName) {
     return new Response("Invalid filename", { status: 400 });
   }
 
-  const doc = await getStoredUpload(folder, safeName);
-  if (!doc?.data) {
+  const file = await getStoredUploadBytes(folder, safeName);
+  if (!file) {
     return new Response("Not found", { status: 404 });
   }
 
-  const raw = doc.data as Buffer | { type: string; data: number[] };
-  const bytes = Buffer.isBuffer(raw) ? new Uint8Array(raw) : Uint8Array.from(raw.data);
-
-  return new Response(bytes, {
+  return new Response(Buffer.from(file.bytes), {
     status: 200,
     headers: {
-      "Content-Type": doc.mimeType,
-      "Content-Length": String(doc.size),
+      "Content-Type": file.mimeType,
+      "Content-Length": String(file.size),
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });

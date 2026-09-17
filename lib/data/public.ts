@@ -98,9 +98,9 @@ export const FALLBACK_SETTINGS: PublicSettings = {
     defaultOgImage: SEED_IMAGES.portrait1,
   },
   featureFlags: {
-    hideShopInNav: true,
+    hideShopInNav: false,
     hideMediaInNav: true,
-    shopEnabled: false,
+    shopEnabled: true,
     mediaEnabled: false,
   },
   payments: {
@@ -725,10 +725,13 @@ function mapProduct(doc: unknown): PublicProduct {
     title: String(item.name ?? item.title ?? ""),
     slug: String(item.slug ?? ""),
     shortDescription: String(item.summary ?? item.shortDescription ?? ""),
+    description: String(item.description ?? ""),
     price: Number(item.price ?? 0),
     currency: String(item.currency ?? "CAD"),
     image: gallery?.[0],
     status: String(item.visibility ?? item.status ?? "published"),
+    displayOrder: Number(item.displayOrder ?? 0),
+    stripePriceId: item.stripePriceId ? String(item.stripePriceId) : undefined,
   };
 }
 

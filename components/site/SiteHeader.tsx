@@ -13,13 +13,23 @@ type SiteHeaderProps = {
   settings: PublicSettings;
 };
 
-const CORE_NAV = [
+type NavLink = { href: string; label: string };
+
+const CORE_NAV_BASE: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/work-with-me", label: "Work with Me" },
   { href: "/services/teachings-courses", label: "Courses & Teachings" },
-  { href: "/contact", label: "Contact" },
 ];
+
+function buildCoreNav(settings: PublicSettings): NavLink[] {
+  const links: NavLink[] = [...CORE_NAV_BASE];
+  if (settings.featureFlags.shopEnabled && !settings.featureFlags.hideShopInNav) {
+    links.push({ href: "/shop", label: "Shop" });
+  }
+  links.push({ href: "/contact", label: "Contact" });
+  return links;
+}
 
 function isNavActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -29,6 +39,9 @@ function isNavActive(pathname: string, href: string) {
       return true;
     }
     return false;
+  }
+  if (href === "/shop") {
+    return pathname === "/shop" || pathname.startsWith("/shop/");
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -44,6 +57,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
 
   const ctaLabel = settings.header.primaryCtaLabel || BOOK_CONSULTATION_LABEL;
   const ctaHref = settings.header.primaryCtaHref || "/booking";
+  const coreNav = buildCoreNav(settings);
 
   return (
     <header
@@ -73,7 +87,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-10"
             aria-label="Primary"
           >
-            {CORE_NAV.map((link) => {
+            {coreNav.map((link) => {
               const active = isNavActive(pathname, link.href);
               return (
                 <Link
@@ -114,7 +128,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             data-lenis-prevent
           >
             <nav className="flex flex-col gap-0.5 p-3" aria-label="Mobile">
-              {CORE_NAV.map((link) => (
+              {coreNav.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
