@@ -7,8 +7,7 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchList } from "@/lib/admin/api";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -28,8 +27,8 @@ export default function AdminFaqsPage() {
 
   const load = () => {
     setLoading(true);
-    adminFetch<PaginatedResponse<FaqRow>>("/api/admin/faqs?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<FaqRow>("/api/admin/faqs?limit=100")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load FAQs"))
       .finally(() => setLoading(false));
   };

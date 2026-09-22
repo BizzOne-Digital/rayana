@@ -11,6 +11,9 @@ import { buildSectionContext } from "@/lib/data/page-context";
 import { getPublicSettings } from "@/lib/data/public";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+/** CMS-driven pages: always read latest MongoDB content (admin saves / publish). */
+export const dynamic = "force-dynamic";
+
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],

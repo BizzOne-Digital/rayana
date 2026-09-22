@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePricingPaths } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -42,7 +42,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/pricing");
+    revalidatePricingPaths();
     return jsonOk({ plan: serializeDoc(plan) });
   });
 }
@@ -63,7 +63,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/pricing");
+    revalidatePricingPaths();
     return jsonOk({ deleted: true, id });
   });
 }

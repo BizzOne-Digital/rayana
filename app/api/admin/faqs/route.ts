@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateContentPaths } from "@/lib/cache/revalidate-public";
 import {
   jsonCreated,
   jsonOk,
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       request,
     });
 
-    revalidatePath("/faqs");
+    revalidateContentPaths();
     return jsonCreated({ faq: serializeDoc(faq) });
   });
 }

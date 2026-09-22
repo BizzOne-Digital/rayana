@@ -6,8 +6,7 @@ import {
   AdminLinkButton,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchList } from "@/lib/admin/api";
 import { formatCurrency } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -30,8 +29,8 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminFetch<PaginatedResponse<ProductRow>>("/api/admin/products?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<ProductRow>("/api/admin/products?limit=100")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load products"))
       .finally(() => setLoading(false));
   }, []);

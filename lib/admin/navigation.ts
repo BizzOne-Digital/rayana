@@ -1,20 +1,15 @@
 import {
-  BookOpen,
-  CalendarDays,
   CreditCard,
   FileText,
   HelpCircle,
-  ImageIcon,
   LayoutDashboard,
-  Layers,
   MessageSquare,
   Package,
   Settings,
   Sparkles,
+  ShoppingBag,
   Star,
-  Upload,
   User,
-  Video,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,15 +25,16 @@ export const adminNavItems: AdminNavItem[] = [
   { label: "Pages", href: "/admin/pages", icon: FileText },
   { label: "Services", href: "/admin/services", icon: Sparkles },
   { label: "Pricing", href: "/admin/pricing", icon: CreditCard },
-  { label: "Bookings", href: "/admin/bookings", icon: CalendarDays },
-  { label: "Blog", href: "/admin/blog", icon: BookOpen },
-  { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+  {
+    label: "Shop modules",
+    href: "/admin/shop",
+    icon: ShoppingBag,
+    description: "Edit chakra module descriptions for the shop",
+  },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-  { label: "Media", href: "/admin/media", icon: Video },
   { label: "Products", href: "/admin/products", icon: Package },
   { label: "Submissions", href: "/admin/submissions", icon: MessageSquare },
-  { label: "Uploads", href: "/admin/uploads", icon: Upload },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

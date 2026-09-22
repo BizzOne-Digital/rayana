@@ -6,8 +6,7 @@ import {
   AdminLinkButton,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchList } from "@/lib/admin/api";
 import { format } from "date-fns";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -28,8 +27,8 @@ export default function AdminBlogPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminFetch<PaginatedResponse<BlogRow>>("/api/admin/blog?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<BlogRow>("/api/admin/blog?limit=100")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load blog posts"))
       .finally(() => setLoading(false));
   }, []);

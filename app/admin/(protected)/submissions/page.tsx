@@ -7,8 +7,7 @@ import {
   AdminTabs,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchList } from "@/lib/admin/api";
 import { format } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -41,12 +40,12 @@ export default function AdminSubmissionsPage() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      adminFetch<PaginatedResponse<ContactRow>>("/api/admin/submissions/contact?limit=100"),
-      adminFetch<PaginatedResponse<ReviewRow>>("/api/admin/submissions/reviews?limit=100"),
+      adminFetchList<ContactRow>("/api/admin/submissions/contact?limit=100"),
+      adminFetchList<ReviewRow>("/api/admin/submissions/reviews?limit=100"),
     ])
-      .then(([contactData, reviewData]) => {
-        setContacts(contactData.items);
-        setReviews(reviewData.items);
+      .then(([contactRows, reviewRows]) => {
+        setContacts(contactRows);
+        setReviews(reviewRows);
       })
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load submissions"))
       .finally(() => setLoading(false));

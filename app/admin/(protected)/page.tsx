@@ -78,10 +78,10 @@ export default function AdminDashboardPage() {
         description="Overview of bookings, content, and site health."
         actions={
           <>
-            <AdminLinkButton href="/admin/bookings" variant="secondary">
-              View bookings
-            </AdminLinkButton>
             <AdminLinkButton href="/admin/pages">Edit pages</AdminLinkButton>
+            <AdminLinkButton href="/admin/shop" variant="secondary">
+              Shop modules
+            </AdminLinkButton>
           </>
         }
       />

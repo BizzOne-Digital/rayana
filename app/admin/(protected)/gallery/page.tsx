@@ -6,8 +6,7 @@ import {
   AdminLinkButton,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchList } from "@/lib/admin/api";
 import { ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -26,8 +25,8 @@ export default function AdminGalleryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminFetch<PaginatedResponse<GalleryCategoryRow>>("/api/admin/gallery/categories?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<GalleryCategoryRow>("/api/admin/gallery/categories?limit=100")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load gallery"))
       .finally(() => setLoading(false));
   }, []);

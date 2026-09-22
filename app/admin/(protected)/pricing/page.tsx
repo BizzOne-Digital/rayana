@@ -8,11 +8,9 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchList } from "@/lib/admin/api";
 import { formatCurrency } from "@/lib/utils";
 import { Plus } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -33,8 +31,8 @@ export default function AdminPricingPage() {
 
   const load = () => {
     setLoading(true);
-    adminFetch<PaginatedResponse<PricingRow>>("/api/admin/pricing?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<PricingRow>("/api/admin/pricing")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load pricing"))
       .finally(() => setLoading(false));
   };
@@ -87,7 +85,7 @@ export default function AdminPricingPage() {
             header: "Status",
             render: (row) => (
               <AdminBadge tone={row.availability === "active" ? "success" : "warning"}>
-                {row.availability.replace("_", " ")}
+                {(row.availability ?? "unknown").replace("_", " ")}
               </AdminBadge>
             ),
           },

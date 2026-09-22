@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateShopPaths } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -28,6 +28,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     const parsed = await parseJsonBody(request, productUpdateSchema);
     if (!parsed.success) return parsed.response;
 
+    const previous = await Product.findById(productId).select("slug").lean();
     const product = await Product.findByIdAndUpdate(
       productId,
       { $set: parsed.data },
@@ -46,7 +47,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/shop");
+    revalidateShopPaths(product.slug);
+    if (previous?.slug && previous.slug !== product.slug) {
+      revalidateShopPaths(previous.slug);
+    }
     return jsonOk({ product: serializeDoc(product) });
   });
 }
@@ -67,7 +71,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/shop");
+    revalidateShopPaths(product.slug);
     return jsonOk({ deleted: true, id: productId });
   });
 }

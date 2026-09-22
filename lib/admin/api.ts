@@ -74,16 +74,40 @@ export async function adminFetchList<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T[]> {
+  const page = await adminFetchPaginated<T>(path, options);
+  return page.items;
+}
+
+/** List endpoints may return `items` or a named array (`plans`, `products`, etc.). */
+export async function adminFetchPaginated<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<{
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}> {
   const payload = await adminFetch<Record<string, unknown>>(path, options);
+  let items: T[] = [];
   if (Array.isArray(payload.items)) {
-    return payload.items as T[];
-  }
-  for (const key of LIST_KEYS) {
-    if (Array.isArray(payload[key])) {
-      return payload[key] as T[];
+    items = payload.items as T[];
+  } else {
+    for (const key of LIST_KEYS) {
+      if (Array.isArray(payload[key])) {
+        items = payload[key] as T[];
+        break;
+      }
     }
   }
-  return [];
+
+  const total = Number(payload.total ?? items.length);
+  const page = Number(payload.page ?? 1);
+  const limit = Number(payload.limit ?? (items.length || 1));
+  const totalPages = Number(payload.totalPages ?? Math.max(1, Math.ceil(total / limit)));
+
+  return { items, total, page, limit, totalPages };
 }
 
 export type StoredUploadFolder = "products" | "gallery" | "pages" | "misc";

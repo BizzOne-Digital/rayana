@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateContentPaths } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -46,7 +46,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/testimonials");
+    revalidateContentPaths();
     return jsonOk({ testimonial: serializeDoc(testimonial) });
   });
 }
@@ -67,7 +67,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/testimonials");
+    revalidateContentPaths();
     return jsonOk({ deleted: true, id });
   });
 }

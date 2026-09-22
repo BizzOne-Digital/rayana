@@ -10,7 +10,7 @@ import {
   AdminTextarea,
 } from "@/components/admin/AdminHeader";
 import { ImageUploader } from "@/components/admin/ImageUploader";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
 import { imageMediaSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,12 +53,16 @@ export default function NewServicePage() {
 
   const onSubmit = form.handleSubmit(async (values) => {
     try {
-      const created = await adminFetch<{ _id: string }>("/api/admin/services", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      const created = await adminFetchResource<{ _id?: string; id?: string }>(
+        "/api/admin/services",
+        "service",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+        },
+      );
       toast.success("Service created");
-      router.push(`/admin/services/${created._id}`);
+      router.push(`/admin/services/${created._id ?? created.id}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create service");
     }

@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateServicePaths } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -29,6 +29,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     const parsed = await parseJsonBody(request, serviceUpdateSchema);
     if (!parsed.success) return parsed.response;
 
+    const previous = await Service.findById(serviceId).select("slug").lean();
     const service = await Service.findByIdAndUpdate(
       serviceId,
       { $set: parsed.data },
@@ -48,9 +49,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/services");
-    revalidatePath(`/services/${service.slug}`);
-    revalidatePath("/booking");
+    revalidateServicePaths(service.slug, previous?.slug);
 
     return jsonOk({ service: serializeDoc(service) });
   });
@@ -72,7 +71,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath("/services");
+    revalidateServicePaths(service.slug);
     return jsonOk({ deleted: true, id: serviceId });
   });
 }

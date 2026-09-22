@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateShopPaths, revalidateSiteLayout } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -38,7 +38,8 @@ export async function PATCH(request: NextRequest) {
       request,
     });
 
-    revalidatePath("/", "layout");
+    revalidateSiteLayout();
+    revalidateShopPaths();
     return jsonOk({ settings: serializeDoc(settings as never) });
   });
 }

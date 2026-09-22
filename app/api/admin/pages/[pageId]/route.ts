@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePublicPage } from "@/lib/cache/revalidate-public";
 import {
   jsonError,
   jsonOk,
@@ -48,10 +48,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath(page.route);
-    if (page.route === "/" || page.systemKey === "home") {
-      revalidatePath("/", "layout");
-    }
+    revalidatePublicPage(page.route, page.systemKey);
     return jsonOk({ page: serializeDoc(page) });
   });
 }
@@ -72,7 +69,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       request,
     });
 
-    revalidatePath(page.route);
+    revalidatePublicPage(page.route, page.systemKey);
     return jsonOk({ deleted: true, id: pageId });
   });
 }

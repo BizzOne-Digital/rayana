@@ -7,8 +7,8 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { AdminBookingRow, PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchPaginated } from "@/lib/admin/api";
+import type { AdminBookingRow } from "@/lib/admin/types";
 import { formatCurrency } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ export default function AdminBookingsPage() {
 
   const load = (nextPage = page) => {
     setLoading(true);
-    adminFetch<PaginatedResponse<AdminBookingRow>>(`/api/admin/bookings?page=${nextPage}&limit=20`)
+    adminFetchPaginated<AdminBookingRow>(`/api/admin/bookings?page=${nextPage}&limit=20`)
       .then((response) => {
         setItems(response.items);
         setTotalPages(response.totalPages);

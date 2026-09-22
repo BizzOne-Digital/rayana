@@ -32,6 +32,7 @@ export function DataTable<T>({
   onPageChange,
   isLoading,
 }: DataTableProps<T>) {
+  const rows = data ?? [];
   return (
     <div className="overflow-hidden rounded-xl border border-[var(--admin-border)] bg-white">
       <div className="overflow-x-auto">
@@ -63,7 +64,7 @@ export function DataTable<T>({
                   ))}
                 </tr>
               ))
-            ) : data.length === 0 ? (
+            ) : rows.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
@@ -73,7 +74,7 @@ export function DataTable<T>({
                 </td>
               </tr>
             ) : (
-              data.map((row) => (
+              rows.map((row) => (
                 <tr
                   key={keyExtractor(row)}
                   className="transition-colors hover:bg-[var(--admin-surface)]/60"

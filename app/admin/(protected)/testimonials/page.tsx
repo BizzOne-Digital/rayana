@@ -7,8 +7,7 @@ import {
   AdminTabs,
 } from "@/components/admin/AdminHeader";
 import { DataTable } from "@/components/admin/DataTable";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchList } from "@/lib/admin/api";
 import { format } from "date-fns";
 import { Check, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -30,8 +29,8 @@ export default function AdminTestimonialsPage() {
 
   const load = () => {
     setLoading(true);
-    adminFetch<PaginatedResponse<TestimonialRow>>("/api/admin/testimonials?limit=100")
-      .then((response) => setItems(response.items))
+    adminFetchList<TestimonialRow>("/api/admin/testimonials?limit=100")
+      .then((rows) => setItems(rows))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load testimonials"))
       .finally(() => setLoading(false));
   };

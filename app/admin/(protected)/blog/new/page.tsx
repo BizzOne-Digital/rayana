@@ -11,7 +11,7 @@ import {
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { SeoFields } from "@/components/admin/SeoFields";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
 import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,12 +52,16 @@ export default function NewBlogPostPage() {
 
   const onSubmit = form.handleSubmit(async (values) => {
     try {
-      const created = await adminFetch<{ _id: string }>("/api/admin/blog", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      const created = await adminFetchResource<{ _id?: string; id?: string }>(
+        "/api/admin/blog",
+        "post",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+        },
+      );
       toast.success("Blog post created");
-      router.push(`/admin/blog/${created._id}`);
+      router.push(`/admin/blog/${created._id ?? created.id}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create post");
     }

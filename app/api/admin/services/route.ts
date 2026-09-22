@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateServicePaths } from "@/lib/cache/revalidate-public";
 import {
   jsonCreated,
   jsonOk,
@@ -45,8 +45,7 @@ export async function POST(request: NextRequest) {
       request,
     });
 
-    revalidatePath("/services");
-    revalidatePath(`/services/${service.slug}`);
+    revalidateServicePaths(service.slug);
 
     return jsonCreated({ service: serializeDoc(service) });
   });

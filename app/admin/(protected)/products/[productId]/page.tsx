@@ -13,12 +13,12 @@ import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
 import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -45,6 +45,8 @@ type ProductForm = z.infer<typeof productSchema>;
 export default function AdminProductEditorPage() {
   const params = useParams<{ productId: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromShop = searchParams.get("from") === "shop";
   const isNew = params.productId === "new";
   const [loading, setLoading] = useState(!isNew);
   const form = useForm<ProductForm>({
@@ -67,7 +69,7 @@ export default function AdminProductEditorPage() {
 
   useEffect(() => {
     if (isNew) return;
-    adminFetch<ProductForm>(`/api/admin/products/${params.productId}`)
+    adminFetchResource<ProductForm>(`/api/admin/products/${params.productId}`, "product")
       .then((data) => form.reset(data))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load product"))
       .finally(() => setLoading(false));
@@ -76,12 +78,16 @@ export default function AdminProductEditorPage() {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       if (isNew) {
-        const created = await adminFetch<{ _id: string }>("/api/admin/products", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
+        const created = await adminFetchResource<{ _id?: string; id?: string }>(
+          "/api/admin/products",
+          "product",
+          {
+            method: "POST",
+            body: JSON.stringify(values),
+          },
+        );
         toast.success("Product created");
-        router.push(`/admin/products/${created._id}`);
+        router.push(`/admin/products/${created._id ?? created.id}`);
         return;
       }
       await adminFetch(`/api/admin/products/${params.productId}`, {
@@ -100,10 +106,17 @@ export default function AdminProductEditorPage() {
     <>
       <AdminHeader
         title={isNew ? "New product" : form.watch("name") || "Edit product"}
-        breadcrumbs={[
-          { label: "Products", href: "/admin/products" },
-          { label: isNew ? "New" : form.watch("name") || "Edit" },
-        ]}
+        breadcrumbs={
+          fromShop
+            ? [
+                { label: "Shop modules", href: "/admin/shop" },
+                { label: isNew ? "New" : form.watch("name") || "Edit" },
+              ]
+            : [
+                { label: "Products", href: "/admin/products" },
+                { label: isNew ? "New" : form.watch("name") || "Edit" },
+              ]
+        }
         actions={
           <AdminButton onClick={onSubmit} disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? (

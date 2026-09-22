@@ -13,8 +13,7 @@ import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { DataTable } from "@/components/admin/DataTable";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
-import { adminFetch } from "@/lib/admin/api";
-import type { PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchList, adminFetchResource } from "@/lib/admin/api";
 import { Loader2, Save, Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -48,14 +47,17 @@ export default function AdminGalleryCategoryPage() {
   const load = () => {
     setLoading(true);
     Promise.all([
-      adminFetch<CategoryDetail>(`/api/admin/gallery/categories/${params.categoryId}`),
-      adminFetch<PaginatedResponse<GalleryImageRow>>(
+      adminFetchResource<CategoryDetail>(
+        `/api/admin/gallery/categories/${params.categoryId}`,
+        "category",
+      ),
+      adminFetchList<GalleryImageRow>(
         `/api/admin/gallery/images?categoryId=${params.categoryId}&limit=100`,
       ),
     ])
-      .then(([categoryData, imageData]) => {
+      .then(([categoryData, imageRows]) => {
         setCategory(categoryData);
-        setImages(imageData.items);
+        setImages(imageRows);
       })
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load gallery"))
       .finally(() => setLoading(false));
@@ -67,8 +69,9 @@ export default function AdminGalleryCategoryPage() {
     if (!category) return;
     setSaving(true);
     try {
-      const updated = await adminFetch<CategoryDetail>(
+      const updated = await adminFetchResource<CategoryDetail>(
         `/api/admin/gallery/categories/${params.categoryId}`,
+        "category",
         {
           method: "PATCH",
           body: JSON.stringify(category),

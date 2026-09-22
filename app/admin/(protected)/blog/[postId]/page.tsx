@@ -12,7 +12,7 @@ import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
@@ -42,7 +42,7 @@ export default function EditBlogPostPage() {
   const form = useForm<BlogForm>({ resolver: zodResolver(blogSchema) });
 
   useEffect(() => {
-    adminFetch<BlogForm>(`/api/admin/blog/${params.postId}`)
+    adminFetchResource<BlogForm>(`/api/admin/blog/${params.postId}`, "post")
       .then((data) => form.reset(data))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load post"))
       .finally(() => setLoading(false));

@@ -8,8 +8,8 @@ import {
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { ImageUploader } from "@/components/admin/ImageUploader";
-import { adminFetch } from "@/lib/admin/api";
-import type { MediaAssetRow, PaginatedResponse } from "@/lib/admin/types";
+import { adminFetch, adminFetchPaginated } from "@/lib/admin/api";
+import type { MediaAssetRow } from "@/lib/admin/types";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Grid3X3, List, Trash2, Upload } from "lucide-react";
@@ -27,7 +27,7 @@ export default function AdminUploadsPage() {
 
   const load = (nextPage = page) => {
     setLoading(true);
-    adminFetch<PaginatedResponse<MediaAssetRow>>(`/api/admin/uploads?page=${nextPage}&limit=24`)
+    adminFetchPaginated<MediaAssetRow>(`/api/admin/uploads?page=${nextPage}&limit=24`)
       .then((response) => {
         setItems(response.items);
         setPage(response.page);

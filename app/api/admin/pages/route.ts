@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePublicPage } from "@/lib/cache/revalidate-public";
 import {
   createOne,
   jsonCreated,
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (page.status === "published") {
-      revalidatePath(page.route);
+      revalidatePublicPage(page.route, page.systemKey);
     }
 
     return jsonCreated({ page: serializeDoc(page) });

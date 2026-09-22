@@ -2,8 +2,8 @@
 
 import { AdminButton } from "@/components/admin/AdminHeader";
 import { EmptyState } from "@/components/admin/EmptyState";
-import { adminFetch } from "@/lib/admin/api";
-import type { MediaAssetRow, PaginatedResponse } from "@/lib/admin/types";
+import { adminFetchPaginated } from "@/lib/admin/api";
+import type { MediaAssetRow } from "@/lib/admin/types";
 import type { ImageMedia } from "@/models/shared";
 import { cn } from "@/lib/utils";
 import { Check, Search, X } from "lucide-react";
@@ -32,7 +32,7 @@ export function MediaPicker({
   useEffect(() => {
     if (!open) return;
     setLoading(true);
-    adminFetch<PaginatedResponse<MediaAssetRow>>(
+    adminFetchPaginated<MediaAssetRow>(
       `/api/admin/uploads?page=1&limit=24${query ? `&q=${encodeURIComponent(query)}` : ""}`,
     )
       .then((response) => setItems(response.items))
