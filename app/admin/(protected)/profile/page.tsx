@@ -21,19 +21,40 @@ import { z } from "zod";
 
 const profileSchema = z
   .object({
-    name: z.string().min(1),
+    name: z.string().trim().min(1, "Name is required").max(120),
     email: emailSchema,
     currentPassword: z.string().optional(),
-    newPassword: z.string().min(8).optional().or(z.literal("")),
+    newPassword: z.string().optional(),
     confirmPassword: z.string().optional(),
   })
-  .refine(
-    (data) => {
-      if (!data.newPassword) return true;
-      return data.newPassword === data.confirmPassword;
-    },
-    { message: "Passwords do not match", path: ["confirmPassword"] },
-  );
+  .superRefine((data, ctx) => {
+    const newPassword = data.newPassword?.trim() ?? "";
+    if (!newPassword) return;
+
+    if (!data.currentPassword?.trim()) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Enter your current password",
+        path: ["currentPassword"],
+      });
+    }
+
+    if (newPassword.length < 8) {
+      ctx.addIssue({
+        code: "custom",
+        message: "New password must be at least 8 characters",
+        path: ["newPassword"],
+      });
+    }
+
+    if (newPassword !== (data.confirmPassword?.trim() ?? "")) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 type ProfileForm = z.infer<typeof profileSchema>;
 
@@ -42,8 +63,8 @@ export default function AdminProfilePage() {
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: session?.user?.name ?? "",
-      email: session?.user?.email ?? "",
+      name: "",
+      email: "",
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
@@ -63,19 +84,44 @@ export default function AdminProfilePage() {
   }, [session, form]);
 
   const onSubmit = form.handleSubmit(async (values) => {
+    const newPassword = values.newPassword?.trim() ?? "";
+    const payload: Record<string, string> = {
+      name: values.name.trim(),
+      email: values.email.trim(),
+    };
+
+    if (newPassword) {
+      payload.currentPassword = values.currentPassword?.trim() ?? "";
+      payload.newPassword = newPassword;
+      payload.confirmPassword = values.confirmPassword?.trim() ?? "";
+    }
+
     try {
-      await adminFetch("/api/admin/profile", {
-        method: "PATCH",
-        body: JSON.stringify(values),
-      });
-      await update({ name: values.name, email: values.email });
+      const result = await adminFetch<{ user: { name: string; email: string } }>(
+        "/api/admin/profile",
+        {
+          method: "PATCH",
+          body: JSON.stringify(payload),
+        },
+      );
+
+      try {
+        await update({
+          name: result.user.name,
+          email: result.user.email,
+        });
+      } catch {
+        toast.message("Profile saved — refresh the page if your name or email still looks old.");
+      }
+
       form.reset({
-        ...values,
+        name: result.user.name,
+        email: result.user.email,
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
       });
-      toast.success("Profile updated");
+      toast.success(newPassword ? "Profile and password updated" : "Profile updated");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Update failed");
     }
@@ -120,20 +166,38 @@ export default function AdminProfilePage() {
           </AdminCard>
 
           <AdminCard title="Change password">
+            <p className="mb-4 text-sm text-[var(--admin-muted)]">
+              Leave password fields blank to keep your current password.
+            </p>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <AdminField label="Current password">
-                  <AdminInput type="password" {...form.register("currentPassword")} />
+                <AdminField
+                  label="Current password"
+                  error={form.formState.errors.currentPassword?.message}
+                >
+                  <AdminInput
+                    type="password"
+                    autoComplete="current-password"
+                    {...form.register("currentPassword")}
+                  />
                 </AdminField>
               </div>
               <AdminField label="New password" error={form.formState.errors.newPassword?.message}>
-                <AdminInput type="password" {...form.register("newPassword")} />
+                <AdminInput
+                  type="password"
+                  autoComplete="new-password"
+                  {...form.register("newPassword")}
+                />
               </AdminField>
               <AdminField
                 label="Confirm new password"
                 error={form.formState.errors.confirmPassword?.message}
               >
-                <AdminInput type="password" {...form.register("confirmPassword")} />
+                <AdminInput
+                  type="password"
+                  autoComplete="new-password"
+                  {...form.register("confirmPassword")}
+                />
               </AdminField>
             </div>
           </AdminCard>

@@ -12,7 +12,6 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
@@ -236,10 +235,6 @@ export default function EditServicePage() {
                   </AdminField>
                 </div>
               </div>
-            </AdminCard>
-
-            <AdminCard title="SEO">
-              <SeoFields control={form.control} prefix="detailPage.seo" />
             </AdminCard>
           </>
         )}

@@ -9,15 +9,12 @@ import {
   AdminTabs,
   AdminTextarea,
 } from "@/components/admin/AdminHeader";
-import { ImageUploader } from "@/components/admin/ImageUploader";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch, adminFetchResource } from "@/lib/admin/api";
-import { seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -53,31 +50,9 @@ const settingsSchema = z.object({
     newsletterBody: z.string(),
     copyrightName: z.string(),
   }),
-  seo: seoSchema.extend({
-    defaultTitle: z.string().optional(),
-    defaultDescription: z.string().optional(),
-    defaultOgImage: z.any().optional(),
-  }),
-  booking: z.object({
-    hostTimeZone: z.string(),
-    rescheduleNoticeHours: z.number(),
-    holdDurationMinutes: z.number(),
-    eTransferInstructions: z.string(),
-  }),
-  payments: z.object({
-    defaultCurrency: z.string(),
-    stripeEnabled: z.boolean(),
-    eTransferEnabled: z.boolean(),
-  }),
   email: z.object({
     fromName: z.string(),
     replyTo: z.string(),
-  }),
-  featureFlags: z.object({
-    hideShopInNav: z.boolean(),
-    hideMediaInNav: z.boolean(),
-    shopEnabled: z.boolean(),
-    mediaEnabled: z.boolean(),
   }),
   legalNotices: z.object({
     requiresOwnerReview: z.boolean(),
@@ -86,6 +61,58 @@ const settingsSchema = z.object({
 });
 
 type SettingsForm = z.infer<typeof settingsSchema>;
+
+function pickEditableSettings(data: Record<string, unknown>): SettingsForm {
+  const brand = (data.brand ?? {}) as Record<string, string | undefined>;
+  const contact = (data.contact ?? {}) as Record<string, string | undefined>;
+  const social = (data.social ?? {}) as Record<string, string | undefined>;
+  const header = (data.header ?? {}) as Record<string, string | boolean | undefined>;
+  const footer = (data.footer ?? {}) as Record<string, string | undefined>;
+  const email = (data.email ?? {}) as Record<string, string | undefined>;
+  const legalNotices = (data.legalNotices ?? {}) as Record<string, string | boolean | undefined>;
+
+  return {
+    brand: {
+      name: brand.name ?? "",
+      tagline: brand.tagline ?? "",
+      headline: brand.headline ?? "",
+      footerStatement: brand.footerStatement ?? "",
+      logoUrl: brand.logoUrl ?? "",
+    },
+    contact: {
+      email: contact.email ?? "",
+      displayPhone: contact.displayPhone ?? "",
+      e164Phone: contact.e164Phone ?? "",
+      whatsApp: contact.whatsApp ?? "",
+      location: contact.location ?? "",
+      responseTimeNote: contact.responseTimeNote ?? "",
+    },
+    social: {
+      facebook: social.facebook ?? "",
+      instagram: social.instagram ?? "",
+      youtube: social.youtube ?? "",
+      linktree: social.linktree ?? "",
+    },
+    header: {
+      primaryCtaLabel: String(header.primaryCtaLabel ?? ""),
+      primaryCtaHref: String(header.primaryCtaHref ?? ""),
+      showIntroOnFirstVisit: Boolean(header.showIntroOnFirstVisit),
+    },
+    footer: {
+      newsletterHeading: footer.newsletterHeading ?? "",
+      newsletterBody: footer.newsletterBody ?? "",
+      copyrightName: footer.copyrightName ?? "",
+    },
+    email: {
+      fromName: email.fromName ?? "",
+      replyTo: email.replyTo ?? "",
+    },
+    legalNotices: {
+      requiresOwnerReview: Boolean(legalNotices.requiresOwnerReview ?? true),
+      disclaimerSummary: String(legalNotices.disclaimerSummary ?? ""),
+    },
+  };
+}
 
 export default function AdminSettingsPage() {
   const [tab, setTab] = useState("brand");
@@ -96,8 +123,8 @@ export default function AdminSettingsPage() {
   });
 
   useEffect(() => {
-    adminFetchResource<SettingsForm>("/api/admin/settings", "settings")
-      .then((data) => form.reset(data))
+    adminFetchResource<Record<string, unknown>>("/api/admin/settings", "settings")
+      .then((data) => form.reset(pickEditableSettings(data)))
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load settings"))
       .finally(() => setLoading(false));
   }, [form]);
@@ -120,7 +147,7 @@ export default function AdminSettingsPage() {
     <>
       <AdminHeader
         title="Settings"
-        description="Configure brand, contact, booking, payments, and feature flags."
+        description="Configure brand, contact details, header, footer, and disclaimer."
         breadcrumbs={[{ label: "Settings" }]}
         actions={
           <AdminButton onClick={onSubmit} disabled={form.formState.isSubmitting}>
@@ -142,12 +169,8 @@ export default function AdminSettingsPage() {
           { id: "contact", label: "Contact" },
           { id: "social", label: "Social" },
           { id: "header-footer", label: "Header/Footer" },
-          { id: "seo", label: "SEO" },
-          { id: "booking", label: "Booking" },
-          { id: "payments", label: "Payments" },
           { id: "email", label: "Email" },
-          { id: "features", label: "Feature Flags" },
-          { id: "legal", label: "Legal" },
+          { id: "disclaimer", label: "Disclaimer" },
         ]}
       />
 
@@ -258,73 +281,6 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
-        {tab === "seo" && (
-          <AdminCard title="Default SEO">
-            <div className="grid gap-4 md:grid-cols-2">
-              <AdminField label="Default title">
-                <AdminInput {...form.register("seo.defaultTitle")} />
-              </AdminField>
-              <div className="md:col-span-2">
-                <AdminField label="Default description">
-                  <AdminTextarea {...form.register("seo.defaultDescription")} />
-                </AdminField>
-              </div>
-              <div className="md:col-span-2">
-                <Controller
-                  control={form.control}
-                  name="seo.defaultOgImage"
-                  render={({ field }) => (
-                    <ImageUploader
-                      label="Default OG image"
-                      value={field.value ?? null}
-                      onChange={field.onChange}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-          </AdminCard>
-        )}
-
-        {tab === "booking" && (
-          <AdminCard title="Booking">
-            <div className="grid gap-4 md:grid-cols-2">
-              <AdminField label="Host timezone">
-                <AdminInput {...form.register("booking.hostTimeZone")} />
-              </AdminField>
-              <AdminField label="Hold duration (minutes)">
-                <AdminInput type="number" {...form.register("booking.holdDurationMinutes", { valueAsNumber: true })} />
-              </AdminField>
-              <AdminField label="Reschedule notice (hours)">
-                <AdminInput type="number" {...form.register("booking.rescheduleNoticeHours", { valueAsNumber: true })} />
-              </AdminField>
-              <div className="md:col-span-2">
-                <AdminField label="E-transfer instructions">
-                  <AdminTextarea {...form.register("booking.eTransferInstructions")} />
-                </AdminField>
-              </div>
-            </div>
-          </AdminCard>
-        )}
-
-        {tab === "payments" && (
-          <AdminCard title="Payments">
-            <div className="grid gap-4 md:grid-cols-2">
-              <AdminField label="Default currency">
-                <AdminInput {...form.register("payments.defaultCurrency")} />
-              </AdminField>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("payments.stripeEnabled")} />
-                Stripe enabled
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("payments.eTransferEnabled")} />
-                E-transfer enabled
-              </label>
-            </div>
-          </AdminCard>
-        )}
-
         {tab === "email" && (
           <AdminCard title="Email">
             <div className="grid gap-4 md:grid-cols-2">
@@ -338,35 +294,12 @@ export default function AdminSettingsPage() {
           </AdminCard>
         )}
 
-        {tab === "features" && (
-          <AdminCard title="Feature flags">
-            <div className="grid gap-3 md:grid-cols-2">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("featureFlags.shopEnabled")} />
-                Shop enabled
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("featureFlags.mediaEnabled")} />
-                Media enabled
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("featureFlags.hideShopInNav")} />
-                Hide shop in navigation
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...form.register("featureFlags.hideMediaInNav")} />
-                Hide media in navigation
-              </label>
-            </div>
-          </AdminCard>
-        )}
-
-        {tab === "legal" && (
-          <AdminCard title="Legal notices">
+        {tab === "disclaimer" && (
+          <AdminCard title="Disclaimer">
             <div className="space-y-4">
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" {...form.register("legalNotices.requiresOwnerReview")} />
-                Legal pages require owner review before publish
+                Disclaimer and policy pages require owner review before publish
               </label>
               <AdminField label="Disclaimer summary">
                 <AdminTextarea {...form.register("legalNotices.disclaimerSummary")} />

@@ -3,7 +3,6 @@ import {
   jsonError,
   jsonOk,
   logAudit,
-  paginated,
   parseJsonBody,
   serializeDoc,
   withAdmin,
@@ -11,33 +10,11 @@ import {
 import { ContactSubmission } from "@/models";
 import { submissionStatusSchema } from "@/lib/validation/admin";
 
-export async function GET(request: NextRequest) {
-  return withAdmin(request, async () => {
-    const submissions = await ContactSubmission.find()
-      .sort({ submittedAt: -1 })
-      .lean();
+type RouteContext = { params: Promise<{ id: string }> };
 
-    const items = submissions.map((item) => ({
-      ...item,
-      _id: String(item._id),
-      id: String(item._id),
-    }));
-
-    return jsonOk({
-      submissions: items,
-      ...paginated(items),
-    });
-  });
-}
-
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   return withAdmin(request, async (session) => {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-    if (!id) {
-      return jsonError("Missing id query parameter", 400);
-    }
-
+    const { id } = await context.params;
     const parsed = await parseJsonBody(request, submissionStatusSchema);
     if (!parsed.success) return parsed.response;
 

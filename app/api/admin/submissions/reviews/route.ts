@@ -3,12 +3,14 @@ import {
   jsonError,
   jsonOk,
   logAudit,
+  paginated,
   parseJsonBody,
   serializeDoc,
   withAdmin,
 } from "@/lib/api/utils";
 import { ReviewSubmission, Testimonial } from "@/models";
 import { submissionStatusSchema } from "@/lib/validation/admin";
+import { revalidateContentPaths } from "@/lib/cache/revalidate-public";
 import { slugify } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
@@ -17,8 +19,15 @@ export async function GET(request: NextRequest) {
       .sort({ submittedAt: -1 })
       .lean();
 
+    const items = submissions.map((item) => ({
+      ...item,
+      _id: String(item._id),
+      id: String(item._id),
+    }));
+
     return jsonOk({
-      submissions: submissions.map((item) => ({ ...item, id: String(item._id) })),
+      submissions: items,
+      ...paginated(items),
     });
   });
 }
@@ -43,7 +52,7 @@ export async function PATCH(request: NextRequest) {
     submission.reviewedAt = new Date();
     submission.reviewedBy = session.user.email ?? undefined;
 
-    if (parsed.data.status === "approved") {
+    if (parsed.data.status === "approved" && !submission.testimonialId) {
       const baseSlug = slugify(submission.name);
       let slug = baseSlug;
       let counter = 1;
@@ -65,7 +74,20 @@ export async function PATCH(request: NextRequest) {
       submission.testimonialId = testimonial._id;
     }
 
+    if (
+      (parsed.data.status === "rejected" || parsed.data.status === "spam") &&
+      submission.testimonialId
+    ) {
+      await Testimonial.findByIdAndUpdate(submission.testimonialId, {
+        status: "archived",
+      });
+    }
+
     await submission.save();
+
+    if (parsed.data.status === "approved" || parsed.data.status === "rejected") {
+      revalidateContentPaths();
+    }
 
     await logAudit({
       action: parsed.data.status === "approved" ? "publish" : "update",

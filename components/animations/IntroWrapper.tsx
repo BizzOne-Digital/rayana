@@ -27,7 +27,9 @@ export function IntroWrapper({
   const timersRef = useRef<number[]>([]);
   const phaseRef = useRef<IntroPhase>("checking");
 
-  phaseRef.current = phase;
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   const clearTimers = useCallback(() => {
     timersRef.current.forEach((id) => window.clearTimeout(id));

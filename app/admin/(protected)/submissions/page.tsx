@@ -26,10 +26,18 @@ type ReviewRow = {
   _id: string;
   name: string;
   email?: string;
+  quote: string;
   excerpt: string;
   status: string;
   submittedAt: string;
 };
+
+function reviewStatusTone(status: string): "neutral" | "success" | "warning" | "danger" {
+  if (status === "approved") return "success";
+  if (status === "pending") return "warning";
+  if (status === "rejected" || status === "spam") return "danger";
+  return "neutral";
+}
 
 export default function AdminSubmissionsPage() {
   const [tab, setTab] = useState("contact");
@@ -55,6 +63,26 @@ export default function AdminSubmissionsPage() {
     () => contacts.filter((item) => item.status === "new").length,
     [contacts],
   );
+
+  const pendingReviewCount = useMemo(
+    () => reviews.filter((item) => item.status === "pending").length,
+    [reviews],
+  );
+
+  const updateReviewStatus = async (id: string, status: string) => {
+    try {
+      await adminFetch(`/api/admin/submissions/reviews?id=${encodeURIComponent(id)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      setReviews((current) =>
+        current.map((item) => (item._id === id ? { ...item, status } : item)),
+      );
+      toast.success(status === "approved" ? "Review approved — now live on site" : "Review updated");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Update failed");
+    }
+  };
 
   const updateContactStatus = async (id: string, status: string) => {
     try {
@@ -84,7 +112,7 @@ export default function AdminSubmissionsPage() {
         onChange={setTab}
         tabs={[
           { id: "contact", label: "Contact", count: newContactCount },
-          { id: "reviews", label: "Reviews" },
+          { id: "reviews", label: "Reviews", count: pendingReviewCount },
         ]}
       />
 
@@ -176,21 +204,61 @@ export default function AdminSubmissionsPage() {
               ),
             },
             {
-              key: "excerpt",
-              header: "Excerpt",
+              key: "review",
+              header: "Review",
               render: (row) => (
-                <p className="max-w-lg text-sm text-[var(--admin-muted)]">{row.excerpt}</p>
+                <p className="max-w-lg text-sm text-[var(--admin-muted)] whitespace-pre-wrap">
+                  {row.quote || row.excerpt}
+                </p>
               ),
             },
             {
               key: "status",
               header: "Status",
-              render: (row) => <AdminBadge tone="neutral">{row.status}</AdminBadge>,
+              render: (row) => (
+                <AdminBadge tone={reviewStatusTone(row.status)}>{row.status}</AdminBadge>
+              ),
             },
             {
               key: "date",
               header: "Submitted",
               render: (row) => format(new Date(row.submittedAt), "MMM d, yyyy"),
+            },
+            {
+              key: "actions",
+              header: "",
+              className: "text-right",
+              render: (row) => (
+                <div className="flex justify-end gap-2">
+                  {row.status === "pending" && (
+                    <>
+                      <AdminButton
+                        size="sm"
+                        variant="primary"
+                        onClick={() => updateReviewStatus(row._id, "approved")}
+                      >
+                        Approve
+                      </AdminButton>
+                      <AdminButton
+                        size="sm"
+                        variant="danger"
+                        onClick={() => updateReviewStatus(row._id, "rejected")}
+                      >
+                        Reject
+                      </AdminButton>
+                    </>
+                  )}
+                  {row.status === "approved" && (
+                    <AdminButton
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => updateReviewStatus(row._id, "rejected")}
+                    >
+                      Unpublish
+                    </AdminButton>
+                  )}
+                </div>
+              ),
             },
           ]}
         />

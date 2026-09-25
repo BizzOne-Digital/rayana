@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Manrope } from "next/font/google";
+import { FloatingWriteReviewCta } from "@/components/site/FloatingWriteReviewCta";
 import { Toaster } from "sonner";
 import { IntroWrapper } from "@/components/animations/IntroWrapper";
 import { PageTransitionProvider } from "@/components/animations/PageTransitionProvider";
@@ -61,6 +62,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           <SiteFooter settings={settings} />
         </IntroWrapper>
       </SmoothScroll>
+      <FloatingWriteReviewCta />
       <Toaster position="top-center" richColors closeButton />
     </div>
   );

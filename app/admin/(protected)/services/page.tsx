@@ -67,11 +67,6 @@ export default function AdminServicesPage() {
             render: (row) => (row.bookable ? "Yes" : "No"),
           },
           {
-            key: "featured",
-            header: "Featured",
-            render: (row) => (row.featured ? "Yes" : "No"),
-          },
-          {
             key: "actions",
             header: "",
             className: "text-right",

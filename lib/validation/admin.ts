@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   buttonSchema,
+  emailSchema,
   imageMediaSchema,
   objectIdSchema,
   pageSectionSchema,
@@ -220,6 +221,43 @@ export const siteSettingsUpdateSchema = z.object({
 export const submissionStatusSchema = z.object({
   status: z.string().min(1),
 });
+
+export const adminProfileUpdateSchema = z
+  .object({
+    name: z.string().trim().min(1).max(120),
+    email: emailSchema,
+    currentPassword: z.string().optional(),
+    newPassword: z.string().optional(),
+    confirmPassword: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    const newPassword = data.newPassword?.trim() ?? "";
+    if (!newPassword) return;
+
+    if (!data.currentPassword?.trim()) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Current password is required to set a new password",
+        path: ["currentPassword"],
+      });
+    }
+
+    if (newPassword.length < 8) {
+      ctx.addIssue({
+        code: "custom",
+        message: "New password must be at least 8 characters",
+        path: ["newPassword"],
+      });
+    }
+
+    if (newPassword !== (data.confirmPassword?.trim() ?? "")) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 export const bookingAdminUpdateSchema = z.object({
   status: z

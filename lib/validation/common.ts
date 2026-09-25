@@ -87,7 +87,7 @@ export const contactSubmissionSchema = z.object({
   phone: phoneSchema,
   subject: z.string().max(200).optional(),
   message: z.string().min(10).max(5000),
-  honeypot: z.literal("").optional(),
+  honeypot: z.string().optional(),
 });
 
 export const reviewSubmissionSchema = z.object({

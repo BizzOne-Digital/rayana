@@ -46,22 +46,26 @@ export async function POST(request: NextRequest) {
     const notifyEmail = settings?.contact.email;
 
     if (notifyEmail) {
-      const template = contactNotificationEmail({
-        name: submission.name,
-        email: submission.email,
-        phone: submission.phone,
-        subject: submission.subject,
-        message: submission.message,
-        submittedAt: submission.submittedAt,
-      });
+      try {
+        const template = contactNotificationEmail({
+          name: submission.name,
+          email: submission.email,
+          phone: submission.phone,
+          subject: submission.subject,
+          message: submission.message,
+          submittedAt: submission.submittedAt,
+        });
 
-      await sendEmail({
-        to: notifyEmail,
-        subject: template.subject,
-        html: template.html,
-        text: template.text,
-        replyTo: submission.email,
-      });
+        await sendEmail({
+          to: notifyEmail,
+          subject: template.subject,
+          html: template.html,
+          text: template.text,
+          replyTo: submission.email,
+        });
+      } catch (error) {
+        console.error("[contact] notification email failed", error);
+      }
     }
 
     return jsonCreated({

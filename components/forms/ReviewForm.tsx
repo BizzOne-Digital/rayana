@@ -10,12 +10,19 @@ type ReviewFormValues = {
   email: string;
   quote: string;
   showFullName: boolean;
+  consentToPublish: boolean;
 };
+
+function buildExcerpt(quote: string): string {
+  const trimmed = quote.trim();
+  if (trimmed.length <= 500) return trimmed;
+  return `${trimmed.slice(0, 497)}…`;
+}
 
 export function ReviewForm({ className }: { className?: string }) {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<ReviewFormValues>({
-    defaultValues: { showFullName: true },
+    defaultValues: { showFullName: true, consentToPublish: false },
   });
 
   async function onSubmit(values: ReviewFormValues) {
@@ -24,7 +31,14 @@ export function ReviewForm({ className }: { className?: string }) {
       const res = await fetch("/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          quote: values.quote,
+          excerpt: buildExcerpt(values.quote),
+          consentToPublish: true,
+          showFullName: values.showFullName,
+        }),
       });
       if (!res.ok) throw new Error("Failed");
       toast.success("Thank you — your review will be reviewed before publishing.");
@@ -64,6 +78,16 @@ export function ReviewForm({ className }: { className?: string }) {
         <label className="flex items-center gap-2 text-sm text-muted-stone">
           <input type="checkbox" {...register("showFullName")} />
           Display my full name publicly
+        </label>
+        <label className="flex items-start gap-2 text-sm text-muted-stone">
+          <input
+            type="checkbox"
+            className="mt-1"
+            {...register("consentToPublish", { required: true })}
+          />
+          <span>
+            I agree this review may be published on the site after Rayana approves it.
+          </span>
         </label>
         <button type="submit" disabled={loading} className="btn btn-primary w-full sm:w-auto">
           {loading ? "Submitting…" : "Submit Review"}

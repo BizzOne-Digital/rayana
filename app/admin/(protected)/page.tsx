@@ -9,26 +9,17 @@ import { IntegrationHealth } from "@/components/admin/IntegrationHealth";
 import { CardGridSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch } from "@/lib/admin/api";
 import type { DashboardStats } from "@/lib/admin/types";
-import { formatCurrency } from "@/lib/utils";
 import {
-  CalendarDays,
   FileText,
+  HelpCircle,
   MessageSquare,
+  ShoppingBag,
   Sparkles,
   Star,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 function StatCard({
   label,
@@ -75,7 +66,7 @@ export default function AdminDashboardPage() {
     <>
       <AdminHeader
         title="Dashboard"
-        description="Overview of bookings, content, and site health."
+        description="Overview of content, submissions, and site health."
         actions={
           <>
             <AdminLinkButton href="/admin/pages">Edit pages</AdminLinkButton>
@@ -88,20 +79,20 @@ export default function AdminDashboardPage() {
 
       {loading ? (
         <CardGridSkeleton count={4} />
-      ) : stats?.bookings ? (
+      ) : stats ? (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <StatCard
-              label="Upcoming bookings"
-              value={stats.bookings.upcoming}
-              hint={`${stats.bookings.pending} pending payment`}
-              href="/admin/bookings"
+              label="New contact messages"
+              value={stats.submissions.contact}
+              hint="Unread in submissions"
+              href="/admin/submissions"
             />
             <StatCard
-              label="Booking revenue"
-              value={formatCurrency(stats.bookings.revenue)}
-              hint={`${stats.bookings.total} total bookings`}
-              href="/admin/bookings"
+              label="Pending reviews"
+              value={stats.submissions.reviews}
+              hint="Write-a-review queue"
+              href="/admin/submissions"
             />
             <StatCard
               label="Pending testimonials"
@@ -110,45 +101,23 @@ export default function AdminDashboardPage() {
               href="/admin/testimonials"
             />
             <StatCard
-              label="New submissions"
-              value={stats.submissions.contact + stats.submissions.reviews}
-              hint="Contact + reviews"
-              href="/admin/submissions"
+              label="Active services"
+              value={stats.services}
+              hint={`${stats.pages} published pages`}
+              href="/admin/services"
             />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-3">
-            <AdminCard
-              title="Booking activity"
-              description="Sessions booked over the last 30 days."
-              className="xl:col-span-2"
-            >
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={stats.bookingChart}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e4d6cf" />
-                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                    <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: 12,
-                        borderColor: "#e4d6cf",
-                      }}
-                    />
-                    <Bar dataKey="count" fill="#7b2433" radius={[6, 6, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </AdminCard>
-
-            <AdminCard title="Quick actions">
+            <AdminCard title="Quick actions" className="xl:col-span-1">
               <div className="space-y-2">
                 {[
                   { href: "/admin/services/new", label: "Add service", icon: Sparkles },
-                  { href: "/admin/blog/new", label: "New blog post", icon: FileText },
-                  { href: "/admin/bookings", label: "Manage bookings", icon: CalendarDays },
+                  { href: "/admin/shop", label: "Shop modules", icon: ShoppingBag },
+                  { href: "/admin/faqs", label: "Manage FAQs", icon: HelpCircle },
                   { href: "/admin/testimonials", label: "Review testimonials", icon: Star },
                   { href: "/admin/submissions", label: "View submissions", icon: MessageSquare },
+                  { href: "/admin/pages", label: "Edit pages", icon: FileText },
                 ].map((action) => {
                   const Icon = action.icon;
                   return (
@@ -164,21 +133,25 @@ export default function AdminDashboardPage() {
                 })}
               </div>
             </AdminCard>
-          </div>
 
-          <div className="grid gap-4 sm:grid-cols-3">
-            <AdminCard>
-              <p className="text-sm text-[var(--admin-muted)]">Published pages</p>
-              <p className="mt-1 text-2xl font-semibold">{stats.pages}</p>
-            </AdminCard>
-            <AdminCard>
-              <p className="text-sm text-[var(--admin-muted)]">Active services</p>
-              <p className="mt-1 text-2xl font-semibold">{stats.services}</p>
-            </AdminCard>
-            <AdminCard>
-              <p className="text-sm text-[var(--admin-muted)]">Blog posts</p>
-              <p className="mt-1 text-2xl font-semibold">{stats.content.blogPosts}</p>
-            </AdminCard>
+            <div className="grid gap-4 sm:grid-cols-2 xl:col-span-2">
+              <AdminCard>
+                <p className="text-sm text-[var(--admin-muted)]">Published pages</p>
+                <p className="mt-1 text-2xl font-semibold">{stats.pages}</p>
+              </AdminCard>
+              <AdminCard>
+                <p className="text-sm text-[var(--admin-muted)]">Shop products</p>
+                <p className="mt-1 text-2xl font-semibold">{stats.content.products}</p>
+              </AdminCard>
+              <AdminCard>
+                <p className="text-sm text-[var(--admin-muted)]">Blog posts</p>
+                <p className="mt-1 text-2xl font-semibold">{stats.content.blogPosts}</p>
+              </AdminCard>
+              <AdminCard>
+                <p className="text-sm text-[var(--admin-muted)]">Gallery images</p>
+                <p className="mt-1 text-2xl font-semibold">{stats.content.galleryImages}</p>
+              </AdminCard>
+            </div>
           </div>
 
           <IntegrationHealth items={stats.integrations ?? []} />

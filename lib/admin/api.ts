@@ -37,16 +37,22 @@ export async function adminFetch<T>(
   const response = await fetch(path, {
     ...options,
     headers,
+    credentials: "include",
   });
 
   if (!response.ok) {
     const payload = (await response.json().catch(() => null)) as
-      | { error?: string; message?: string }
+      | { error?: string; message?: string; details?: { fieldErrors?: Record<string, string[]> } }
       | null;
-    throw new AdminApiError(
-      payload?.error ?? payload?.message ?? response.statusText,
-      response.status,
-    );
+    const fieldMessages = payload?.details?.fieldErrors
+      ? Object.values(payload.details.fieldErrors).flat().filter(Boolean)
+      : [];
+    const message =
+      fieldMessages[0] ??
+      payload?.error ??
+      payload?.message ??
+      response.statusText;
+    throw new AdminApiError(message, response.status);
   }
 
   if (response.status === 204) {
@@ -70,12 +76,22 @@ export async function adminFetchResource<T>(
 }
 
 /** Normalize list endpoints that return `items` or a named array. */
-export async function adminFetchList<T>(
+/** Ensure list rows from the API always have a string `_id` for tables and actions. */
+export function normalizeAdminListRows<T extends { _id?: string; id?: string }>(
+  rows: T[],
+): Array<T & { _id: string }> {
+  return rows.map((row) => ({
+    ...row,
+    _id: String(row._id ?? row.id ?? ""),
+  }));
+}
+
+export async function adminFetchList<T extends { _id?: string; id?: string }>(
   path: string,
   options: RequestInit = {},
-): Promise<T[]> {
+): Promise<Array<T & { _id: string }>> {
   const page = await adminFetchPaginated<T>(path, options);
-  return page.items;
+  return normalizeAdminListRows(page.items);
 }
 
 /** List endpoints may return `items` or a named array (`plans`, `products`, etc.). */
@@ -93,6 +109,8 @@ export async function adminFetchPaginated<T>(
   let items: T[] = [];
   if (Array.isArray(payload.items)) {
     items = payload.items as T[];
+  } else if (Array.isArray(payload.submissions)) {
+    items = payload.submissions as T[];
   } else {
     for (const key of LIST_KEYS) {
       if (Array.isArray(payload[key])) {

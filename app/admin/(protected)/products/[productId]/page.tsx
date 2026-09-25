@@ -11,7 +11,6 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
@@ -177,10 +176,6 @@ export default function AdminProductEditorPage() {
                 <option value="out_of_stock">Out of stock</option>
               </AdminSelect>
             </AdminField>
-            <label className="flex items-center gap-2 text-sm md:col-span-2">
-              <input type="checkbox" {...form.register("featured")} />
-              Featured product
-            </label>
             <div className="md:col-span-2">
               <AdminField label="Summary">
                 <AdminTextarea {...form.register("summary")} />
@@ -211,10 +206,6 @@ export default function AdminProductEditorPage() {
               />
             )}
           />
-        </AdminCard>
-
-        <AdminCard title="SEO">
-          <SeoFields control={form.control} />
         </AdminCard>
       </form>
     </>

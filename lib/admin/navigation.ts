@@ -1,10 +1,8 @@
 import {
-  CreditCard,
   FileText,
   HelpCircle,
   LayoutDashboard,
   MessageSquare,
-  Package,
   Settings,
   Sparkles,
   ShoppingBag,
@@ -24,7 +22,6 @@ export const adminNavItems: AdminNavItem[] = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Pages", href: "/admin/pages", icon: FileText },
   { label: "Services", href: "/admin/services", icon: Sparkles },
-  { label: "Pricing", href: "/admin/pricing", icon: CreditCard },
   {
     label: "Shop modules",
     href: "/admin/shop",
@@ -33,7 +30,6 @@ export const adminNavItems: AdminNavItem[] = [
   },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-  { label: "Products", href: "/admin/products", icon: Package },
   { label: "Submissions", href: "/admin/submissions", icon: MessageSquare },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
