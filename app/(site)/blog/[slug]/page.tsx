@@ -6,6 +6,7 @@ import { RichText } from "@/components/ui/RichText";
 import { getPublicBlogPost, getPublicBlogPosts, getPublicSettings } from "@/lib/data/public";
 import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { getPageSeoFallback } from "@/lib/seo/site-seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,12 +17,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     getPublicSettings(),
   ]);
   if (!post) return {};
+  const fallback = getPageSeoFallback(`/blog/${slug}`);
   return buildMetadata({
-    title: post.title,
-    description: post.excerpt,
+    title: fallback?.title ?? post.title,
+    description: fallback?.description ?? post.excerpt,
     settings,
     path: `/blog/${slug}`,
-    keywords: post.categories,
+    keywords: fallback?.keywords ?? post.categories,
     openGraphType: "article",
     ogImage: post.heroImage?.url,
   });

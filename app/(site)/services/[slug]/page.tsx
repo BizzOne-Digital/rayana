@@ -20,11 +20,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ]);
   if (!service) return {};
   return buildMetadata({
-    title: service.title,
-    description: service.shortDescription,
     settings,
     path: `/services/${slug}`,
-    keywords: [service.title, "spiritual consultation", "Rayana De Silva"],
+    ogImage: service.mainImage?.url,
   });
 }
 
