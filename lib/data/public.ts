@@ -94,7 +94,7 @@ export const FALLBACK_SETTINGS: PublicSettings = {
   seo: {
     defaultTitle: "Rayana De Silva — Heart Matters",
     defaultDescription:
-      "Private consultations, wisdom mentoring, and teachings for clarity, consciousness, truth, and freedom.",
+      "Private spiritual consultations, wisdom mentoring, and consciousness teachings with Rayana De Silva in Richmond, BC and online. Clarity, truth, and heart-centred integration.",
     defaultOgImage: SEED_IMAGES.portrait1,
   },
   featureFlags: {
@@ -137,8 +137,9 @@ function page(
 
 export const FALLBACK_PAGES: Record<string, PublicPage> = {
   home: page("home", "Home", "/", HOME_SECTIONS, {
-    title: "Home",
-    description: "A Deeper Way of Seeing into What Matters",
+    title: "Rayana De Silva — Heart Matters",
+    description:
+      "A deeper way of seeing into what matters — private consultations, wisdom mentoring, and teachings with Rayana De Silva in Richmond, BC and online.",
   }),
   about: page("about", "About", "/about", RAYANA_ABOUT_SECTIONS, {
     title: "About Rayana De Silva",

@@ -30,7 +30,7 @@ export default function AdminPagesListPage() {
     <>
       <AdminHeader
         title="Pages"
-        description="Manage system pages, sections, and SEO."
+        description="Manage system pages and sections."
         breadcrumbs={[{ label: "Pages" }]}
       />
 

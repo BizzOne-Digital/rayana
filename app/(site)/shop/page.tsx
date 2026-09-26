@@ -6,16 +6,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSettings();
-  return buildMetadata({
-    title: "Shop",
-    seo: {
-      title: "Shop | Rayana De Silva",
-      description:
-        "Recorded chakra modules to study at your leisure—foundation and advanced pairings.",
-    },
-    settings,
-    path: "/shop",
-  });
+  return buildMetadata({ settings, path: "/shop" });
 }
 
 export default async function ShopPage() {

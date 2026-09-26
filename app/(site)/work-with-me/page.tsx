@@ -7,12 +7,6 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSettings();
   return buildMetadata({
-    title: "Work With Me",
-    seo: {
-      title: "Work With Me | Rayana De Silva",
-      description:
-        "Private consultations, wisdom mentoring, teachings, workshops, and more with Rayana De Silva.",
-    },
     settings,
     path: "/work-with-me",
   });

@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
+import { SITE_NAME } from "@/lib/constants";
+import {
+  SITE_DEFAULT_DESCRIPTION,
+  SITE_DEFAULT_KEYWORDS,
+} from "@/lib/seo/site-seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rayana De Silva — Heart Matters",
-  description:
-    "Private consultations, wisdom mentoring, and teachings for clarity, consciousness, truth, and freedom.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://rayanaheartmatters.vercel.app",
+  ),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DEFAULT_DESCRIPTION,
+  keywords: [...SITE_DEFAULT_KEYWORDS],
+  applicationName: SITE_NAME,
+  authors: [{ name: "Rayana De Silva" }],
+  creator: "Rayana De Silva",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

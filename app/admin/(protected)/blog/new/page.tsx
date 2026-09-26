@@ -10,10 +10,9 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
-import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
+import { imageMediaSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -29,7 +28,6 @@ const blogSchema = z.object({
   author: z.string().min(1),
   status: z.enum(["draft", "published", "scheduled"]),
   heroImage: imageMediaSchema,
-  seo: seoSchema,
 });
 
 type BlogForm = z.infer<typeof blogSchema>;
@@ -46,7 +44,6 @@ export default function NewBlogPostPage() {
       author: "Rayana De Silva",
       status: "draft",
       heroImage: { url: "/images/seed/teaching.svg", alt: "Blog hero" },
-      seo: {},
     },
   });
 
@@ -129,10 +126,6 @@ export default function NewBlogPostPage() {
               <RichTextEditor value={field.value} onChange={field.onChange} minHeight="280px" />
             )}
           />
-        </AdminCard>
-
-        <AdminCard title="SEO">
-          <SeoFields control={form.control} />
         </AdminCard>
 
         <div className="flex justify-end">

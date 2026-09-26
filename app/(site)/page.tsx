@@ -5,16 +5,8 @@ import { getPublicPage, getPublicSettings } from "@/lib/data/public";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [page, settings] = await Promise.all([
-    getPublicPage("home"),
-    getPublicSettings(),
-  ]);
-  return buildMetadata({
-    title: page?.title,
-    seo: page?.seo,
-    settings,
-    path: "/",
-  });
+  const settings = await getPublicSettings();
+  return buildMetadata({ settings, path: "/" });
 }
 
 export default async function HomePage() {

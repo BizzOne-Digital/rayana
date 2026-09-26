@@ -10,11 +10,9 @@ import {
   AdminTabs,
 } from "@/components/admin/AdminHeader";
 import { SectionEditor } from "@/components/admin/SectionEditor";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetchResource } from "@/lib/admin/api";
 import type { AdminPageDetail } from "@/lib/admin/types";
-import { seoSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExternalLink, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
@@ -28,7 +26,6 @@ const pageFormSchema = z.object({
   title: z.string().min(1),
   navigationLabel: z.string().min(1),
   showInNavigation: z.boolean(),
-  seo: seoSchema,
 });
 
 type PageFormValues = z.infer<typeof pageFormSchema>;
@@ -47,7 +44,6 @@ export default function AdminPageEditorPage() {
       title: "",
       navigationLabel: "",
       showInNavigation: true,
-      seo: {},
     },
   });
 
@@ -60,7 +56,6 @@ export default function AdminPageEditorPage() {
           title: data.title,
           navigationLabel: data.navigationLabel,
           showInNavigation: data.showInNavigation,
-          seo: data.seo ?? {},
         });
       })
       .catch((error) => toast.error(error instanceof Error ? error.message : "Failed to load page"))
@@ -147,7 +142,6 @@ export default function AdminPageEditorPage() {
         tabs={[
           { id: "sections", label: "Sections" },
           { id: "settings", label: "Page settings" },
-          { id: "seo", label: "SEO" },
         ]}
       />
 
@@ -174,11 +168,6 @@ export default function AdminPageEditorPage() {
         </AdminCard>
       )}
 
-      {activeTab === "seo" && (
-        <AdminCard title="Search & social">
-          <SeoFields control={form.control} />
-        </AdminCard>
-      )}
     </>
   );
 }

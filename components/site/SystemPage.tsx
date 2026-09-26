@@ -18,8 +18,6 @@ export async function generateSystemPageMetadata({
     getPublicSettings(),
   ]);
   return buildMetadata({
-    title: page?.title,
-    seo: page?.seo,
     settings,
     path,
   });

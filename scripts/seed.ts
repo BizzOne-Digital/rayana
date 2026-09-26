@@ -141,7 +141,7 @@ async function upsertSiteSettings(): Promise<void> {
       seo: {
         defaultTitle: "Rayana De Silva — Heart Matters",
         defaultDescription:
-          "Private consultations, wisdom mentoring, and teachings for clarity, consciousness, truth, and freedom.",
+          "Private spiritual consultations, wisdom mentoring, and consciousness teachings with Rayana De Silva in Richmond, BC and online. Clarity, truth, and heart-centred integration.",
         defaultOgImage: IMAGES.portrait1,
       },
       booking: {

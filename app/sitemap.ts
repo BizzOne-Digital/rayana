@@ -19,6 +19,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: page.systemKey === "home" ? 1 : 0.7,
   }));
 
+  staticEntries.push({
+    url: `${base}/work-with-me`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.85,
+  });
+
   const serviceEntries: MetadataRoute.Sitemap = services.map((service) => ({
     url: `${base}/services/${service.slug}`,
     lastModified: new Date(),

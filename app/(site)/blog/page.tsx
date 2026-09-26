@@ -8,11 +8,8 @@ import { SEED_IMAGES } from "@/lib/data/seed-images";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [page, settings] = await Promise.all([
-    getPublicPage("blog"),
-    getPublicSettings(),
-  ]);
-  return buildMetadata({ title: page?.title, seo: page?.seo, settings, path: "/blog" });
+  const settings = await getPublicSettings();
+  return buildMetadata({ settings, path: "/blog" });
 }
 
 export default async function BlogPage() {

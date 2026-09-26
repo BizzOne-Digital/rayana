@@ -20,10 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   ]);
   if (!service) return {};
   return buildMetadata({
-    title: service.detailPage.seo.title || service.title,
-    description: service.detailPage.seo.description || service.shortDescription,
+    title: service.title,
+    description: service.shortDescription,
     settings,
     path: `/services/${slug}`,
+    keywords: [service.title, "spiritual consultation", "Rayana De Silva"],
   });
 }
 

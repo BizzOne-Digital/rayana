@@ -10,19 +10,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const [settings, product] = await Promise.all([getPublicSettings(), getPublicProduct(slug)]);
   if (!product) {
-    return buildMetadata({
-      title: "Shop",
-      seo: { title: "Shop | Rayana De Silva", description: "" },
-      settings,
-      path: "/shop",
-    });
+    return buildMetadata({ settings, path: "/shop" });
   }
   return buildMetadata({
     title: product.title,
-    seo: {
-      title: `${product.title} | Shop`,
-      description: product.shortDescription,
-    },
+    description: product.shortDescription,
     settings,
     path: `/shop/${slug}`,
   });

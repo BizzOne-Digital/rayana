@@ -14,7 +14,7 @@ import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch, adminFetchResource } from "@/lib/admin/api";
 import { slugify } from "@/lib/utils";
-import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
+import { imageMediaSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -36,7 +36,6 @@ const productSchema = z.object({
   visibility: z.enum(["draft", "published", "hidden"]),
   featured: z.boolean(),
   gallery: z.array(imageMediaSchema),
-  seo: seoSchema,
 });
 
 type ProductForm = z.infer<typeof productSchema>;
@@ -62,7 +61,6 @@ export default function AdminProductEditorPage() {
       visibility: "draft",
       featured: false,
       gallery: [],
-      seo: {},
     },
   });
 

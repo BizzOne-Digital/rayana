@@ -10,10 +10,9 @@ import {
 } from "@/components/admin/AdminHeader";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
-import { SeoFields } from "@/components/admin/SeoFields";
 import { FormSkeleton } from "@/components/admin/LoadingSkeleton";
 import { adminFetch, adminFetchResource } from "@/lib/admin/api";
-import { imageMediaSchema, seoSchema } from "@/lib/validation/common";
+import { imageMediaSchema } from "@/lib/validation/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Save } from "lucide-react";
 import { useParams } from "next/navigation";
@@ -30,7 +29,6 @@ const blogSchema = z.object({
   author: z.string().min(1),
   status: z.enum(["draft", "published", "scheduled"]),
   heroImage: imageMediaSchema,
-  seo: seoSchema,
 });
 
 type BlogForm = z.infer<typeof blogSchema>;
@@ -128,9 +126,6 @@ export default function EditBlogPostPage() {
           />
         </AdminCard>
 
-        <AdminCard title="SEO">
-          <SeoFields control={form.control} />
-        </AdminCard>
       </form>
     </>
   );

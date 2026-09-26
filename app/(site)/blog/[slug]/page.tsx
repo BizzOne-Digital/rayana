@@ -19,9 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: post.title,
     description: post.excerpt,
-    seo: post.seo,
     settings,
     path: `/blog/${slug}`,
+    keywords: post.categories,
+    openGraphType: "article",
+    ogImage: post.heroImage?.url,
   });
 }
 

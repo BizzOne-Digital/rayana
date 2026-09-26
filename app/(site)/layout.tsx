@@ -10,6 +10,7 @@ import { SiteMain } from "@/components/site/SiteMain";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { buildSectionContext } from "@/lib/data/page-context";
 import { getPublicSettings } from "@/lib/data/public";
+import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 /** CMS-driven pages: always read latest MongoDB content (admin saves / publish). */
@@ -50,6 +51,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     <div
       className={`${cinzel.variable} ${cormorant.variable} ${manrope.variable} flex min-h-dvh w-full max-w-full flex-col overflow-x-clip bg-background text-foreground`}
     >
+      <SiteJsonLd settings={settings} />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
